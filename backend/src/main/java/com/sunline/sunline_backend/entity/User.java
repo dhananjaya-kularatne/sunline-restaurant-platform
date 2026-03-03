@@ -37,6 +37,12 @@ public class User {
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "reset_token_expiry")
+    private LocalDateTime resetTokenExpiry;
+
     public enum Role {
         CUSTOMER, KITCHEN, DELIVERY, ADMIN
     }

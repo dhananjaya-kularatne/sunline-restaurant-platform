@@ -24,14 +24,14 @@ const LoginPage = () => {
             login({ name: data.name, role: data.role }, data.token);
             navigate('/');
         } catch (err) {
-            setError(err.message || 'Invalid email or password. Please try again.');
+            setError(err.response?.data?.message || err.message || 'Invalid credentials');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="min-h-[80vh] flex items-center justify-center px-4">
             <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 card-shadow">
                 <div className="flex flex-col items-center mb-8">
                     <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white mb-4 shadow-lg">
@@ -57,6 +57,9 @@ const LoginPage = () => {
                     <div>
                         <div className="flex justify-between mb-2">
                             <label className="block text-sm font-medium text-gray-700">Password</label>
+                            <Link to="/forgot-password" size="sm" className="text-sm text-primary hover:underline font-medium">
+                                Forgot password?
+                            </Link>
                         </div>
                         <div className="relative">
                             <input
