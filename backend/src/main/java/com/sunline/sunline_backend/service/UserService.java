@@ -2,15 +2,20 @@ package com.sunline.sunline_backend.service;
 
 import com.sunline.sunline_backend.entity.User;
 import com.sunline.sunline_backend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.UUID;
@@ -29,6 +34,9 @@ public class UserService implements UserDetailsService {
 
     @Value("${app.frontend.url}")
     private String frontendUrl;
+
+    @Value("${app.upload.dir}")
+    private String uploadDir;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -95,5 +103,43 @@ public class UserService implements UserDetailsService {
         if (user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("The password reset link has expired");
         }
+    }
+
+    public User updateProfile(String email, String name, String bio) {
+        User user = findByEmail(email);
+        if (name != null)
+            user.setName(name);
+        if (bio != null)
+            user.setBio(bio);
+        return userRepository.save(user);
+    }
+
+    public User updateProfilePicture(String email, String filePath) {
+        User user = findByEmail(email);
+        user.setProfilePicture(filePath);
+        return userRepository.save(user);
+    }
+
+    public String saveProfilePicture(String email, MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new RuntimeException("File is empty");
+        }
+
+        String contentType = file.getContentType();
+        if (contentType == null || (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))) {
+            throw new RuntimeException("Invalid file type. Only JPG, JPEG, and PNG are allowed.");
+        }
+
+        Path uploadPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path filePath = uploadPath.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath);
+
+        updateProfilePicture(email, fileName);
+        return fileName;
     }
 }
