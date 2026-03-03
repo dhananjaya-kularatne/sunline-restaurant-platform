@@ -43,6 +43,11 @@ public class User {
     @Column(name = "reset_token_expiry")
     private LocalDateTime resetTokenExpiry;
 
+    private String bio;
+
+    @Column(name = "profile_picture")
+    private String profilePicture;
+
     public enum Role {
         CUSTOMER, KITCHEN, DELIVERY, ADMIN
     }
