@@ -4,6 +4,8 @@ target/
 .DS_Store
 Thumbs.db
 
+./resources/application.properties
+
 # IDE specific
 .idea/
 .vscode/
