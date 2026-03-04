@@ -3,6 +3,7 @@ package com.sunline.sunline_backend.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -17,6 +18,14 @@ public class GlobalExceptionHandler {
         Map<String, String> response = new HashMap<>();
         response.put("message", "Invalid email or password. Please try again.");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<Map<String, String>> handleDisabledUser(DisabledException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("message",
+                "Access to your account has been restricted by administrative policy. Please contact system support for further assistance.");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
     @ExceptionHandler(RuntimeException.class)
