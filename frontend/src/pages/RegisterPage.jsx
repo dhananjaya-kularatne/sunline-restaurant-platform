@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 import { Utensils, Loader2, Info } from 'lucide-react';
 
@@ -35,7 +35,7 @@ const RegisterPage = () => {
         }
 
         if (!validatePassword(formData.password)) {
-            setError('Password does not meet requirements');
+            setError('Password must meet the required complexity criteria (minimum 8 characters, one uppercase, one number, and one special character)');
             return;
         }
 
@@ -52,10 +52,10 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-12 text-gray-800">
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 text-gray-800">
             <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
                 <div className="flex flex-col items-center mb-8">
-                    <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center text-white mb-4">
+                    <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white mb-4 shadow-lg">
                         <Utensils size={32} />
                     </div>
                     <h2 className="text-3xl font-bold text-gray-900">Create Account</h2>
@@ -74,7 +74,7 @@ const RegisterPage = () => {
                                 type="text"
                                 name="name"
                                 required
-                                className="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition-all outline-none"
                                 placeholder="John Doe"
                                 value={formData.name}
                                 onChange={handleChange}
@@ -87,7 +87,7 @@ const RegisterPage = () => {
                                 type="email"
                                 name="email"
                                 required
-                                className="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition-all outline-none"
                                 placeholder="name@example.com"
                                 value={formData.email}
                                 onChange={handleChange}
@@ -100,14 +100,14 @@ const RegisterPage = () => {
                                 type="password"
                                 name="password"
                                 required
-                                className="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition-all outline-none"
                                 placeholder="••••••••"
                                 value={formData.password}
                                 onChange={handleChange}
                             />
-                            <div className="mt-2 flex items-start text-xs text-gray-500 bg-blue-50 p-2 rounded">
+                            <div className="mt-2 flex items-start text-xs text-blue-800 bg-[#e7f3ff] p-3 rounded-lg border border-blue-100">
                                 <Info size={14} className="mr-2 mt-0.5 text-blue-500 shrink-0" />
-                                <p>Must be at least 8 chars with an uppercase letter, a number, and a special character.</p>
+                                <p>Password must be at least 8 characters with an uppercase letter, a number, and a special character.</p>
                             </div>
                         </div>
 
@@ -117,7 +117,7 @@ const RegisterPage = () => {
                                 type="password"
                                 name="confirmPassword"
                                 required
-                                className="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition-all outline-none"
                                 placeholder="••••••••"
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
@@ -129,11 +129,18 @@ const RegisterPage = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold flex items-center justify-center hover:bg-orange-600 disabled:opacity-50 transition-all shadow-md mt-4"
+                            className="w-full bg-primary text-white py-3 rounded-lg font-bold flex items-center justify-center hover:opacity-90 disabled:opacity-50 transition-all shadow-md active:scale-[0.98] mt-4"
                         >
                             {loading ? <Loader2 className="animate-spin mr-2" /> : null}
                             Register
                         </button>
+
+                        <p className="text-center text-gray-600 mt-4">
+                            Already have an account?{' '}
+                            <Link to="/login" className="text-primary font-semibold hover:underline">
+                                Sign In
+                            </Link>
+                        </p>
                     </form>
                 )}
             </div>
