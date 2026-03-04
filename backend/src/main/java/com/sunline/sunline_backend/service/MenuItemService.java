@@ -6,6 +6,7 @@ import com.sunline.sunline_backend.repository.MenuItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class MenuItemService {
                 .name(item.getName())
                 .description(item.getDescription())
                 .price(item.getPrice())
-                .category(item.getCategory())
+                .categories(new ArrayList<>(item.getCategories()))
                 .imageUrl(item.getImageUrl())
                 .isAvailable(item.getIsAvailable())
                 .build();

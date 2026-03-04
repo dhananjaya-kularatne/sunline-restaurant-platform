@@ -1,24 +1,27 @@
 package com.sunline.sunline_backend.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MenuItemDTO {
     private Long id;
     private String name;
     private String description;
     private Double price;
-    private String category;
+    private List<String> categories = new ArrayList<>();
     private String imageUrl;
     private Boolean isAvailable;
 
     public MenuItemDTO() {
     }
 
-    public MenuItemDTO(Long id, String name, String description, Double price, String category, String imageUrl,
+    public MenuItemDTO(Long id, String name, String description, Double price, List<String> categories, String imageUrl,
             Boolean isAvailable) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.category = category;
+        this.categories = categories != null ? categories : new ArrayList<>();
         this.imageUrl = imageUrl;
         this.isAvailable = isAvailable;
     }
@@ -60,12 +63,12 @@ public class MenuItemDTO {
         this.price = price;
     }
 
-    public String getCategory() {
-        return category;
+    public List<String> getCategories() {
+        return categories;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 
     public String getImageUrl() {
@@ -89,7 +92,7 @@ public class MenuItemDTO {
         private String name;
         private String description;
         private Double price;
-        private String category;
+        private List<String> categories = new ArrayList<>();
         private String imageUrl;
         private Boolean isAvailable;
 
@@ -113,8 +116,8 @@ public class MenuItemDTO {
             return this;
         }
 
-        public MenuItemDTOBuilder category(String category) {
-            this.category = category;
+        public MenuItemDTOBuilder categories(List<String> categories) {
+            this.categories = categories;
             return this;
         }
 
@@ -129,7 +132,7 @@ public class MenuItemDTO {
         }
 
         public MenuItemDTO build() {
-            return new MenuItemDTO(id, name, description, price, category, imageUrl, isAvailable);
+            return new MenuItemDTO(id, name, description, price, categories, imageUrl, isAvailable);
         }
     }
 }

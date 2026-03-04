@@ -1,6 +1,8 @@
 package com.sunline.sunline_backend.entity;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "menu_items")
@@ -19,24 +21,27 @@ public class MenuItem {
     @Column(nullable = false)
     private Double price;
 
-    @Column(nullable = false)
-    private String category;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "menu_item_categories", joinColumns = @JoinColumn(name = "menu_item_id"))
+    @Column(name = "category")
+    private Set<String> categories = new HashSet<>();
 
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "is_available")
     private Boolean isAvailable = true;
 
     public MenuItem() {
     }
 
-    public MenuItem(Long id, String name, String description, Double price, String category, String imageUrl,
+    public MenuItem(Long id, String name, String description, Double price, Set<String> categories, String imageUrl,
             Boolean isAvailable) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.category = category;
+        this.categories = categories != null ? categories : new HashSet<>();
         this.imageUrl = imageUrl;
         this.isAvailable = isAvailable != null ? isAvailable : true;
     }
@@ -78,12 +83,12 @@ public class MenuItem {
         this.price = price;
     }
 
-    public String getCategory() {
-        return category;
+    public Set<String> getCategories() {
+        return categories;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(Set<String> categories) {
+        this.categories = categories;
     }
 
     public String getImageUrl() {
@@ -107,7 +112,7 @@ public class MenuItem {
         private String name;
         private String description;
         private Double price;
-        private String category;
+        private Set<String> categories = new HashSet<>();
         private String imageUrl;
         private Boolean isAvailable = true;
 
@@ -131,8 +136,15 @@ public class MenuItem {
             return this;
         }
 
+        public MenuItemBuilder categories(Set<String> categories) {
+            this.categories = categories;
+            return this;
+        }
+
         public MenuItemBuilder category(String category) {
-            this.category = category;
+            if (this.categories == null)
+                this.categories = new HashSet<>();
+            this.categories.add(category);
             return this;
         }
 
@@ -147,7 +159,7 @@ public class MenuItem {
         }
 
         public MenuItem build() {
-            return new MenuItem(id, name, description, price, category, imageUrl, isAvailable);
+            return new MenuItem(id, name, description, price, categories, imageUrl, isAvailable);
         }
     }
 }

@@ -10,5 +10,5 @@ import java.util.List;
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
     List<MenuItem> findByIsAvailableTrue();
 
-    List<MenuItem> findByCategory(String category);
+    List<MenuItem> findByCategoriesContaining(String category);
 }
