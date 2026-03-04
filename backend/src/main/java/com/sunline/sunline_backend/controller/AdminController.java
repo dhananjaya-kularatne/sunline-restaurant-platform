@@ -1,0 +1,56 @@
+package com.sunline.sunline_backend.controller;
+
+import com.sunline.sunline_backend.dto.request.UserRoleRequest;
+import com.sunline.sunline_backend.dto.response.UserResponse;
+import com.sunline.sunline_backend.entity.User;
+import com.sunline.sunline_backend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/api/admin")
+@PreAuthorize("hasRole('ADMIN')")
+public class AdminController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(required = false) String search) {
+        List<User> users = userService.getAllUsers(search);
+        List<UserResponse> response = users.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/users/{id}/role")
+    public ResponseEntity<UserResponse> updateUserRole(@PathVariable Long id, @RequestBody UserRoleRequest request) {
+        User.Role role = User.Role.valueOf(request.getRole().toUpperCase());
+        User updatedUser = userService.updateUserRole(id, role);
+        return ResponseEntity.ok(mapToResponse(updatedUser));
+    }
+
+    @PutMapping("/users/{id}/status")
+    public ResponseEntity<UserResponse> toggleUserStatus(@PathVariable Long id) {
+        User updatedUser = userService.toggleUserStatus(id);
+        return ResponseEntity.ok(mapToResponse(updatedUser));
+    }
+
+    private UserResponse mapToResponse(User user) {
+        return UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .bio(user.getBio())
+                .profilePicture(user.getProfilePicture())
+                .role(user.getRole().name())
+                .active(user.getActive() == null || user.getActive())
+                .build();
+    }
+}

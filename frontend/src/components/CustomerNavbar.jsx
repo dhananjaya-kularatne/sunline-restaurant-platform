@@ -16,18 +16,21 @@ const CustomerNavbar = () => {
     return (
         <nav className="bg-white shadow-sm py-4 px-6 sticky top-0 z-50">
             <div className="container mx-auto flex justify-between items-center">
-                <Link to="/" className="text-2xl font-bold text-primary">
+                <Link to="/" className="text-2xl font-bold text-[#FF7F50]">
                     Sunline Restaurant
                 </Link>
 
                 <div className="hidden md:flex items-center space-x-8">
-                    <Link to="/" className="text-secondary hover:text-primary transition-colors font-medium">Home</Link>
+                    <Link to="/" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Home</Link>
+                    <Link to="/menu" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Menu</Link>
+
+
 
                     {user ? (
                         <div className="relative">
                             <button
                                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                                className="flex items-center space-x-2 text-secondary hover:text-primary focus:outline-none font-medium"
+                                className="flex items-center space-x-2 text-gray-700 hover:text-[#FF7F50] focus:outline-none font-medium"
                             >
                                 <span>{user.name}</span>
                                 <ChevronDown size={20} />
