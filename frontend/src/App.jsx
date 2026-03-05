@@ -10,6 +10,8 @@ import CustomerNavbar from './components/CustomerNavbar';
 import { AuthProvider } from './context/AuthContext';
 import MenuPage from './pages/MenuPage';
 
+import AdminMenuManagement from './pages/AdminMenuManagement';
+
 function App() {
     return (
         <AuthProvider>
@@ -25,6 +27,7 @@ function App() {
                         <Route path="/reset-password" element={<ResetPasswordPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/admin/users" element={<AdminUserManagement />} />
+                        <Route path="/admin/menu" element={<AdminMenuManagement />} />
                     </Routes>
                 </div>
             </Router>
