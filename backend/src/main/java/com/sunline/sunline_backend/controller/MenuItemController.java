@@ -20,7 +20,7 @@ public class MenuItemController {
 
     @GetMapping
     public List<MenuItemDTO> getAllAvailableMenu() {
-        return menuItemService.getAllAvailableMenuItems();
+        return menuItemService.getAllMenuItems();
     }
 
     @GetMapping("/all")
