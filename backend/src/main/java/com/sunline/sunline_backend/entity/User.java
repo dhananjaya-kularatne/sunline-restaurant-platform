@@ -1,10 +1,15 @@
 package com.sunline.sunline_backend.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -24,9 +29,11 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    @Builder.Default
     @Column(name = "is_active")
     private Boolean active = true;
 
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "reset_token")
@@ -42,54 +49,5 @@ public class User {
 
     public enum Role {
         CUSTOMER, KITCHEN, DELIVERY, ADMIN
-    }
-
-    public static class UserBuilder {
-        private Long id;
-        private String name;
-        private String email;
-        private String password;
-        private Role role;
-        private Boolean active = true;
-        private LocalDateTime createdAt = LocalDateTime.now();
-
-        public UserBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public UserBuilder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public UserBuilder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public UserBuilder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public UserBuilder role(Role role) {
-            this.role = role;
-            return this;
-        }
-
-        public UserBuilder active(Boolean active) {
-            this.active = active;
-            return this;
-        }
-
-        public UserBuilder createdAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public User build() {
-            return new User(id, name, email, password, role, active, createdAt);
-        }
     }
 }
