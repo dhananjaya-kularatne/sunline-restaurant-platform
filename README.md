@@ -25,7 +25,7 @@ Story1_Registration/
 
 ### 1. Prerequisites
 - **MySQL Server**: Ensure MySQL is running on your machine.
-- **Java 17+**: Installed and configured (for backend).
+- **Java 21+**: Installed and configured (for backend).
 - **Node.js**: Installed (for frontend).
 - **Maven**: (Optional if using `./mvnw`, but good to have).
 
