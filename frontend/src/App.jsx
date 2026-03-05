@@ -7,6 +7,7 @@ import ProfilePage from './pages/ProfilePage';
 import HomePage from './pages/HomePage';
 import CustomerNavbar from './components/CustomerNavbar';
 import { AuthProvider } from './context/AuthContext';
+import MenuPage from './pages/MenuPage';
 
 function App() {
     return (
