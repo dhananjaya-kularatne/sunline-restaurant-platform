@@ -11,7 +11,7 @@ const MenuPage = () => {
     useEffect(() => {
         const fetchMenu = async () => {
             try {
-                const data = await menuService.getAllMenuItems();
+                const data = await menuService.getAvailableMenuItems();
                 setMenuItems(data);
                 setLoading(false);
             } catch (err) {
