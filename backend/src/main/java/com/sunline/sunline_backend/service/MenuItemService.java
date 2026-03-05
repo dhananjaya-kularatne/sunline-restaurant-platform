@@ -54,9 +54,17 @@ public class MenuItemService {
         existingItem.setPrice(dto.getPrice());
         existingItem.setCategories(new HashSet<>(dto.getCategories()));
         existingItem.setImageUrl(dto.getImageUrl());
+        existingItem.setIsAvailable(dto.getIsAvailable());
 
         MenuItem updatedItem = menuItemRepository.save(existingItem);
         return convertToDTO(updatedItem);
+    }
+
+    public void deleteMenuItem(Long id) {
+        if (!menuItemRepository.existsById(id)) {
+            throw new RuntimeException("Menu item not found with id: " + id);
+        }
+        menuItemRepository.deleteById(id);
     }
 
     private MenuItemDTO convertToDTO(MenuItem item) {
@@ -67,6 +75,7 @@ public class MenuItemService {
                 .price(item.getPrice())
                 .categories(new ArrayList<>(item.getCategories()))
                 .imageUrl(item.getImageUrl())
+                .isAvailable(item.getIsAvailable())
                 .build();
     }
 
@@ -77,6 +86,7 @@ public class MenuItemService {
                 .price(dto.getPrice())
                 .categories(new HashSet<>(dto.getCategories()))
                 .imageUrl(dto.getImageUrl())
+                .isAvailable(dto.getIsAvailable() != null ? dto.getIsAvailable() : true)
                 .build();
     }
 }

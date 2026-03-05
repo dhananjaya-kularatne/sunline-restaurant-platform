@@ -36,6 +36,14 @@ const menuService = {
             console.error('Error updating menu item:', error);
             throw error;
         }
+    },
+    deleteMenuItem: async (id) => {
+        try {
+            await api.delete(`/menu/${id}`);
+        } catch (error) {
+            console.error('Error deleting menu item:', error);
+            throw error;
+        }
     }
 };
 

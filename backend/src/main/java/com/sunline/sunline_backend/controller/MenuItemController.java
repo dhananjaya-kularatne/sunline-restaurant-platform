@@ -40,4 +40,10 @@ public class MenuItemController {
     public MenuItemDTO updateMenuItem(@PathVariable Long id, @RequestBody MenuItemDTO menuItemDTO) {
         return menuItemService.updateMenuItem(id, menuItemDTO);
     }
+
+    @DeleteMapping("/{id}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
+    public void deleteMenuItem(@PathVariable Long id) {
+        menuItemService.deleteMenuItem(id);
+    }
 }
