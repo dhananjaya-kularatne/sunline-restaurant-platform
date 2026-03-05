@@ -18,10 +18,32 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
+
+    public List<User> getAllUsers(String search) {
+        if (search != null && !search.isEmpty()) {
+            return userRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search);
+        }
+        return userRepository.findAll();
+    }
+
+    public User updateUserRole(Long userId, User.Role role) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setRole(role);
+        return userRepository.save(user);
+    }
+
+    public User toggleUserStatus(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setActive(user.getActive() == null || !user.getActive());
+        return userRepository.save(user);
+    }
 
     @Autowired
     private UserRepository userRepository;
