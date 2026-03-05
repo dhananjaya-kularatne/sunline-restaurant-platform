@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Search, UserPlus, Users, LayoutDashboard, Settings, LogOut, ChevronDown, UserMinus, UserCheck, Shield, Utensils, Truck, User } from 'lucide-react';
+import { Search, ChevronDown, UserMinus, UserCheck } from 'lucide-react';
 import userService from '../services/userService';
 import { useAuth } from '../context/AuthContext';
+import AdminSidebar from '../components/AdminSidebar';
 
 const AdminUserManagement = () => {
     const [users, setUsers] = useState([]);
@@ -76,19 +77,7 @@ const AdminUserManagement = () => {
 
     return (
         <div className="flex min-h-screen bg-[#F8F9FA]">
-            {/* Sidebar */}
-            <aside className="w-64 bg-[#3E4958] text-white flex flex-col">
-                <div className="p-6">
-                    <h2 className="text-xl font-bold text-[#FF7F50]">Sunline Admin</h2>
-                </div>
-                <nav className="flex-1 mt-4">
-                    <div className="px-4 py-3 mx-2 rounded-lg bg-[#FF7F50] flex items-center gap-3 cursor-pointer">
-                        <Users size={20} />
-                        <span className="font-medium">User Management</span>
-                    </div>
-                    {/* Other nav items can be added here if needed */}
-                </nav>
-            </aside>
+            <AdminSidebar />
 
             {/* Main Content */}
             <main className="flex-1 p-8">

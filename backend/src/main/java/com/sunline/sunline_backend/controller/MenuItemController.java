@@ -3,9 +3,7 @@ package com.sunline.sunline_backend.controller;
 import com.sunline.sunline_backend.dto.MenuItemDTO;
 import com.sunline.sunline_backend.service.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +19,25 @@ public class MenuItemController {
     }
 
     @GetMapping
-    public List<MenuItemDTO> getAllMenu() {
+    public List<MenuItemDTO> getAllAvailableMenu() {
         return menuItemService.getAllAvailableMenuItems();
+    }
+
+    @GetMapping("/all")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
+    public List<MenuItemDTO> getAllMenu() {
+        return menuItemService.getAllMenuItems();
+    }
+
+    @PostMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
+    public MenuItemDTO addMenuItem(@RequestBody MenuItemDTO menuItemDTO) {
+        return menuItemService.addMenuItem(menuItemDTO);
+    }
+
+    @PutMapping("/{id}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
+    public MenuItemDTO updateMenuItem(@PathVariable Long id, @RequestBody MenuItemDTO menuItemDTO) {
+        return menuItemService.updateMenuItem(id, menuItemDTO);
     }
 }
