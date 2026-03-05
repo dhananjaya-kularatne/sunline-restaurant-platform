@@ -148,12 +148,6 @@ const MenuPage = () => {
                                     alt={item.name}
                                     className="h-64 w-full object-cover object-center group-hover:scale-110 transition-transform duration-700"
                                 />
-                                {/* Availability Overlay */}
-                                {!item.isAvailable && (
-                                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-                                        <span className="text-white font-bold text-xl uppercase tracking-widest px-4 py-2 border-2 border-white">Sold Out</span>
-                                    </div>
-                                )}
                                 {/* Price Tag */}
                                 <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl text-lg font-black text-orange-600 shadow-lg">
                                     LKR {item.price.toFixed(0)}
@@ -182,11 +176,7 @@ const MenuPage = () => {
                                 {/* Footer Action */}
                                 <div className="mt-auto pt-6 border-t border-gray-50">
                                     <button
-                                        disabled={!item.isAvailable}
-                                        className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center space-x-3 transition-all duration-300 ${item.isAvailable
-                                            ? 'bg-gray-900 text-white hover:bg-orange-600 hover:shadow-lg active:scale-95'
-                                            : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                            }`}
+                                        className="w-full py-4 rounded-2xl font-bold flex items-center justify-center space-x-3 transition-all duration-300 bg-gray-900 text-white hover:bg-orange-600 hover:shadow-lg active:scale-95"
                                     >
                                         <span>Add to Order</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
