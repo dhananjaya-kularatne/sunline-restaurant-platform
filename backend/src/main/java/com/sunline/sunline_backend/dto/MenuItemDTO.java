@@ -10,18 +10,20 @@ public class MenuItemDTO {
     private Double price;
     private List<String> categories = new ArrayList<>();
     private String imageUrl;
+    private Boolean isAvailable;
 
     public MenuItemDTO() {
     }
 
-    public MenuItemDTO(Long id, String name, String description, Double price, List<String> categories,
-            String imageUrl) {
+    public MenuItemDTO(Long id, String name, String description, Double price, List<String> categories, String imageUrl,
+            Boolean isAvailable) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.categories = categories != null ? categories : new ArrayList<>();
         this.imageUrl = imageUrl;
+        this.isAvailable = isAvailable;
     }
 
     public static MenuItemDTOBuilder builder() {
@@ -77,6 +79,14 @@ public class MenuItemDTO {
         this.imageUrl = imageUrl;
     }
 
+    public Boolean getIsAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(Boolean isAvailable) {
+        this.isAvailable = isAvailable;
+    }
+
     public static class MenuItemDTOBuilder {
         private Long id;
         private String name;
@@ -84,6 +94,7 @@ public class MenuItemDTO {
         private Double price;
         private List<String> categories = new ArrayList<>();
         private String imageUrl;
+        private Boolean isAvailable;
 
         public MenuItemDTOBuilder id(Long id) {
             this.id = id;
@@ -115,8 +126,13 @@ public class MenuItemDTO {
             return this;
         }
 
+        public MenuItemDTOBuilder isAvailable(Boolean isAvailable) {
+            this.isAvailable = isAvailable;
+            return this;
+        }
+
         public MenuItemDTO build() {
-            return new MenuItemDTO(id, name, description, price, categories, imageUrl);
+            return new MenuItemDTO(id, name, description, price, categories, imageUrl, isAvailable);
         }
     }
 }

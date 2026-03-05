@@ -15,7 +15,8 @@ const AdminMenuManagement = () => {
         description: '',
         price: '',
         categories: '',
-        imageUrl: ''
+        imageUrl: '',
+        isAvailable: true
     });
 
     useEffect(() => {
@@ -48,7 +49,8 @@ const AdminMenuManagement = () => {
                 description: item.description,
                 price: item.price,
                 categories: item.categories ? item.categories.join(', ') : '',
-                imageUrl: item.imageUrl
+                imageUrl: item.imageUrl,
+                isAvailable: item.isAvailable
             });
         } else {
             setCurrentItem(null);
@@ -57,7 +59,8 @@ const AdminMenuManagement = () => {
                 description: '',
                 price: '',
                 categories: '',
-                imageUrl: ''
+                imageUrl: '',
+                isAvailable: true
             });
         }
         setIsModalOpen(true);
@@ -92,6 +95,18 @@ const AdminMenuManagement = () => {
         }
     };
 
+    const handleDelete = async (id) => {
+        if (window.confirm('Are you sure you want to delete this menu item?')) {
+            try {
+                await menuService.deleteMenuItem(id);
+                showNotification('success', 'Menu item deleted successfully!');
+                fetchMenuItems();
+            } catch (error) {
+                console.error('Error deleting menu item:', error);
+                showNotification('error', 'Failed to delete menu item');
+            }
+        }
+    };
 
     const filteredItems = menuItems.filter(item =>
         item.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -143,6 +158,7 @@ const AdminMenuManagement = () => {
                                 <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase">Item</th>
                                 <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase">Category</th>
                                 <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase">Price</th>
+                                <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase">Status</th>
                                 <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase text-right">Actions</th>
                             </tr>
                         </thead>
@@ -177,6 +193,12 @@ const AdminMenuManagement = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 font-medium text-gray-700">LKR {item.price}</td>
+                                        <td className="px-6 py-4">
+                                            <span className={`px-2 py-1 rounded-full text-[10px] font-bold ${item.isAvailable ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'
+                                                }`}>
+                                                {item.isAvailable ? 'AVAILABLE' : 'UNAVAILABLE'}
+                                            </span>
+                                        </td>
                                         <td className="px-6 py-4 text-right">
                                             <div className="flex justify-end gap-2">
                                                 <button
@@ -184,6 +206,12 @@ const AdminMenuManagement = () => {
                                                     className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
                                                 >
                                                     <Edit2 size={16} />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(item.id)}
+                                                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                >
+                                                    <Trash2 size={16} />
                                                 </button>
                                             </div>
                                         </td>
@@ -257,6 +285,16 @@ const AdminMenuManagement = () => {
                                         value={formData.imageUrl}
                                         onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                                     />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        id="isAvailable"
+                                        className="w-5 h-5 accent-[#FF7F50]"
+                                        checked={formData.isAvailable}
+                                        onChange={(e) => setFormData({ ...formData, isAvailable: e.target.checked })}
+                                    />
+                                    <label htmlFor="isAvailable" className="text-sm font-semibold text-gray-700">Available for ordering</label>
                                 </div>
                                 <div className="pt-4 flex gap-3">
                                     <button
