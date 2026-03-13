@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class DataSeeder {
@@ -25,7 +26,7 @@ public class DataSeeder {
                         }
 
                         System.out.println("Seeding menu items with multi-categories...");
-                        repository.saveAll(Arrays.asList(
+                        List<MenuItem> items = Arrays.asList(
                                         MenuItem.builder()
                                                         .name("Vegetable Kottu")
                                                         .description("Finely chopped flatbread (roti) mixed with fresh vegetables, eggs, and mild spices. A vegetarian favourite.")
@@ -102,7 +103,8 @@ public class DataSeeder {
                                                         .category("Mains")
                                                         .imageUrl("https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80")
                                                         .isAvailable(true)
-                                                        .build()));
+                                                        .build());
+                        repository.saveAll(items);
                 };
         }
 }
