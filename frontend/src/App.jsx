@@ -9,6 +9,8 @@ import HomePage from './pages/HomePage';
 import CustomerNavbar from './components/CustomerNavbar';
 import { AuthProvider } from './context/AuthContext';
 import MenuPage from './pages/MenuPage';
+import CreatePostPage from './pages/CreatePostPage';
+import SocialFeedPage from './pages/SocialFeedPage';
 
 import AdminMenuManagement from './pages/AdminMenuManagement';
 
@@ -28,6 +30,8 @@ function App() {
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/admin/users" element={<AdminUserManagement />} />
                         <Route path="/admin/menu" element={<AdminMenuManagement />} />
+                        <Route path="/create-post" element={<CreatePostPage />} />
+                        <Route path="/social-feed" element={<SocialFeedPage />} />
                     </Routes>
                 </div>
             </Router>
