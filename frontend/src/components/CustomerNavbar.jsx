@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Menu, User, LogOut, ChevronDown, LayoutDashboard, Utensils, Truck } from 'lucide-react';
 import { useState } from 'react';
@@ -6,6 +6,7 @@ import { useState } from 'react';
 const CustomerNavbar = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleLogout = () => {
@@ -23,6 +24,7 @@ const CustomerNavbar = () => {
                 <div className="hidden md:flex items-center space-x-8">
                     <Link to="/" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Home</Link>
                     <Link to="/menu" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Menu</Link>
+                    <Link to="/social-feed" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Social Feed</Link>
 
 
 
@@ -37,7 +39,7 @@ const CustomerNavbar = () => {
                             </button>
 
                             {dropdownOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2">
+                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-[200]">
                                     <Link
                                         to="/profile"
                                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
@@ -92,6 +94,15 @@ const CustomerNavbar = () => {
                     <Menu size={24} />
                 </button>
             </div>
+            {user && location.pathname === '/social-feed' && (
+                <Link
+                    to="/create-post"
+                    className="fixed top-[4rem] right-[1.5rem] z-[100] flex items-center space-x-2 bg-orange-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-orange-600 transition-all font-semibold"
+                >
+                    <span className="text-lg">+</span>
+                    <span>Share a Post</span>
+                </Link>
+            )}
         </nav>
     );
 };
