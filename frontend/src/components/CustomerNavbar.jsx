@@ -23,9 +23,6 @@ const CustomerNavbar = () => {
                 <div className="hidden md:flex items-center space-x-8">
                     <Link to="/" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Home</Link>
                     <Link to="/menu" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Menu</Link>
-
-
-
                     {user ? (
                         <div className="relative">
                             <button
