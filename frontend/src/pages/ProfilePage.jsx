@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import authService from '../services/authService';
 import { User, Camera, Loader2, CheckCircle, Mail, Type, FileText } from 'lucide-react';
+import UserReportsPage from './UserReportsPage';
 
 const ProfilePage = () => {
     const { user, updateUser } = useAuth();
@@ -177,6 +178,10 @@ const ProfilePage = () => {
                         </div>
                     </form>
                 </div>
+            </div>
+            
+            <div className="max-w-5xl w-full mt-8">
+                <UserReportsPage emailAddress={formData.email} />
             </div>
         </div>
     );

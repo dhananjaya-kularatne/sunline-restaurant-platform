@@ -34,6 +34,9 @@ public class SupportReport {
     @jakarta.persistence.Column(columnDefinition = "TEXT")
     private String description;
 
+    @Builder.Default
+    private String status = "PENDING";
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 }

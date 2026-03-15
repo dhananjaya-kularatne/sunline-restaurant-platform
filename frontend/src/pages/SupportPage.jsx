@@ -20,9 +20,9 @@ const SupportPage = () => {
         'Select a category',
         'General Inquiry',
         'Food Quality',
-        'Service Experience',
+        'Service Quality',
         'Technical Issue',
-        'Billing Request',
+        'Billing Issues',
         'Other'
     ];
 
@@ -56,7 +56,7 @@ const SupportPage = () => {
             newErrors.category = 'Category is required';
         }
 
-        if (['Food Quality', 'Service Experience', 'Billing Request'].includes(formData.category)) {
+        if (['Food Quality', 'Service Quality', 'Billing Issues'].includes(formData.category)) {
             if (!formData.orderId || !formData.orderId.trim()) {
                 newErrors.orderId = 'Order ID is required for this category';
             }
@@ -192,7 +192,7 @@ const SupportPage = () => {
                             {errors.category && <p className="mt-1 text-xs text-red-500">{errors.category}</p>}
                         </div>
 
-                        {['Food Quality', 'Service Experience', 'Billing Request'].includes(formData.category) && (
+                        {['Food Quality', 'Service Quality', 'Billing Issues'].includes(formData.category) && (
                             <div>
                                 <label htmlFor="orderId" className="block text-sm font-medium text-gray-700 mb-1">
                                     Order ID <span className="text-red-500">*</span>

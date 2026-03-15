@@ -22,4 +22,10 @@ public class SupportReportController {
         SupportReport createdReport = supportReportService.createSupportReport(dto);
         return new ResponseEntity<>(createdReport, HttpStatus.CREATED);
     }
+
+    @GetMapping("/user/{emailAddress}")
+    public ResponseEntity<List<SupportReport>> getUserReports(@PathVariable String emailAddress) {
+        List<SupportReport> reports = supportReportService.getUserReports(emailAddress);
+        return ResponseEntity.ok(reports);
+    }
 }
