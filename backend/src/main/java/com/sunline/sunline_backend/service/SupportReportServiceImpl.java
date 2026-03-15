@@ -6,6 +6,8 @@ import com.sunline.sunline_backend.repository.SupportReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SupportReportServiceImpl implements SupportReportService {
@@ -23,5 +25,10 @@ public class SupportReportServiceImpl implements SupportReportService {
                 .build();
                 
         return repository.save(report);
+    }
+    
+    @Override
+    public List<SupportReport> getUserReports(String emailAddress) {
+        return repository.findByEmailAddressOrderByCreatedAtDesc(emailAddress);
     }
 }
