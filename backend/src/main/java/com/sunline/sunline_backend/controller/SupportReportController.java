@@ -4,6 +4,7 @@ import com.sunline.sunline_backend.dto.SupportReportDto;
 import com.sunline.sunline_backend.entity.SupportReport;
 import com.sunline.sunline_backend.service.SupportReportService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,15 @@ public class SupportReportController {
         return new ResponseEntity<>(createdReport, HttpStatus.CREATED);
     }
 
-    @GetMapping("/user/{emailAddress}")
+    @GetMapping("/user/{emailAddress:.+}")
     public ResponseEntity<List<SupportReport>> getUserReports(@PathVariable String emailAddress) {
         List<SupportReport> reports = supportReportService.getUserReports(emailAddress);
         return ResponseEntity.ok(reports);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReport(@PathVariable Long id) {
+        supportReportService.deleteSupportReport(id);
+        return ResponseEntity.noContent().build();
     }
 }
