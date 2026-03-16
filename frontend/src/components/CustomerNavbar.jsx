@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Menu, User, LogOut, ChevronDown, LayoutDashboard, Utensils, Truck } from 'lucide-react';
+import { Menu, User, LogOut, ChevronDown, LayoutDashboard, Utensils, Truck, FileText } from 'lucide-react';
 import { useState } from 'react';
 
 const CustomerNavbar = () => {
@@ -42,6 +42,15 @@ const CustomerNavbar = () => {
                                     >
                                         <User size={16} className="mr-2" /> Profile
                                     </Link>
+                                    {user.role === 'CUSTOMER' && (
+                                        <Link
+                                            to="/my-reports"
+                                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                                            onClick={() => setDropdownOpen(false)}
+                                        >
+                                            <FileText size={16} className="mr-2" /> My Reports
+                                        </Link>
+                                    )}
                                     {user.role === 'ADMIN' && (
                                         <Link
                                             to="/admin/users"

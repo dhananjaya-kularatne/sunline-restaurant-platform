@@ -31,4 +31,9 @@ public class SupportReportServiceImpl implements SupportReportService {
     public List<SupportReport> getUserReports(String emailAddress) {
         return repository.findByEmailAddressOrderByCreatedAtDesc(emailAddress);
     }
+
+    @Override
+    public void deleteSupportReport(Long id) {
+        repository.deleteById(id);
+    }
 }

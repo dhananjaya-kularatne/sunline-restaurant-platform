@@ -46,7 +46,7 @@ public class AuthController {
         String token = tokenProvider.generateToken(request.getEmail());
         User user = userService.findByEmail(request.getEmail());
 
-        return ResponseEntity.ok(new AuthResponse(token, user.getRole().name(), user.getName()));
+        return ResponseEntity.ok(new AuthResponse(token, user.getRole().name(), user.getName(), user.getEmail()));
     }
 
     @PostMapping("/forgot-password")
