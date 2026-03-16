@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { HelpCircle, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { HelpCircle, CheckCircle, Lock, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 const SupportPage = () => {
+    const { user, loading } = useAuth();
     const [formData, setFormData] = useState({
-        fullName: '',
-        emailAddress: '',
+        fullName: user?.name || '',
+        emailAddress: user?.email || '',
         category: '',
         orderId: '',
         description: ''
@@ -15,6 +18,16 @@ const SupportPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [serverError, setServerError] = useState('');
+
+    useEffect(() => {
+        if (user) {
+            setFormData(prev => ({
+                ...prev,
+                fullName: user.name || '',
+                emailAddress: user.email || ''
+            }));
+        }
+    }, [user]);
 
     const categories = [
         'Select a category',
@@ -80,8 +93,8 @@ const SupportPage = () => {
             await api.post('/support-reports', formData);
             setSubmitSuccess(true);
             setFormData({
-                fullName: '',
-                emailAddress: '',
+                fullName: user?.name || '',
+                emailAddress: user?.email || '',
                 category: '',
                 orderId: '',
                 description: ''
@@ -92,6 +105,45 @@ const SupportPage = () => {
             setIsSubmitting(false);
         }
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-12">
+                <div className="w-12 h-12 border-4 border-[#FF7F50]/20 border-t-[#FF7F50] rounded-full animate-spin mb-4"></div>
+                <p className="text-gray-500 font-medium">Checking authentication...</p>
+            </div>
+        );
+    }
+
+    if (!user) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center mt-10">
+                    <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Lock className="text-[#FF7F50]" size={40} />
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4 tracking-tight">Login Required</h2>
+                    <p className="text-gray-600 mb-8 leading-relaxed">
+                        Please log in to your account to submit a support report. This helps us track your issue and respond more effectively.
+                    </p>
+                    <div className="space-y-3">
+                        <Link 
+                            to="/login"
+                            className="bg-[#FF7F50] text-white py-3.5 rounded-xl font-bold text-lg hover:bg-[#e06b3f] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#FF7F50]/20"
+                        >
+                            Log In <ArrowRight size={20} />
+                        </Link>
+                        <Link 
+                            to="/register"
+                            className="block w-full text-center border border-gray-100 text-gray-600 py-3.5 rounded-xl font-bold hover:bg-gray-50 transition-all"
+                        >
+                            Create Account
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     if (submitSuccess) {
         return (
@@ -108,6 +160,12 @@ const SupportPage = () => {
                     >
                         Submit Another Report
                     </button>
+                    <Link
+                        to="/my-reports"
+                        className="w-full block text-center border border-[#FF7F50] text-[#FF7F50] py-3 px-4 rounded-lg font-medium hover:bg-orange-50 transition-colors mt-3"
+                    >
+                        View My Reports
+                    </Link>
                 </div>
             </div>
         );
@@ -161,9 +219,10 @@ const SupportPage = () => {
                                 placeholder="john@example.com"
                                 value={formData.emailAddress}
                                 onChange={handleChange}
+                                readOnly={!!user?.email}
                                 className={`w-full px-4 py-2 border rounded-lg focus:ring-[#FF7F50] focus:border-[#FF7F50] outline-none transition-all ${
                                     errors.emailAddress ? 'border-red-500 bg-red-50' : 'border-gray-200'
-                                }`}
+                                } ${user?.email ? 'bg-gray-50 cursor-not-allowed' : ''}`}
                             />
                             {errors.emailAddress && <p className="mt-1 text-xs text-red-500">{errors.emailAddress}</p>}
                         </div>
