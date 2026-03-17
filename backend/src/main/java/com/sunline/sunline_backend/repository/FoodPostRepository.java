@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface FoodPostRepository extends JpaRepository<FoodPost, Long> {
 
-    @Query("SELECT p FROM FoodPost p WHERE p.removed = false ORDER BY p.createdAt DESC")
+    @Query("SELECT DISTINCT p FROM FoodPost p JOIN FETCH p.author LEFT JOIN FETCH p.taggedItems WHERE p.removed = false ORDER BY p.createdAt DESC")
     List<FoodPost> findAllActivePosts();
 }
