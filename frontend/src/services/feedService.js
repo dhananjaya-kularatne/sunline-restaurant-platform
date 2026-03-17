@@ -1,6 +1,7 @@
 import api from './api';
 
 const feedService = {
+    getFeed: () => api.get('/feed'),
     createPost: (data) => api.post('/feed/posts', data),
     uploadImage: (file) => {
         const formData = new FormData();

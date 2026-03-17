@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -68,5 +69,11 @@ public class FoodPostController {
 
         FoodPostResponse response = foodPostService.createPost(user.getId(), request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FoodPostResponse>> getFeed(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(foodPostService.getAllPosts());
     }
 }
