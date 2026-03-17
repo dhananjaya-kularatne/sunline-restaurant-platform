@@ -10,8 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class FoodPostService {
 
         private final FoodPostRepository foodPostRepository;
@@ -33,12 +37,20 @@ public class FoodPostService {
                 return toResponse(saved);
         }
 
+        public List<FoodPostResponse> getAllPosts() {
+                return foodPostRepository.findAllActivePosts()
+                                .stream()
+                                .map(this::toResponse)
+                                .collect(Collectors.toList());
+        }
+
         private FoodPostResponse toResponse(FoodPost post) {
                 return FoodPostResponse.builder()
                                 .id(post.getId())
                                 .author(FoodPostResponse.AuthorInfo.builder()
                                                 .id(post.getAuthor().getId())
                                                 .name(post.getAuthor().getName())
+                                                .profilePicture(post.getAuthor().getProfilePicture())
                                                 .build())
                                 .caption(post.getCaption())
                                 .imageUrl(post.getImageUrl())

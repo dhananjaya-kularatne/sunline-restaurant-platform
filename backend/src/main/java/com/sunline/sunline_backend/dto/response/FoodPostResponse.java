@@ -21,5 +21,6 @@ public class FoodPostResponse {
     public static class AuthorInfo {
         private Long id;
         private String name;
+        private String profilePicture;
     }
 }
