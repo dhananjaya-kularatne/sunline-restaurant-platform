@@ -94,15 +94,6 @@ const CustomerNavbar = () => {
                     <Menu size={24} />
                 </button>
             </div>
-            {user && location.pathname === '/social-feed' && (
-                <Link
-                    to="/create-post"
-                    className="fixed top-[4rem] right-[1.5rem] z-[100] flex items-center space-x-2 bg-orange-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-orange-600 transition-all font-semibold"
-                >
-                    <span className="text-lg">+</span>
-                    <span>Share a Post</span>
-                </Link>
-            )}
         </nav>
     );
 };

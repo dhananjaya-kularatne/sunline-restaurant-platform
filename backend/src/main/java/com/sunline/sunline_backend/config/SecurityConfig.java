@@ -4,6 +4,7 @@ import com.sunline.sunline_backend.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -37,7 +38,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/register").permitAll()
                         .requestMatchers("/api/menu/**").permitAll()
                         .requestMatchers("/api/auth/**", "/uploads/**").permitAll()
-                        .requestMatchers("/api/feed", "/api/feed/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/feed").permitAll()
+                        .requestMatchers("/api/feed/**").authenticated()
                         .anyRequest().authenticated());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
