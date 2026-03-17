@@ -37,6 +37,7 @@ public class FoodPostService {
                 return toResponse(saved);
         }
 
+        @Transactional(readOnly = true)
         public List<FoodPostResponse> getAllPosts() {
                 return foodPostRepository.findAllActivePosts()
                                 .stream()

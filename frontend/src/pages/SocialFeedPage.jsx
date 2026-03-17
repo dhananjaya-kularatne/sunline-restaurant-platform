@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Loader2, Utensils, MessageCircle } from 'lucide-react';
+import { Loader2, Utensils, MessageCircle, Plus } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import feedService from '../services/feedService';
 import { useAuth } from '../context/AuthContext';
 
@@ -56,21 +57,33 @@ const SocialFeedPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            {/* Sticky Header */}
-            <div className="sticky top-0 z-10 border-b border-orange-100 bg-white px-4 py-3 shadow-sm">
-                <div className="mx-auto flex max-w-2xl items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white">
-                        <Utensils className="h-6 w-6" />
-                    </div>
-                    <div>
-                        <h1 className="text-lg font-bold text-gray-900">Sunline Bites</h1>
-                        <p className="text-xs text-gray-500">Community Food Feed</p>
-                    </div>
-                </div>
-            </div>
 
             {/* Main Content */}
-            <div className="mx-auto max-w-md px-4 py-6 sm:max-w-xl">
+            <div className="mx-auto max-w-6xl px-4 pt-5 pb-12">
+                {/* Interactive Header */}
+                <div className="mb-10 flex flex-col md:flex-row md:items-start justify-between gap-6 border-b border-gray-200 pb-8">
+                    <div className="space-y-4">
+                        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
+                            <span className="block">Welcome to the</span>
+                            <span className="block bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent">
+                                Social Feed
+                            </span>
+                        </h1>
+                        <p className="max-w-2xl text-lg text-gray-500">
+                            Discover delicious meals and share your culinary adventures with the community.
+                        </p>
+                    </div>
+
+                    {user && (
+                        <Link
+                            to="/create-post"
+                            className="-mt-2 inline-flex items-center justify-center rounded-full bg-orange-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-100 transition-all hover:scale-105 hover:bg-orange-600 active:scale-95"
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Share a Post
+                        </Link>
+                    )}
+                </div>
                 {posts.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 text-center">
                         <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-orange-100 text-orange-500">
@@ -80,7 +93,7 @@ const SocialFeedPage = () => {
                         <p className="mt-2 text-gray-600">Be the first to share a delicious meal!</p>
                     </div>
                 ) : (
-                    <div className="space-y-6">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {posts.map((post) => (
                             <div key={post.id} className="overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-md">
                                 {/* Author Header */}
@@ -124,7 +137,7 @@ const SocialFeedPage = () => {
                                     <img
                                         src={getImageUrl(post.imageUrl)}
                                         alt="Food post"
-                                        className="max-h-72 w-full object-cover"
+                                        className="max-h-48 w-full object-cover"
                                         onError={(e) => {
                                             e.target.src = 'https://via.placeholder.com/600x400?text=Food+Post';
                                         }}
