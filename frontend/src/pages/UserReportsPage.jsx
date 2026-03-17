@@ -125,14 +125,7 @@ const UserReportsPage = () => {
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-16 text-center">
                         <Package className="mx-auto h-14 w-14 text-gray-300 mb-4" />
                         <h3 className="text-lg font-semibold text-gray-800 mb-2">No Reports Yet</h3>
-                        <p className="text-gray-500 text-sm mb-6">You haven't submitted any support reports yet.</p>
-                        <Link
-                            to="/support"
-                            className="inline-flex items-center gap-2 bg-[#FF7F50] text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:bg-[#e06b3f] transition-colors"
-                        >
-                            <PlusCircle size={16} />
-                            Submit a Report
-                        </Link>
+                        <p className="text-gray-500 text-sm">You haven't submitted any support reports yet.</p>
                     </div>
                 )}
 
