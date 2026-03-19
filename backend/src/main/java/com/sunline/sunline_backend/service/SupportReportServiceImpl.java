@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SupportReportServiceImpl implements SupportReportService {
 
-    private final SupportReportRepository repository;
+    private final SupportReportRepository supportReportRepository;
 
     @Override
     public SupportReport createSupportReport(SupportReportDto dto) {
@@ -24,16 +24,37 @@ public class SupportReportServiceImpl implements SupportReportService {
                 .description(dto.getDescription())
                 .build();
                 
-        return repository.save(report);
+        return supportReportRepository.save(report);
     }
     
     @Override
     public List<SupportReport> getUserReports(String emailAddress) {
-        return repository.findByEmailAddressOrderByCreatedAtDesc(emailAddress);
+        return supportReportRepository.findByEmailAddressOrderByCreatedAtDesc(emailAddress);
+    }
+
+    @Override
+    public List<SupportReport> getAllReports() {
+        return supportReportRepository.findByHiddenFromAdminFalseOrderByCreatedAtDesc();
     }
 
     @Override
     public void deleteSupportReport(Long id) {
-        repository.deleteById(id);
+        supportReportRepository.deleteById(id);
+    }
+
+    @Override
+    public SupportReport updateReportStatus(Long id, String status) {
+        SupportReport report = supportReportRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Report not found"));
+        report.setStatus(status);
+        return supportReportRepository.save(report);
+    }
+
+    @Override
+    public void hideReportFromAdmin(Long id) {
+        SupportReport report = supportReportRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Report not found"));
+        report.setHiddenFromAdmin(true);
+        supportReportRepository.save(report);
     }
 }

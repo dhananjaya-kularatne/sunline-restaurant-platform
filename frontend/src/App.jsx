@@ -13,6 +13,7 @@ import MenuPage from './pages/MenuPage';
 import AdminMenuManagement from './pages/AdminMenuManagement';
 import SupportPage from './pages/SupportPage';
 import UserReportsPage from './pages/UserReportsPage';
+import AdminSupportManagement from './pages/AdminSupportManagement';
 import Footer from './components/Footer';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                         <Route path="/my-reports" element={<UserReportsPage />} />
                         <Route path="/admin/users" element={<AdminUserManagement />} />
                         <Route path="/admin/menu" element={<AdminMenuManagement />} />
+                        <Route path="/admin/support" element={<AdminSupportManagement />} />
                     </Routes>
                     <Footer />
                 </div>
