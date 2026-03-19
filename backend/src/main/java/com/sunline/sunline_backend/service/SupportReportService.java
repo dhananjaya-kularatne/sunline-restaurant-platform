@@ -8,5 +8,8 @@ import java.util.List;
 public interface SupportReportService {
     SupportReport createSupportReport(SupportReportDto dto);
     List<SupportReport> getUserReports(String emailAddress);
+    List<SupportReport> getAllReports();
     void deleteSupportReport(Long id);
+    SupportReport updateReportStatus(Long id, String status);
+    void hideReportFromAdmin(Long id);
 }

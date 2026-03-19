@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface SupportReportRepository extends JpaRepository<SupportReport, Long> {
     List<SupportReport> findByEmailAddressOrderByCreatedAtDesc(String emailAddress);
+    
+    List<SupportReport> findByHiddenFromAdminFalseOrderByCreatedAtDesc();
 }
