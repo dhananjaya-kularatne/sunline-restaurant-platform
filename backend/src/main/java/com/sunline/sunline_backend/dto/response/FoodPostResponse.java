@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -15,6 +16,8 @@ public class FoodPostResponse {
     private String caption;
     private List<String> taggedItems;
     private LocalDateTime createdAt;
+    private Map<String, Long> reactionCounts;
+    private String currentUserReaction;
 
     @Data
     @Builder
