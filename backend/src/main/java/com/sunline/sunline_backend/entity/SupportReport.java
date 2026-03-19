@@ -1,5 +1,6 @@
 package com.sunline.sunline_backend.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,12 +32,18 @@ public class SupportReport {
     private String orderId;
     
     // Use column definition for potentially longer text
-    @jakarta.persistence.Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Builder.Default
+    @Column(nullable = false)
     private String status = "PENDING";
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean hiddenFromAdmin = false;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
