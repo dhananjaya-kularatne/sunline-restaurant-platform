@@ -41,9 +41,8 @@ public class SupportReportController {
     }
 
     @DeleteMapping("/{id}")
-    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteReport(@PathVariable Long id) {
-        supportReportService.hideReportFromAdmin(id);
+        supportReportService.deleteSupportReport(id);
         return ResponseEntity.noContent().build();
     }
 

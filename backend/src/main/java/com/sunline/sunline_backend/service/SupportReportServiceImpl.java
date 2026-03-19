@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SupportReportServiceImpl implements SupportReportService {
 
-    private final SupportReportRepository supportReportRepository;
+    private final SupportReportRepository repository;
 
     @Override
     public SupportReport createSupportReport(SupportReportDto dto) {
@@ -24,37 +24,44 @@ public class SupportReportServiceImpl implements SupportReportService {
                 .description(dto.getDescription())
                 .build();
                 
-        return supportReportRepository.save(report);
+        return repository.save(report);
     }
     
     @Override
     public List<SupportReport> getUserReports(String emailAddress) {
-        return supportReportRepository.findByEmailAddressOrderByCreatedAtDesc(emailAddress);
+        return repository.findByEmailAddressOrderByCreatedAtDesc(emailAddress);
     }
 
     @Override
     public List<SupportReport> getAllReports() {
-        return supportReportRepository.findByHiddenFromAdminFalseOrderByCreatedAtDesc();
+        return repository.findByHiddenFromAdminFalseOrderByCreatedAtDesc();
     }
 
     @Override
     public void deleteSupportReport(Long id) {
-        supportReportRepository.deleteById(id);
+        SupportReport report = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Report not found"));
+        
+        // Get current user roles
+        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = auth != null && auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (isAdmin) {
+            // Soft delete for Admin
+            report.setHiddenFromAdmin(true);
+            repository.save(report);
+        } else {
+            // Hard delete for Customer
+            repository.delete(report);
+        }
     }
 
     @Override
     public SupportReport updateReportStatus(Long id, String status) {
-        SupportReport report = supportReportRepository.findById(id)
+        SupportReport report = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Report not found"));
         report.setStatus(status);
-        return supportReportRepository.save(report);
-    }
-
-    @Override
-    public void hideReportFromAdmin(Long id) {
-        SupportReport report = supportReportRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Report not found"));
-        report.setHiddenFromAdmin(true);
-        supportReportRepository.save(report);
+        return repository.save(report);
     }
 }
