@@ -34,15 +34,15 @@ public class SupportReport {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Builder.Default
     @Column(nullable = false)
+    @Builder.Default
     private String status = "PENDING";
 
-    @Builder.Default
     @Column(nullable = false)
+    @Builder.Default
     private boolean hiddenFromAdmin = false;
 
-    @Builder.Default
     @Column(nullable = false)
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 }
