@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -30,7 +29,7 @@ public class SupportReport {
     private String emailAddress;
     private String category;
     private String orderId;
-    
+
     // Use column definition for potentially longer text
     @Column(columnDefinition = "TEXT")
     private String description;
