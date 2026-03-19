@@ -1,6 +1,7 @@
 package com.sunline.sunline_backend.controller;
 
 import com.sunline.sunline_backend.dto.request.CreatePostRequest;
+import com.sunline.sunline_backend.dto.request.ReactionRequest;
 import com.sunline.sunline_backend.dto.response.FoodPostResponse;
 import com.sunline.sunline_backend.entity.User;
 import com.sunline.sunline_backend.repository.UserRepository;
@@ -74,6 +75,26 @@ public class FoodPostController {
     @GetMapping
     public ResponseEntity<List<FoodPostResponse>> getFeed(
             @AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(foodPostService.getAllPosts());
+        Long userId = null;
+        if (userDetails != null) {
+            User user = userRepository.findByEmail(userDetails.getUsername())
+                    .orElse(null);
+            if (user != null) {
+                userId = user.getId();
+            }
+        }
+        return ResponseEntity.ok(foodPostService.getAllPosts(userId));
+    }
+
+    @PostMapping("/posts/{postId}/reactions")
+    public ResponseEntity<FoodPostResponse> reactToPost(
+            @PathVariable Long postId,
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody ReactionRequest request) {
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        FoodPostResponse response = foodPostService.reactToPost(user.getId(), postId, request.getReactionType());
+        return ResponseEntity.ok(response);
     }
 }
