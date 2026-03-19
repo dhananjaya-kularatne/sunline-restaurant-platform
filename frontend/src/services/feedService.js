@@ -10,6 +10,8 @@ const feedService = {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
     },
+    reactToPost: (postId, reactionType) =>
+        api.post(`/feed/posts/${postId}/reactions`, { reactionType }),
 };
 
 export default feedService;
