@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/menu/**").permitAll()
                         .requestMatchers("/api/auth/**", "/uploads/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/feed").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/feed/posts/*/comments").permitAll()
                         .requestMatchers("/api/feed/**").authenticated()
                         .anyRequest().authenticated());
 

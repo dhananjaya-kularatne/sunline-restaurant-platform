@@ -6,24 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FoodPostResponse {
+public class CommentResponse {
     private Long id;
     private AuthorInfo author;
-    private String imageUrl;
-    private String caption;
-    private List<String> taggedItems;
+    private String content;
     private LocalDateTime createdAt;
-    
-    // SN-19 Reactions
-    private Map<String, Long> reactionCounts;
-    private String currentUserReaction;
+    @SuppressWarnings("unused")
+    private boolean isAuthor;
 
     @Data
     @Builder
