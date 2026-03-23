@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Loader2, Utensils, MessageCircle, Plus } from 'lucide-react';
+import { Loader2, Utensils, MessageCircle, Plus, Send } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import feedService from '../services/feedService';
 import { useAuth } from '../context/AuthContext';
@@ -18,6 +18,12 @@ const SocialFeedPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [openReactionPostId, setOpenReactionPostId] = useState(null);
+    
+    // SN-20 Comments State
+    const [openCommentPostId, setOpenCommentPostId] = useState(null);
+    const [commentsMap, setCommentsMap] = useState({});
+    const [commentTextMap, setCommentTextMap] = useState({});
+    const [loadingCommentsMap, setLoadingCommentsMap] = useState({});
 
     useEffect(() => {
         const fetchFeed = async () => {
@@ -59,11 +65,72 @@ const SocialFeedPage = () => {
         }
     };
 
-    const getImageUrl = (url) => {
-        if (url && url.startsWith('/uploads/')) {
-            return `http://localhost:8080${url}`;
+    const handleToggleComments = async (postId) => {
+        if (openCommentPostId === postId) {
+            setOpenCommentPostId(null);
+            return;
         }
-        return url;
+
+        setOpenCommentPostId(postId);
+        
+        // Fetch comments if not already loaded or to refresh
+        setLoadingCommentsMap(prev => ({ ...prev, [postId]: true }));
+        try {
+            const response = await feedService.getComments(postId);
+            setCommentsMap(prev => ({ ...prev, [postId]: response.data }));
+        } catch (err) {
+            console.error('Error fetching comments:', err);
+        } finally {
+            setLoadingCommentsMap(prev => ({ ...prev, [postId]: false }));
+        }
+    };
+
+    const handleAddComment = async (postId) => {
+        const content = commentTextMap[postId];
+        if (!content || !content.trim() || !user) return;
+
+        try {
+            const response = await feedService.addComment(postId, content);
+            setCommentsMap(prev => ({
+                ...prev,
+                [postId]: [...(prev[postId] || []), response.data]
+            }));
+            setCommentTextMap(prev => ({ ...prev, [postId]: '' }));
+        } catch (err) {
+            console.error('Error adding comment:', err);
+        }
+    };
+
+    const handleDeleteComment = async (postId, commentId) => {
+        try {
+            await feedService.deleteComment(postId, commentId);
+            setCommentsMap(prev => ({
+                ...prev,
+                [postId]: prev[postId].filter(c => c.id !== commentId)
+            }));
+        } catch (err) {
+            console.error('Error deleting comment:', err);
+        }
+    };
+
+    const getImageUrl = (url) => {
+        if (!url) return null;
+        if (url.startsWith('http')) return url;
+        if (url.startsWith('/uploads/')) return `http://localhost:8080${url}`;
+        return `http://localhost:8080/uploads/${url}`;
+    };
+
+    const formatRelativeDate = (dateString) => {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+        
+        if (diffInSeconds < 60) return 'just now';
+        if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m`;
+        if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h`;
+        if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d`;
+        
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     };
 
     if (loading) {
@@ -124,12 +191,13 @@ const SocialFeedPage = () => {
                         <p className="mt-2 text-gray-600">Be the first to share a delicious meal!</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 items-start">
                         {posts.map((post) => {
                             const totalReactions = Object.values(post.reactionCounts || {}).reduce((acc, val) => acc + val, 0);
+                            const isCommentsOpen = openCommentPostId === post.id;
 
                             return (
-                                <div key={post.id} className="overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-md">
+                                <div key={post.id} className="overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-md flex flex-col">
                                     {/* Author Header */}
                                     <div className="flex items-center gap-3 px-4 pb-2 pt-4">
                                         <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full border border-gray-100 bg-gray-200">
@@ -195,10 +263,10 @@ const SocialFeedPage = () => {
                                         )}
                                     </div>
 
-                                    {/* Reaction UI */}
-                                    <div className="border-t border-gray-100 flex items-center">
-                                        <div className="reaction-popover-container px-4 py-2 relative">
-                                            {/* The single trigger button */}
+                                    {/* Interaction Row */}
+                                    <div className="border-t border-gray-100 grid grid-cols-3 items-center px-4 py-2">
+                                        <div className="reaction-popover-container relative">
+                                            {/* Reaction Button */}
                                             <button 
                                                 onClick={() => setOpenReactionPostId(openReactionPostId === post.id ? null : post.id)}
                                                 className="rounded-full border border-gray-300 bg-white p-2 text-gray-600 hover:border-gray-400 hover:bg-gray-50 transition-all flex items-center gap-2"
@@ -215,9 +283,9 @@ const SocialFeedPage = () => {
                                                 )}
                                             </button>
 
-                                            {/* Popover */}
+                                            {/* Reaction Popover */}
                                             {openReactionPostId === post.id && (
-                                                <div className="absolute bottom-full left-0 mb-2 z-10 bg-white rounded-2xl shadow-xl border border-gray-200 px-3 py-2 flex gap-3">
+                                                <div className="absolute bottom-full left-0 mb-2 z-10 bg-white rounded-2xl shadow-xl border border-gray-200 px-3 py-2 flex gap-3 animate-in fade-in slide-in-from-bottom-2">
                                                     {REACTIONS.map((reaction) => (
                                                         <button 
                                                             key={reaction.type}
@@ -233,7 +301,107 @@ const SocialFeedPage = () => {
                                                 </div>
                                             )}
                                         </div>
+
+                                        {/* Comment Button (Lucide MessageCircle) - Centered */}
+                                        <div className="flex justify-center">
+                                            <button 
+                                                onClick={() => handleToggleComments(post.id)}
+                                                className={`rounded-full border p-2 text-gray-600 transition-all flex items-center gap-2 ${
+                                                    isCommentsOpen ? 'border-orange-400 bg-orange-50 text-orange-500' : 'border-gray-300 bg-white hover:border-gray-400 hover:bg-gray-50'
+                                                }`}
+                                            >
+                                                <MessageCircle className="h-5 w-5" />
+                                                {commentsMap[post.id]?.length > 0 && (
+                                                    <span className="text-xs font-medium">{commentsMap[post.id].length}</span>
+                                                )}
+                                            </button>
+                                        </div>
+
+                                        {/* Empty spacer for grid alignment */}
+                                        <div />
                                     </div>
+
+                                    {/* Inline Comments Section */}
+                                    {isCommentsOpen && (
+                                        <div className="border-t border-gray-100 bg-gray-50/50 flex flex-col max-h-[400px]">
+                                            {/* Comments List */}
+                                            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                                                {loadingCommentsMap[post.id] ? (
+                                                    <div className="flex justify-center py-4">
+                                                        <Loader2 className="h-6 w-6 animate-spin text-orange-500" />
+                                                    </div>
+                                                ) : commentsMap[post.id]?.length === 0 ? (
+                                                    <p className="text-center text-sm text-gray-500 py-4">No comments yet. Be the first to say something!</p>
+                                                ) : (
+                                                    commentsMap[post.id]?.map((comment) => (
+                                                        <div key={comment.id} className="space-y-1">
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="h-6 w-6 overflow-hidden rounded-full bg-gray-200">
+                                                                    {comment.author.profilePicture ? (
+                                                                        <img 
+                                                                            src={getImageUrl(comment.author.profilePicture)} 
+                                                                            alt="" 
+                                                                            className="h-full w-full object-cover"
+                                                                        />
+                                                                    ) : (
+                                                                        <div className="flex h-full w-full items-center justify-center">
+                                                                            <svg viewBox="0 0 24 24" className="h-4 w-4 text-gray-400" fill="currentColor">
+                                                                                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                                                                            </svg>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                                <span className="text-xs font-bold text-gray-900">{comment.author.name}</span>
+                                                                <span className="text-[10px] text-gray-400">• {formatRelativeDate(comment.createdAt)}</span>
+                                                                
+                                                                {user && user.name === comment.author.name && (
+                                                                    <button
+                                                                        onClick={() => handleDeleteComment(post.id, comment.id)}
+                                                                        className="text-gray-300 hover:text-red-400 transition-colors p-1 rounded ml-auto"
+                                                                        title="Delete comment"
+                                                                    >
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                            <polyline points="3 6 5 6 21 6"/>
+                                                                            <path d="M19 6l-1 14H6L5 6"/>
+                                                                            <path d="M10 11v6M14 11v6"/>
+                                                                            <path d="M9 6V4h6v2"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                            <p className="pl-8 text-sm text-gray-700 leading-relaxed font-medium">
+                                                                {comment.content}
+                                                            </p>
+                                                        </div>
+                                                    ))
+                                                )}
+                                            </div>
+
+                                            {/* Sticky Input Bar */}
+                                            <div className="sticky bottom-0 border-t border-gray-100 bg-white p-3">
+                                                <div className="flex items-center gap-2">
+                                                    <input
+                                                        type="text"
+                                                        value={commentTextMap[post.id] || ''}
+                                                        onChange={(e) => setCommentTextMap(prev => ({ ...prev, [post.id]: e.target.value }))}
+                                                        placeholder={user ? "Write a comment..." : "Login to comment"}
+                                                        disabled={!user}
+                                                        className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm focus:border-orange-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                                                        onKeyDown={(e) => e.key === 'Enter' && handleAddComment(post.id)}
+                                                    />
+                                                    <button
+                                                        onClick={() => handleAddComment(post.id)}
+                                                        disabled={!user || !commentTextMap[post.id]?.trim()}
+                                                        className="flex h-9 w-9 items-center justify-center rounded-full bg-orange-500 text-white transition-all hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                                                    >
+                                                        <Send className="h-4 w-4" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
 
                                 </div>
                             );
