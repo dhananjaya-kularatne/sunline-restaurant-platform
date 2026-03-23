@@ -14,6 +14,7 @@ import AdminMenuManagement from './pages/AdminMenuManagement';
 import SupportPage from './pages/SupportPage';
 import UserReportsPage from './pages/UserReportsPage';
 import AdminSupportManagement from './pages/AdminSupportManagement';
+import ReservationsPage from './pages/ReservationsPage';
 import Footer from './components/Footer';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
                         <Route path="/admin/users" element={<AdminUserManagement />} />
                         <Route path="/admin/menu" element={<AdminMenuManagement />} />
                         <Route path="/admin/support" element={<AdminSupportManagement />} />
+                        <Route path="/reservations" element={<ReservationsPage />} />
                     </Routes>
                     <Footer />
                 </div>
