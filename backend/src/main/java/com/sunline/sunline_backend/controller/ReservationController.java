@@ -24,4 +24,9 @@ public class ReservationController {
     public ResponseEntity<List<ReservationDto>> getMyReservations(@RequestParam String email) {
         return ResponseEntity.ok(reservationService.getReservationsByEmail(email));
     }
+
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<ReservationDto> cancelReservation(@PathVariable Long id) {
+        return ResponseEntity.ok(reservationService.cancelReservation(id));
+    }
 }
