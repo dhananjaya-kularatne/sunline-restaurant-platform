@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.io.IOException;
 
 @RestController
@@ -18,6 +20,17 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping("/public/{id}")
+    public ResponseEntity<?> getPublicProfile(@PathVariable Long id) {
+        User user = userService.findById(id);
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", user.getId());
+        response.put("name", user.getName());
+        response.put("bio", user.getBio());
+        response.put("profilePicture", user.getProfilePicture());
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(Authentication authentication) {

@@ -5,11 +5,11 @@ import feedService from '../services/feedService';
 import { useAuth } from '../context/AuthContext';
 
 const REACTIONS = [
-  { type: 'DELICIOUS', emoji: '😋', label: 'Delicious' },
-  { type: 'LOVE',      emoji: '❤️', label: 'Love it' },
-  { type: 'WOW',       emoji: '🤩', label: 'Wow' },
-  { type: 'GROSS',     emoji: '🤢', label: 'Gross' },
-  { type: 'ANGRY',     emoji: '😤', label: 'Not okay' },
+    { type: 'DELICIOUS', emoji: '😋', label: 'Delicious' },
+    { type: 'LOVE', emoji: '❤️', label: 'Love it' },
+    { type: 'WOW', emoji: '🤩', label: 'Wow' },
+    { type: 'GROSS', emoji: '🤢', label: 'Gross' },
+    { type: 'ANGRY', emoji: '😤', label: 'Not okay' },
 ];
 
 const SocialFeedPage = () => {
@@ -18,7 +18,7 @@ const SocialFeedPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [openReactionPostId, setOpenReactionPostId] = useState(null);
-    
+
     // SN-20 Comments State
     const [openCommentPostId, setOpenCommentPostId] = useState(null);
     const [commentsMap, setCommentsMap] = useState({});
@@ -72,7 +72,7 @@ const SocialFeedPage = () => {
         }
 
         setOpenCommentPostId(postId);
-        
+
         // Fetch comments if not already loaded or to refresh
         setLoadingCommentsMap(prev => ({ ...prev, [postId]: true }));
         try {
@@ -124,12 +124,12 @@ const SocialFeedPage = () => {
         const date = new Date(dateString);
         const now = new Date();
         const diffInSeconds = Math.floor((now - date) / 1000);
-        
+
         if (diffInSeconds < 60) return 'just now';
         if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m`;
         if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h`;
         if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d`;
-        
+
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     };
 
@@ -199,40 +199,77 @@ const SocialFeedPage = () => {
                             return (
                                 <div key={post.id} className="overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-md flex flex-col">
                                     {/* Author Header */}
-                                    <div className="flex items-center gap-3 px-4 pb-2 pt-4">
-                                        <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full border border-gray-100 bg-gray-200">
-                                            {post.author.profilePicture ? (
-                                                <img
-                                                    src={getImageUrl(post.author.profilePicture)}
-                                                    alt={post.author.name}
-                                                    className="h-full w-full object-cover"
-                                                    onError={(e) => {
-                                                        e.target.onerror = null;
-                                                        e.target.style.display = 'none';
-                                                        e.target.nextSibling.style.display = 'block';
-                                                    }}
-                                                />
-                                            ) : null}
-                                            <div 
-                                                className="flex h-full w-full items-center justify-center"
-                                                style={{ display: post.author.profilePicture ? 'none' : 'flex' }}
-                                            >
-                                                <svg viewBox="0 0 24 24" className="h-6 w-6 text-gray-400" fill="currentColor">
-                                                    <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
-                                                </svg>
+                                    {user ? (
+                                        <Link to={`/user/${post.author.id}`} className="flex items-center gap-3 px-4 pb-2 pt-4">
+                                            <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full border border-gray-100 bg-gray-200">
+                                                {post.author.profilePicture ? (
+                                                    <img
+                                                        src={getImageUrl(post.author.profilePicture)}
+                                                        alt={post.author.name}
+                                                        className="h-full w-full object-cover"
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.style.display = 'none';
+                                                            e.target.nextSibling.style.display = 'block';
+                                                        }}
+                                                    />
+                                                ) : null}
+                                                <div
+                                                    className="flex h-full w-full items-center justify-center"
+                                                    style={{ display: post.author.profilePicture ? 'none' : 'flex' }}
+                                                >
+                                                    <svg viewBox="0 0 24 24" className="h-6 w-6 text-gray-400" fill="currentColor">
+                                                        <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h3 className="text-sm font-semibold text-gray-900">{post.author.name}</h3>
+                                                <p className="text-xs text-gray-400">
+                                                    {new Date(post.createdAt).toLocaleDateString('en-US', {
+                                                        month: 'short',
+                                                        day: 'numeric',
+                                                        year: 'numeric'
+                                                    })}
+                                                </p>
+                                            </div>
+                                        </Link>
+                                    ) : (
+                                        <div className="flex items-center gap-3 px-4 pb-2 pt-4">
+                                            <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full border border-gray-100 bg-gray-200">
+                                                {post.author.profilePicture ? (
+                                                    <img
+                                                        src={getImageUrl(post.author.profilePicture)}
+                                                        alt={post.author.name}
+                                                        className="h-full w-full object-cover"
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.style.display = 'none';
+                                                            e.target.nextSibling.style.display = 'block';
+                                                        }}
+                                                    />
+                                                ) : null}
+                                                <div
+                                                    className="flex h-full w-full items-center justify-center"
+                                                    style={{ display: post.author.profilePicture ? 'none' : 'flex' }}
+                                                >
+                                                    <svg viewBox="0 0 24 24" className="h-6 w-6 text-gray-400" fill="currentColor">
+                                                        <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h3 className="text-sm font-semibold text-gray-900">{post.author.name}</h3>
+                                                <p className="text-xs text-gray-400">
+                                                    {new Date(post.createdAt).toLocaleDateString('en-US', {
+                                                        month: 'short',
+                                                        day: 'numeric',
+                                                        year: 'numeric'
+                                                    })}
+                                                </p>
                                             </div>
                                         </div>
-                                        <div>
-                                            <h3 className="text-sm font-semibold text-gray-900">{post.author.name}</h3>
-                                            <p className="text-xs text-gray-400">
-                                                {new Date(post.createdAt).toLocaleDateString('en-US', {
-                                                    month: 'short',
-                                                    day: 'numeric',
-                                                    year: 'numeric'
-                                                })}
-                                            </p>
-                                        </div>
-                                    </div>
+                                    )}
 
                                     {/* Post Image */}
                                     <div className="mt-2">
@@ -267,16 +304,16 @@ const SocialFeedPage = () => {
                                     <div className="border-t border-gray-100 grid grid-cols-3 items-center px-4 py-2">
                                         <div className="reaction-popover-container relative">
                                             {/* Reaction Button */}
-                                            <button 
+                                            <button
                                                 onClick={() => setOpenReactionPostId(openReactionPostId === post.id ? null : post.id)}
                                                 className="rounded-full border border-gray-300 bg-white p-2 text-gray-600 hover:border-gray-400 hover:bg-gray-50 transition-all flex items-center gap-2"
                                             >
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" 
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                                     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                    <circle cx="12" cy="12" r="10"/>
-                                                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                                                    <line x1="9" y1="9" x2="9.01" y2="9"/>
-                                                    <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                                    <circle cx="12" cy="12" r="10" />
+                                                    <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                                                    <line x1="9" y1="9" x2="9.01" y2="9" />
+                                                    <line x1="15" y1="9" x2="15.01" y2="9" />
                                                 </svg>
                                                 {totalReactions > 0 && (
                                                     <span className="text-xs text-gray-500 font-medium">{totalReactions}</span>
@@ -287,12 +324,11 @@ const SocialFeedPage = () => {
                                             {openReactionPostId === post.id && (
                                                 <div className="absolute bottom-full left-0 mb-2 z-10 bg-white rounded-2xl shadow-xl border border-gray-200 px-3 py-2 flex gap-3 animate-in fade-in slide-in-from-bottom-2">
                                                     {REACTIONS.map((reaction) => (
-                                                        <button 
+                                                        <button
                                                             key={reaction.type}
                                                             onClick={() => handleReaction(post.id, reaction.type)}
-                                                            className={`flex flex-col items-center gap-1 p-1.5 rounded-xl hover:bg-gray-100 transition-all min-w-[44px] ${
-                                                                post.currentUserReaction === reaction.type ? 'ring-2 ring-orange-400 bg-orange-50' : ''
-                                                            }`}
+                                                            className={`flex flex-col items-center gap-1 p-1.5 rounded-xl hover:bg-gray-100 transition-all min-w-[44px] ${post.currentUserReaction === reaction.type ? 'ring-2 ring-orange-400 bg-orange-50' : ''
+                                                                }`}
                                                         >
                                                             <span className="text-2xl">{reaction.emoji}</span>
                                                             <span className="text-xs text-gray-500">{post.reactionCounts?.[reaction.type] ?? 0}</span>
@@ -304,11 +340,10 @@ const SocialFeedPage = () => {
 
                                         {/* Comment Button (Lucide MessageCircle) - Centered */}
                                         <div className="flex justify-center">
-                                            <button 
+                                            <button
                                                 onClick={() => handleToggleComments(post.id)}
-                                                className={`rounded-full border p-2 text-gray-600 transition-all flex items-center gap-2 ${
-                                                    isCommentsOpen ? 'border-orange-400 bg-orange-50 text-orange-500' : 'border-gray-300 bg-white hover:border-gray-400 hover:bg-gray-50'
-                                                }`}
+                                                className={`rounded-full border p-2 text-gray-600 transition-all flex items-center gap-2 ${isCommentsOpen ? 'border-orange-400 bg-orange-50 text-orange-500' : 'border-gray-300 bg-white hover:border-gray-400 hover:bg-gray-50'
+                                                    }`}
                                             >
                                                 <MessageCircle className="h-5 w-5" />
                                                 {commentsMap[post.id]?.length > 0 && (
@@ -335,25 +370,48 @@ const SocialFeedPage = () => {
                                                 ) : (
                                                     commentsMap[post.id]?.map((comment) => (
                                                         <div key={comment.id} className="space-y-1">
-                                                            <div className="flex items-center gap-2">
-                                                                <div className="h-6 w-6 overflow-hidden rounded-full bg-gray-200">
-                                                                    {comment.author.profilePicture ? (
-                                                                        <img 
-                                                                            src={getImageUrl(comment.author.profilePicture)} 
-                                                                            alt="" 
-                                                                            className="h-full w-full object-cover"
-                                                                        />
-                                                                    ) : (
-                                                                        <div className="flex h-full w-full items-center justify-center">
-                                                                            <svg viewBox="0 0 24 24" className="h-4 w-4 text-gray-400" fill="currentColor">
-                                                                                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
-                                                                            </svg>
-                                                                        </div>
-                                                                    )}
+                                                            {user ? (
+                                                                <Link to={`/user/${comment.author.id}`} className="flex items-center gap-2">
+                                                                    <div className="h-6 w-6 overflow-hidden rounded-full bg-gray-200">
+                                                                        {comment.author.profilePicture ? (
+                                                                            <img
+                                                                                src={getImageUrl(comment.author.profilePicture)}
+                                                                                alt=""
+                                                                                className="h-full w-full object-cover"
+                                                                            />
+                                                                        ) : (
+                                                                            <div className="flex h-full w-full items-center justify-center">
+                                                                                <svg viewBox="0 0 24 24" className="h-4 w-4 text-gray-400" fill="currentColor">
+                                                                                    <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
+                                                                                </svg>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                    <span className="text-xs font-bold text-gray-900">{comment.author.name}</span>
+                                                                    <span className="text-[10px] text-gray-400">• {formatRelativeDate(comment.createdAt)}</span>
+                                                                </Link>
+                                                            ) : (
+                                                                <div className="flex items-center gap-2">
+                                                                    <div className="h-6 w-6 overflow-hidden rounded-full bg-gray-200">
+                                                                        {comment.author.profilePicture ? (
+                                                                            <img
+                                                                                src={getImageUrl(comment.author.profilePicture)}
+                                                                                alt=""
+                                                                                className="h-full w-full object-cover"
+                                                                            />
+                                                                        ) : (
+                                                                            <div className="flex h-full w-full items-center justify-center">
+                                                                                <svg viewBox="0 0 24 24" className="h-4 w-4 text-gray-400" fill="currentColor">
+                                                                                    <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
+                                                                                </svg>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                    <span className="text-xs font-bold text-gray-900">{comment.author.name}</span>
+                                                                    <span className="text-[10px] text-gray-400">• {formatRelativeDate(comment.createdAt)}</span>
                                                                 </div>
-                                                                <span className="text-xs font-bold text-gray-900">{comment.author.name}</span>
-                                                                <span className="text-[10px] text-gray-400">• {formatRelativeDate(comment.createdAt)}</span>
-                                                                
+                                                            )}
+
                                                                 {user && user.name === comment.author.name && (
                                                                     <button
                                                                         onClick={() => handleDeleteComment(post.id, comment.id)}
@@ -361,16 +419,15 @@ const SocialFeedPage = () => {
                                                                         title="Delete comment"
                                                                     >
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                             strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                                            <polyline points="3 6 5 6 21 6"/>
-                                                                            <path d="M19 6l-1 14H6L5 6"/>
-                                                                            <path d="M10 11v6M14 11v6"/>
-                                                                            <path d="M9 6V4h6v2"/>
+                                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                            <polyline points="3 6 5 6 21 6" />
+                                                                            <path d="M19 6l-1 14H6L5 6" />
+                                                                            <path d="M10 11v6M14 11v6" />
+                                                                            <path d="M9 6V4h6v2" />
                                                                         </svg>
                                                                     </button>
                                                                 )}
-                                                            </div>
                                                             <p className="pl-8 text-sm text-gray-700 leading-relaxed font-medium">
                                                                 {comment.content}
                                                             </p>
