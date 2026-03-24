@@ -49,7 +49,9 @@ const CreatePostModal = ({ onClose, onCreated }) => {
         setLoading(true);
         try {
             // First upload image
-            const uploadRes = await feedService.uploadImage(selectedFile);
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            const uploadRes = await feedService.uploadImage(formData);
             const imageUrl = uploadRes.data.url;
 
             // Then create post — ensure taggedItems is always an array, never null
