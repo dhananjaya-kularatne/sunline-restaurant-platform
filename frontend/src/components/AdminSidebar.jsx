@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Utensils, LayoutDashboard, Settings, LogOut } from 'lucide-react';
+import { Users, Utensils, LayoutDashboard, Settings, LogOut, Image } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const AdminSidebar = () => {
@@ -8,6 +8,7 @@ const AdminSidebar = () => {
     const navItems = [
         { name: 'User Management', path: '/admin/users', icon: Users },
         { name: 'Menu Management', path: '/admin/menu', icon: Utensils },
+        { name: 'Post Management', path: '/admin/posts', icon: Image },
     ];
 
     return (

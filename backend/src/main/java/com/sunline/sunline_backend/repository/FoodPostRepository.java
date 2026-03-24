@@ -17,4 +17,7 @@ public interface FoodPostRepository extends JpaRepository<FoodPost, Long> {
 
     @Query("SELECT p FROM FoodPost p LEFT JOIN FETCH p.taggedItems WHERE p.id = :id")
     Optional<FoodPost> findByIdWithTags(@Param("id") Long id);
+
+    @Query("SELECT DISTINCT p FROM FoodPost p LEFT JOIN FETCH p.taggedItems WHERE p.removed = false AND LOWER(p.author.name) LIKE LOWER(CONCAT('%', :username, '%')) ORDER BY p.createdAt DESC")
+    List<FoodPost> findActivePostsByUsername(@Param("username") String username);
 }

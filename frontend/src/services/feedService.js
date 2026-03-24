@@ -5,9 +5,7 @@ const feedService = {
 
   createPost: (postData) => api.post('/feed/posts', postData),
 
-  uploadImage: (formData) => api.post('/feed/upload', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  }),
+  uploadImage: (formData) => api.post('/feed/upload', formData),
 
   reactToPost: (postId, reactionType) => api.post(`/feed/posts/${postId}/reactions`, {
     reactionType
