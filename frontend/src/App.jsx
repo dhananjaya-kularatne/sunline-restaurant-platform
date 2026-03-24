@@ -13,6 +13,7 @@ import CreatePostPage from './pages/CreatePostPage';
 import SocialFeedPage from './pages/SocialFeedPage';
 
 import AdminMenuManagement from './pages/AdminMenuManagement';
+import AdminPostManagement from './pages/AdminPostManagement';
 
 function App() {
     return (
@@ -31,6 +32,7 @@ function App() {
                         <Route path="/user/:userId" element={<ProfilePage />} />
                         <Route path="/admin/users" element={<AdminUserManagement />} />
                         <Route path="/admin/menu" element={<AdminMenuManagement />} />
+                        <Route path="/admin/posts" element={<AdminPostManagement />} />
                         <Route path="/create-post" element={<CreatePostPage />} />
                         <Route path="/social-feed" element={<SocialFeedPage />} />
                     </Routes>

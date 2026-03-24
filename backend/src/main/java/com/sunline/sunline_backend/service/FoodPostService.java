@@ -119,6 +119,7 @@ public class FoodPostService {
                         .id(post.getAuthor().getId())
                         .name(post.getAuthor().getName())
                         .profilePicture(post.getAuthor().getProfilePicture())
+                        .email(post.getAuthor().getEmail())
                         .build())
                 .caption(post.getCaption())
                 .imageUrl(post.getImageUrl())
@@ -127,5 +128,21 @@ public class FoodPostService {
                 .reactionCounts(reactionCounts)
                 .currentUserReaction(currentUserReaction)
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public List<FoodPostResponse> getPostsByUsername(String username) {
+        return foodPostRepository.findActivePostsByUsername(username)
+                .stream()
+                .map(post -> toResponse(post, null))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void removePost(Long postId) {
+        FoodPost post = foodPostRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        post.setRemoved(true);
+        foodPostRepository.save(post);
     }
 }

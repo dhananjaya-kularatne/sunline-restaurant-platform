@@ -33,5 +33,6 @@ public class FoodPostResponse {
         private Long id;
         private String name;
         private String profilePicture;
+        private String email;
     }
 }

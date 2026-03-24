@@ -4,6 +4,7 @@ import com.sunline.sunline_backend.dto.request.UserRoleRequest;
 import com.sunline.sunline_backend.dto.response.UserResponse;
 import com.sunline.sunline_backend.entity.User;
 import com.sunline.sunline_backend.service.UserService;
+import com.sunline.sunline_backend.service.FoodPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +20,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FoodPostService foodPostService;
 
     @GetMapping("/users")
     public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(required = false) String search) {
@@ -40,6 +44,17 @@ public class AdminController {
     public ResponseEntity<UserResponse> toggleUserStatus(@PathVariable Long id) {
         User updatedUser = userService.toggleUserStatus(id);
         return ResponseEntity.ok(mapToResponse(updatedUser));
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<?> getPosts(@RequestParam(required = false, defaultValue = "") String username) {
+        return ResponseEntity.ok(foodPostService.getPostsByUsername(username));
+    }
+
+    @DeleteMapping("/posts/{postId}")
+    public ResponseEntity<?> removePost(@PathVariable Long postId) {
+        foodPostService.removePost(postId);
+        return ResponseEntity.ok().build();
     }
 
     private UserResponse mapToResponse(User user) {
