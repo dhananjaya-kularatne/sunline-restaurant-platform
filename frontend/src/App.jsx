@@ -28,6 +28,7 @@ function App() {
                         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                         <Route path="/reset-password" element={<ResetPasswordPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/user/:userId" element={<ProfilePage />} />
                         <Route path="/admin/users" element={<AdminUserManagement />} />
                         <Route path="/admin/menu" element={<AdminMenuManagement />} />
                         <Route path="/create-post" element={<CreatePostPage />} />

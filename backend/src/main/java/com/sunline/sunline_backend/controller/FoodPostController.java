@@ -40,20 +40,20 @@ public class FoodPostController {
 
             String originalFilename = file.getOriginalFilename();
             String filename = UUID.randomUUID().toString() + "_" + originalFilename;
-            
+
             String uploadDir = System.getProperty("user.dir") + "/uploads/";
             Path uploadPath = Paths.get(uploadDir);
-            
+
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
-            
+
             Path filePath = uploadPath.resolve(filename);
             Files.copy(file.getInputStream(), filePath);
-            
+
             Map<String, String> response = new HashMap<>();
             response.put("url", "/uploads/" + filename);
-            
+
             return ResponseEntity.ok(response);
         } catch (IOException e) {
             return ResponseEntity.status(500).body("Could not upload file: " + e.getMessage());
@@ -93,7 +93,7 @@ public class FoodPostController {
             @RequestBody ReactionRequest request) {
         User user = userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        
+
         FoodPostResponse response = foodPostService.reactToPost(user.getId(), postId, request.getReactionType());
         return ResponseEntity.ok(response);
     }

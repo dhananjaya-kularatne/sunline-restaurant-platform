@@ -2,15 +2,15 @@ import api from './api';
 
 const feedService = {
   getFeed: () => api.get('/feed'),
-  
+
   createPost: (postData) => api.post('/feed/posts', postData),
-  
+
   uploadImage: (formData) => api.post('/feed/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),
 
-  reactToPost: (postId, reactionType) => api.post(`/feed/posts/${postId}/reactions`, { 
-    reactionType 
+  reactToPost: (postId, reactionType) => api.post(`/feed/posts/${postId}/reactions`, {
+    reactionType
   }),
 
   getComments: (postId) => api.get(`/feed/posts/${postId}/comments`),
@@ -19,7 +19,7 @@ const feedService = {
     content
   }),
 
-  deleteComment: (postId, commentId) => 
+  deleteComment: (postId, commentId) =>
     api.delete(`/feed/posts/${postId}/comments/${commentId}`)
 };
 
