@@ -35,6 +35,14 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
+    public ReservationDto cancelReservation(Long id) {
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+        reservation.setStatus("CANCELLED");
+        Reservation updatedReservation = reservationRepository.save(reservation);
+        return mapToDto(updatedReservation);
+    }
+
     private ReservationDto mapToDto(Reservation reservation) {
         return ReservationDto.builder()
                 .id(reservation.getId())

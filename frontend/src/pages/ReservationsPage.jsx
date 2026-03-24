@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar, Users, Clock, MessageSquare, CheckCircle, ArrowRight, Lock } from 'lucide-react';
+import React, { useState } from 'react';
+import { Calendar, Users, Clock, CheckCircle, ArrowRight, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -133,24 +133,28 @@ const ReservationsPage = () => {
     if (submitSuccess) {
         return (
             <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center mt-10">
-                    <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Your reservation is pending</h2>
-                    <p className="text-gray-600 mb-6">
+                <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-10 text-center mt-10 border border-orange-100 animate-in zoom-in duration-300">
+                    <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <CheckCircle className="h-12 w-12 text-green-500" />
+                    </div>
+                    <h2 className="text-3xl font-black text-gray-900 mb-2">Your reservation is pending</h2>
+                    <p className="text-gray-500 mb-8 font-medium">
                         Look out for a confirmation shortly.
                     </p>
-                    <button
-                        onClick={() => setSubmitSuccess(false)}
-                        className="w-full bg-[#FF7F50] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#e06b3f] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F50]"
-                    >
-                        Book Another Table
-                    </button>
-                    <Link
-                        to="/"
-                        className="w-full block text-center border border-[#FF7F50] text-[#FF7F50] py-3 px-4 rounded-lg font-medium hover:bg-orange-50 transition-colors mt-3"
-                    >
-                        Back to Home
-                    </Link>
+                    <div className="space-y-3 w-full max-w-sm mx-auto">
+                        <button
+                            onClick={() => setSubmitSuccess(false)}
+                            className="w-full bg-[#FF7F50] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#e06b3f] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#FF7F50]/20"
+                        >
+                            Book Another Table
+                        </button>
+                        <Link
+                            to="/"
+                            className="w-full border-2 border-[#FF7F50] text-[#FF7F50] py-4 rounded-xl font-bold text-lg hover:bg-orange-50 transition-all flex items-center justify-center gap-2"
+                        >
+                            Back to Home
+                        </Link>
+                    </div>
                 </div>
             </div>
         );
@@ -158,107 +162,127 @@ const ReservationsPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-8 mt-4">
-                <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Reserve a Table</h1>
-                    <p className="text-gray-500">Simple and fast restaurant reservations</p>
+            <div className="max-w-2xl w-full">
+                <div className="bg-white rounded-[2rem] shadow-2xl p-10 mt-4 border border-gray-100 flex flex-col items-center">
+                    <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mb-6">
+                        <Calendar className="text-[#FF7F50]" size={40} />
+                    </div>
+                    
+                    <div className="text-center mb-10">
+                        <h1 className="text-4xl font-black text-gray-900 mb-3 tracking-tight">Reserve a Table</h1>
+                        <p className="text-gray-500 font-medium">Quick and easy reservations in seconds</p>
+                    </div>
+
+                    {serverError && (
+                        <div className="w-full mb-8 bg-red-50 border-l-4 border-red-500 p-4 rounded-xl animate-in slide-in-from-left duration-300">
+                            <p className="text-red-700 font-medium">{serverError}</p>
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="w-full space-y-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* Date Input */}
+                            <div className="space-y-2">
+                                <label htmlFor="reservationDate" className="block text-sm font-bold text-gray-700 ml-1">
+                                    Reservation Date
+                                </label>
+                                <input
+                                    type="date"
+                                    id="reservationDate"
+                                    name="reservationDate"
+                                    value={formData.reservationDate}
+                                    onChange={handleChange}
+                                    className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-2xl focus:ring-4 focus:ring-orange-100 focus:border-[#FF7F50] outline-none transition-all font-medium ${
+                                        errors.reservationDate ? 'border-red-500 bg-red-50' : 'border-transparent'
+                                    }`}
+                                />
+                                {errors.reservationDate && <p className="mt-1 text-xs text-red-500 font-bold ml-1">{errors.reservationDate}</p>}
+                            </div>
+
+                            {/* Time Select */}
+                            <div className="space-y-2">
+                                <label htmlFor="reservationTime" className="block text-sm font-bold text-gray-700 ml-1">
+                                    Preferred Time
+                                </label>
+                                <div className="relative">
+                                    <select
+                                        id="reservationTime"
+                                        name="reservationTime"
+                                        value={formData.reservationTime}
+                                        onChange={handleChange}
+                                        className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-2xl focus:ring-4 focus:ring-orange-100 focus:border-[#FF7F50] outline-none transition-all appearance-none font-medium cursor-pointer ${
+                                            errors.reservationTime ? 'border-red-500 bg-red-50' : 'border-transparent'
+                                        }`}
+                                    >
+                                        <option value="">Select a slot</option>
+                                        {timeSlots.map(slot => (
+                                            <option key={slot} value={slot}>{formatTime(slot)}</option>
+                                        ))}
+                                    </select>
+                                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                        <Clock size={20} />
+                                    </div>
+                                </div>
+                                {errors.reservationTime && <p className="mt-1 text-xs text-red-500 font-bold ml-1">{errors.reservationTime}</p>}
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-8">
+                            {/* Guest Count */}
+                            <div className="space-y-2">
+                                <label htmlFor="guestCount" className="block text-sm font-bold text-gray-700 ml-1">
+                                    Number of Guests
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        type="number"
+                                        id="guestCount"
+                                        name="guestCount"
+                                        min="1"
+                                        value={formData.guestCount}
+                                        onChange={handleChange}
+                                        className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-2xl focus:ring-4 focus:ring-orange-100 focus:border-[#FF7F50] outline-none transition-all font-medium ${
+                                            errors.guestCount ? 'border-red-500 bg-red-50' : 'border-transparent'
+                                        }`}
+                                    />
+                                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                        <Users size={20} />
+                                    </div>
+                                </div>
+                                {errors.guestCount && <p className="mt-1 text-xs text-red-500 font-bold ml-1">{errors.guestCount}</p>}
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="specialRequest" className="block text-sm font-bold text-gray-700 ml-1">
+                                Special Requests (Optional)
+                            </label>
+                            <textarea
+                                id="specialRequest"
+                                name="specialRequest"
+                                rows="3"
+                                placeholder="Any dietary requirements or special occasions?"
+                                value={formData.specialRequest}
+                                onChange={handleChange}
+                                className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:ring-4 focus:ring-orange-100 focus:border-[#FF7F50] outline-none transition-all resize-none font-medium"
+                            ></textarea>
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className={`group w-full bg-[#FF7F50] text-white py-5 px-4 rounded-2xl font-black text-xl hover:bg-[#e06b3f] transition-all duration-300 flex justify-center items-center gap-3 shadow-xl shadow-[#FF7F50]/30 active:scale-[0.98] ${
+                                isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+                            }`}
+                        >
+                            {isSubmitting ? (
+                                <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
+                            ) : (
+                                <>Reserve a Table <ArrowRight className="group-hover:translate-x-1 transition-transform" /></>
+                            )}
+                        </button>
+                    </form>
                 </div>
-
-                {serverError && (
-                    <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
-                        <p className="text-red-700">{serverError}</p>
-                    </div>
-                )}
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Date Input */}
-                        <div className="space-y-1">
-                            <label htmlFor="reservationDate" className="block text-sm font-medium text-gray-700 mb-1">
-                                Date <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="date"
-                                id="reservationDate"
-                                name="reservationDate"
-                                value={formData.reservationDate}
-                                onChange={handleChange}
-                                className={`w-full px-4 py-2 border rounded-lg focus:ring-[#FF7F50] focus:border-[#FF7F50] outline-none transition-all ${
-                                    errors.reservationDate ? 'border-red-500 bg-red-50' : 'border-gray-200'
-                                }`}
-                            />
-                            {errors.reservationDate && <p className="mt-1 text-xs text-red-500">{errors.reservationDate}</p>}
-                        </div>
-
-                        {/* Time Select (Simple Dropdown instead of clunky picker) */}
-                        <div className="space-y-1">
-                            <label htmlFor="reservationTime" className="block text-sm font-medium text-gray-700 mb-1">
-                                Preferred Time <span className="text-red-500">*</span>
-                            </label>
-                            <select
-                                id="reservationTime"
-                                name="reservationTime"
-                                value={formData.reservationTime}
-                                onChange={handleChange}
-                                className={`w-full px-4 py-2 border rounded-lg focus:ring-[#FF7F50] focus:border-[#FF7F50] outline-none transition-all bg-white appearance-none ${
-                                    errors.reservationTime ? 'border-red-500 bg-red-50' : 'border-gray-200'
-                                }`}
-                            >
-                                <option value="">Select Time</option>
-                                {timeSlots.map(slot => (
-                                    <option key={slot} value={slot}>{formatTime(slot)}</option>
-                                ))}
-                            </select>
-                            {errors.reservationTime && <p className="mt-1 text-xs text-red-500">{errors.reservationTime}</p>}
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Guest Count */}
-                        <div className="space-y-1">
-                            <label htmlFor="guestCount" className="block text-sm font-medium text-gray-700 mb-1">
-                                Guests <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="number"
-                                id="guestCount"
-                                name="guestCount"
-                                min="1"
-                                value={formData.guestCount}
-                                onChange={handleChange}
-                                className={`w-full px-4 py-2 border rounded-lg focus:ring-[#FF7F50] focus:border-[#FF7F50] outline-none transition-all ${
-                                    errors.guestCount ? 'border-red-500 bg-red-50' : 'border-gray-200'
-                                }`}
-                            />
-                            {errors.guestCount && <p className="mt-1 text-xs text-red-500">{errors.guestCount}</p>}
-                        </div>
-                    </div>
-
-                    <div className="space-y-1">
-                        <label htmlFor="specialRequest" className="block text-sm font-medium text-gray-700 mb-1">
-                            Special Requests
-                        </label>
-                        <textarea
-                            id="specialRequest"
-                            name="specialRequest"
-                            rows="4"
-                            placeholder="Birthday decoration?"
-                            value={formData.specialRequest}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-[#FF7F50] focus:border-[#FF7F50] outline-none transition-all resize-y"
-                        ></textarea>
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className={`w-full bg-[#FF7F50] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#e06b3f] transition-all duration-200 flex justify-center items-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F50] ${
-                            isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
-                        }`}
-                    >
-                        {isSubmitting ? 'Confirming...' : 'Reserve'}
-                    </button>
-                </form>
             </div>
         </div>
     );
