@@ -68,7 +68,7 @@ const CustomStatusDropdown = ({ currentStatus, onUpdate, isLoading, options }) =
                 disabled={isLoading}
                 onClick={() => setIsOpen(!isOpen)}
                 className={`
-                    flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-300
+                    flex items-center justify-between gap-2 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300
                     border-2 ${currentOption.borderColor} ${currentOption.bgColor} ${currentOption.textColor}
                     shadow-sm hover:shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-wait min-w-[140px]
                 `}
@@ -244,7 +244,7 @@ const AdminSupportManagement = () => {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#FDFDFD]">
+        <div className="flex min-h-screen bg-[#F8F9FA]">
             <AdminSidebar />
 
             <Modal 
@@ -261,32 +261,28 @@ const AdminSupportManagement = () => {
             <main className="flex-1 p-10">
                 <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-12 gap-8">
                     <div>
-                        <div className="inline-flex items-center gap-2 bg-orange-50 text-[#FF7F50] px-3 py-1 rounded-full text-[10px] font-black uppercase mb-4 tracking-[0.2em]">
-                           <div className="w-1.5 h-1.5 rounded-full bg-[#FF7F50] animate-pulse"></div>
-                           Operations Dashboard
-                        </div>
-                        <h1 className="text-4xl font-black text-[#1A1C1E] tracking-tight">
-                            Support <span className="text-[#FF7F50]">Management</span>
+                        
+                        <h1 className="text-3xl font-bold text-[#3E4958]">
+                            Support Management
                         </h1>
-                        <p className="text-gray-400 font-medium mt-2">Review and resolve customer support requests</p>
+                        <p className="text-gray-500 mt-1">Review and resolve customer support requests</p>
                     </div>
                     
                     <div className="flex flex-col sm:flex-row gap-4 w-full xl:w-auto">
                         <div className="relative group flex-1 sm:flex-none">
-                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-[#FF7F50] transition-colors" size={20} />
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                             <input
                                 type="text"
                                 placeholder="Search queries..."
-                                className="pl-12 pr-6 py-4 border-2 border-gray-50 rounded-[1.5rem] w-full sm:w-80 focus:outline-none focus:border-[#FF7F50]/20 focus:ring-4 focus:ring-[#FF7F50]/5 transition-all bg-white font-semibold text-gray-700 placeholder:text-gray-300"
+                                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-full sm:w-80 focus:outline-none focus:ring-2 focus:ring-[#FF7F50] transition-all bg-white text-gray-700"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
                         
                         <div className="relative flex-1 sm:flex-none">
-                            <Filter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                            <select
-                                className="pl-12 pr-10 py-4 border-2 border-gray-50 rounded-[1.5rem] focus:outline-none focus:border-[#FF7F50]/20 focus:ring-4 focus:ring-[#FF7F50]/5 appearance-none bg-white font-bold text-gray-500 cursor-pointer w-full sm:w-auto transition-all"
+                                                        <select
+                                className="pl-4 pr-10 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF7F50] appearance-none bg-white text-gray-600 cursor-pointer text-sm w-full sm:w-auto transition-all"
                                 value={categoryFilter}
                                 onChange={(e) => setCategoryFilter(e.target.value)}
                             >
@@ -294,7 +290,7 @@ const AdminSupportManagement = () => {
                                     <option key={cat} value={cat}>{cat}</option>
                                 ))}
                             </select>
-                            <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-300 pointer-events-none" size={16} />
+                            <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
                         </div>
                     </div>
                 </div>
@@ -326,16 +322,16 @@ const AdminSupportManagement = () => {
                     </div>
                 )}
 
-                <div className="bg-white rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.05)] border border-gray-50 overflow-hidden">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="bg-[#FAFBFC]">
-                                    <th className="px-8 py-6 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50">Customer</th>
-                                    <th className="px-8 py-6 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50">Category</th>
-                                    <th className="px-8 py-6 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50">Status</th>
-                                    <th className="px-8 py-6 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50">Time</th>
-                                    <th className="px-8 py-6 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50 text-right">Actions</th>
+                                <tr className="bg-[#F8F9FA] border-bottom border-gray-200">
+                                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Customer</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Category</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Time</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-50/50">
@@ -365,33 +361,33 @@ const AdminSupportManagement = () => {
                                         <React.Fragment key={report.id}>
                                             <tr 
                                                 onClick={() => setExpandedId(expandedId === report.id ? null : report.id)}
-                                                className={`cursor-pointer transition-all duration-300 group ${expandedId === report.id ? 'bg-orange-50/30' : 'hover:bg-gray-50/50'}`}
+                                                className={`cursor-pointer transition-colors ${expandedId === report.id ? 'bg-orange-50/30' : 'hover:bg-gray-50'}`}
                                             >
-                                                <td className="px-8 py-8">
+                                                <td className="px-6 py-4">
                                                     <div className="flex items-center gap-4">
                                                         <div className="w-12 h-12 bg-orange-50 rounded-[1.2rem] flex items-center justify-center text-[#FF7F50] font-black text-lg border border-orange-100 shadow-sm transition-transform group-hover:scale-110">
                                                             {report.fullName.charAt(0)}
                                                         </div>
                                                         <div className="flex flex-col">
-                                                            <span className="font-black text-[#1A1C1E] tracking-tight group-hover:text-[#FF7F50] transition-colors">
+                                                            <span className="font-semibold text-gray-800 group-hover:text-[#FF7F50] transition-colors">
                                                                 {report.fullName}
                                                             </span>
-                                                            <span className="text-[12px] text-gray-400 font-bold mt-0.5 tracking-tight">{report.emailAddress}</span>
+                                                            <span className="text-sm text-gray-500">{report.emailAddress}</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-8 py-8">
-                                                    <span className={`inline-flex px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-[0.15em] border-2 shadow-sm ${
+                                                <td className="px-6 py-4">
+                                                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                                                         report.category === 'Food Quality' ? 'bg-rose-50 text-rose-500 border-rose-100' :
                                                         report.category === 'Service Quality' ? 'bg-amber-50 text-amber-500 border-amber-100' :
                                                         report.category === 'Billing Issues' ? 'bg-emerald-50 text-emerald-500 border-emerald-100' :
                                                         report.category === 'Technical Issue' ? 'bg-sky-50 text-sky-500 border-sky-100' :
-                                                        'bg-slate-50 text-slate-500 border-slate-100'
+                                                        'bg-gray-100 text-gray-600'
                                                     }`}>
                                                         {report.category}
                                                     </span>
                                                 </td>
-                                                <td className="px-8 py-8" onClick={(e) => e.stopPropagation()}>
+                                                <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
                                                     <CustomStatusDropdown 
                                                         currentStatus={report.status} 
                                                         onUpdate={(newStatus) => handleStatusUpdate(report.id, newStatus)}
@@ -399,27 +395,27 @@ const AdminSupportManagement = () => {
                                                         options={statusOptions}
                                                     />
                                                 </td>
-                                                <td className="px-8 py-8">
+                                                <td className="px-6 py-4">
                                                     <div className="flex flex-col gap-1">
-                                                        <div className="flex items-center gap-2 text-[#1A1C1E] text-xs font-black tracking-tight">
-                                                            <Calendar size={14} className="text-gray-300" />
+                                                        <div className="flex items-center gap-2 text-gray-600 text-sm">
+                                                            <Calendar size={14} className="text-gray-400" />
                                                             {formatDate(report.createdAt)}
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-8 py-8 text-right" onClick={(e) => e.stopPropagation()}>
+                                                <td className="px-6 py-4 text-right" onClick={(e) => e.stopPropagation()}>
                                                     <div className="flex items-center justify-end gap-2">
                                                         <button
                                                             onClick={() => setExpandedId(expandedId === report.id ? null : report.id)}
-                                                            className={`p-3 rounded-xl transition-all ${expandedId === report.id ? 'bg-[#FF7F50] text-white rotate-180' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
+                                                            className={`p-2 rounded-lg transition-all ${expandedId === report.id ? 'bg-[#FF7F50] text-white rotate-180' : 'text-gray-400 hover:bg-gray-100'}`}
                                                         >
                                                             <ChevronDown size={18} />
                                                         </button>
                                                         <button
                                                             onClick={() => handleOpenDeleteModal(report.id)}
-                                                            className="p-3 text-gray-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all duration-300"
+                                                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                                         >
-                                                            <Trash2 size={20} />
+                                                            <Trash2 size={16} />
                                                         </button>
                                                     </div>
                                                 </td>
@@ -456,12 +452,7 @@ const AdminSupportManagement = () => {
             </main>
 
             <style dangerouslySetInnerHTML={{ __html: `
-                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
                 
-                :root {
-                    font-family: 'Plus Jakarta Sans', sans-serif;
-                }
-
                 @keyframes fade-in {
                     from { opacity: 0; transform: translateY(-10px); }
                     to { opacity: 1; transform: translateY(0); }
