@@ -14,6 +14,7 @@ import AdminMenuManagement from './pages/AdminMenuManagement';
 import SupportPage from './pages/SupportPage';
 import UserReportsPage from './pages/UserReportsPage';
 import AdminSupportManagement from './pages/AdminSupportManagement';
+import AdminReservationManagement from './pages/AdminReservationManagement';
 import ReservationsPage from './pages/ReservationsPage';
 import MyReservationsPage from './pages/MyReservationsPage';
 import Footer from './components/Footer';
@@ -37,6 +38,7 @@ function App() {
                         <Route path="/admin/users" element={<AdminUserManagement />} />
                         <Route path="/admin/menu" element={<AdminMenuManagement />} />
                         <Route path="/admin/support" element={<AdminSupportManagement />} />
+                        <Route path="/admin/reservations" element={<AdminReservationManagement />} />
                         <Route path="/reservations" element={<MyReservationsPage />} />
                         <Route path="/book-table" element={<ReservationsPage />} />
                     </Routes>

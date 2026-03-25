@@ -30,9 +30,31 @@ public class ReservationService {
     }
 
     public List<ReservationDto> getReservationsByEmail(String email) {
-        return reservationRepository.findByCustomerEmail(email).stream()
+        return reservationRepository.findByCustomerEmailOrderByCreatedAtDesc(email).stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<ReservationDto> getAllReservations() {
+        return reservationRepository.findAllByOrderByCreatedAtDesc().stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    public ReservationDto confirmReservation(Long id) {
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+        reservation.setStatus("CONFIRMED");
+        Reservation updatedReservation = reservationRepository.save(reservation);
+        return mapToDto(updatedReservation);
+    }
+
+    public ReservationDto markNoShow(Long id) {
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+        reservation.setStatus("NO_SHOW");
+        Reservation updatedReservation = reservationRepository.save(reservation);
+        return mapToDto(updatedReservation);
     }
 
     public ReservationDto cancelReservation(Long id) {
