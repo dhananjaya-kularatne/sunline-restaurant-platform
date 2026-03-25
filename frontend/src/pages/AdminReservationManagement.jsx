@@ -138,20 +138,20 @@ const AdminReservationManagement = () => {
     const getStatusStyles = (status) => {
         switch (status) {
             case 'PENDING':
-                return 'bg-amber-50 text-amber-600 border-amber-100';
+                return 'bg-orange-100 text-orange-600';
             case 'CONFIRMED':
-                return 'bg-emerald-50 text-emerald-600 border-emerald-100';
+                return 'bg-green-100 text-green-600';
             case 'CANCELLED':
-                return 'bg-rose-50 text-rose-600 border-rose-100';
+                return 'bg-red-100 text-red-600';
             case 'RESERVED':
-                return 'bg-gray-100 text-gray-500 border-gray-200';
+                return 'bg-gray-100 text-gray-600';
             default:
-                return 'bg-slate-50 text-slate-500 border-slate-100';
+                return 'bg-gray-100 text-gray-600';
         }
     };
 
     return (
-        <div className="flex min-h-screen bg-[#FDFDFD]">
+        <div className="flex min-h-screen bg-[#F8F9FA]">
             <AdminSidebar />
 
             <Modal 
@@ -170,32 +170,28 @@ const AdminReservationManagement = () => {
             <main className="flex-1 p-10">
                 <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-12 gap-8">
                     <div>
-                        <div className="inline-flex items-center gap-2 bg-orange-50 text-[#FF7F50] px-3 py-1 rounded-full text-[10px] font-black uppercase mb-4 tracking-[0.2em]">
-                           <div className="w-1.5 h-1.5 rounded-full bg-[#FF7F50] animate-pulse"></div>
-                           Operations Dashboard
-                        </div>
-                        <h1 className="text-4xl font-black text-[#1A1C1E] tracking-tight">
-                            Reservation <span className="text-[#FF7F50]">Management</span>
+                        
+                        <h1 className="text-3xl font-bold text-[#3E4958]">
+                            Reservation Management
                         </h1>
-                        <p className="text-gray-400 font-medium mt-2">Manage table bookings and customer attendance</p>
+                        <p className="text-gray-500 mt-1">Manage table bookings and customer attendance</p>
                     </div>
                     
                     <div className="flex flex-col sm:flex-row gap-4 w-full xl:w-auto">
                         <div className="relative group flex-1 sm:flex-none">
-                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-[#FF7F50] transition-colors" size={20} />
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                             <input
                                 type="text"
                                 placeholder="Search by email or date..."
-                                className="pl-12 pr-6 py-4 border-2 border-gray-50 rounded-[1.5rem] w-full sm:w-80 focus:outline-none focus:border-[#FF7F50]/20 focus:ring-4 focus:ring-[#FF7F50]/5 transition-all bg-white font-semibold text-gray-700 placeholder:text-gray-300"
+                                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-full sm:w-80 focus:outline-none focus:ring-2 focus:ring-[#FF7F50] transition-all bg-white text-gray-700"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
                         
                         <div className="relative flex-1 sm:flex-none">
-                            <Filter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                            <select
-                                className="pl-12 pr-10 py-4 border-2 border-gray-50 rounded-[1.5rem] focus:outline-none focus:border-[#FF7F50]/20 focus:ring-4 focus:ring-[#FF7F50]/5 appearance-none bg-white font-bold text-gray-500 cursor-pointer w-full sm:w-auto transition-all"
+                                                        <select
+                                className="pl-4 pr-10 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF7F50] appearance-none bg-white text-gray-600 cursor-pointer text-sm w-full sm:w-auto transition-all"
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value)}
                             >
@@ -203,7 +199,7 @@ const AdminReservationManagement = () => {
                                     <option key={status} value={status}>{status.replace('_', ' ')}</option>
                                 ))}
                             </select>
-                            <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-300 pointer-events-none" size={16} />
+                            <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
                         </div>
                     </div>
                 </div>
@@ -235,15 +231,15 @@ const AdminReservationManagement = () => {
                     </div>
                 )}
 
-                <div className="bg-white rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.05)] border border-gray-50 overflow-hidden">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="bg-[#FAFBFC]">
-                                    <th className="px-8 py-6 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50">Customer</th>
-                                    <th className="px-8 py-6 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50">Details</th>
-                                    <th className="px-8 py-6 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50">Status</th>
-                                    <th className="px-8 py-6 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] border-b border-gray-50 text-right">Actions</th>
+                                <tr className="bg-[#F8F9FA] border-bottom border-gray-200">
+                                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Customer</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Details</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-50/50">
@@ -273,22 +269,22 @@ const AdminReservationManagement = () => {
                                         <React.Fragment key={res.id}>
                                             <tr 
                                                 onClick={() => setExpandedId(expandedId === res.id ? null : res.id)}
-                                                className={`cursor-pointer transition-all duration-300 group ${expandedId === res.id ? 'bg-orange-50/30' : 'hover:bg-gray-50/50'}`}
+                                                className={`cursor-pointer transition-colors ${expandedId === res.id ? 'bg-orange-50/30' : 'hover:bg-gray-50'}`}
                                             >
-                                                <td className="px-8 py-8">
+                                                <td className="px-6 py-4">
                                                     <div className="flex items-center gap-4">
                                                         <div className="w-12 h-12 bg-orange-50 rounded-[1.2rem] flex items-center justify-center text-[#FF7F50] font-black text-lg border border-orange-100 shadow-sm transition-transform group-hover:scale-110">
                                                             <Mail size={20} />
                                                         </div>
                                                         <div className="flex flex-col">
-                                                            <span className="font-black text-[#1A1C1E] tracking-tight group-hover:text-[#FF7F50] transition-colors">
+                                                            <span className="font-semibold text-gray-800 group-hover:text-[#FF7F50] transition-colors">
                                                                 {res.customerEmail}
                                                             </span>
-                                                            <span className="text-[12px] text-gray-400 font-bold mt-0.5 tracking-tight">Customer</span>
+                                                            <span className="text-sm text-gray-500">Customer</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                            <td className="px-8 py-8">
+                                            <td className="px-6 py-4">
                                                 <div className="flex flex-col gap-2">
                                                     <div className="flex items-center gap-2 text-gray-700 font-bold text-sm">
                                                         <Calendar size={14} className="text-[#FF7F50]" />
@@ -304,12 +300,12 @@ const AdminReservationManagement = () => {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="px-8 py-8" onClick={(e) => e.stopPropagation()}>
-                                                <span className={`inline-flex px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-[0.15em] border-2 shadow-sm ${getStatusStyles(res.status)}`}>
+                                            <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                                                <span className={`px-3 py-1 rounded-full text-xs font-bold ${getStatusStyles(res.status)}`}>
                                                     {res.status.replace('_', ' ')}
                                                 </span>
                                             </td>
-                                            <td className="px-8 py-8 text-right" onClick={(e) => e.stopPropagation()}>
+                                            <td className="px-6 py-4 text-right" onClick={(e) => e.stopPropagation()}>
                                                 <div className="flex items-center justify-end gap-2">
                                                     <button
                                                         onClick={(e) => {
@@ -326,7 +322,7 @@ const AdminReservationManagement = () => {
                                                                 e.stopPropagation();
                                                                 setActionModal({ isOpen: true, reservationId: res.id, type: 'CONFIRM' });
                                                             }}
-                                                            className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl font-bold text-xs hover:bg-emerald-100 transition-all active:scale-95"
+                                                            className="px-3 py-1 bg-green-50 text-green-600 rounded-lg font-semibold text-sm hover:bg-green-100 transition-colors"
                                                         >
                                                             Confirm
                                                         </button>
@@ -337,7 +333,7 @@ const AdminReservationManagement = () => {
                                                                 e.stopPropagation();
                                                                 setActionModal({ isOpen: true, reservationId: res.id, type: 'RESERVED' });
                                                             }}
-                                                            className="px-4 py-2 bg-amber-50 text-amber-600 rounded-xl font-bold text-xs hover:bg-amber-100 transition-all active:scale-95"
+                                                            className="px-3 py-1 bg-gray-100 text-gray-600 rounded-lg font-semibold text-sm hover:bg-gray-200 transition-colors"
                                                         >
                                                             Reserved
                                                         </button>
@@ -374,12 +370,7 @@ const AdminReservationManagement = () => {
             </main>
 
             <style dangerouslySetInnerHTML={{ __html: `
-                @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
                 
-                :root {
-                    font-family: 'Plus Jakarta Sans', sans-serif;
-                }
-
                 @keyframes fade-in {
                     from { opacity: 0; transform: translateY(-10px); }
                     to { opacity: 1; transform: translateY(0); }

@@ -166,7 +166,7 @@ const UserReportsPage = () => {
                                                 </span>
                                                 <button
                                                     onClick={() => setDeleteModal({ show: true, reportId: report.id })}
-                                                    className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                    className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                                     title="Delete Report"
                                                 >
                                                     <Trash2 size={16} />
