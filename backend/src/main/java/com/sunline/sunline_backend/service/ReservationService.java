@@ -49,10 +49,10 @@ public class ReservationService {
         return mapToDto(updatedReservation);
     }
 
-    public ReservationDto markNoShow(Long id) {
+    public ReservationDto markReserved(Long id) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
-        reservation.setStatus("NO_SHOW");
+        reservation.setStatus("RESERVED");
         Reservation updatedReservation = reservationRepository.save(reservation);
         return mapToDto(updatedReservation);
     }

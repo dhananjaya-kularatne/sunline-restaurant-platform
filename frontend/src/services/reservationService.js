@@ -10,8 +10,8 @@ const confirmReservation = async (id) => {
     return response.data;
 };
 
-const markNoShow = async (id) => {
-    const response = await api.put(`/reservations/${id}/no-show`);
+const markReserved = async (id) => {
+    const response = await api.put(`/reservations/${id}/reserved`);
     return response.data;
 };
 
@@ -23,6 +23,6 @@ const cancelReservation = async (id) => {
 export default {
     getAllReservations,
     confirmReservation,
-    markNoShow,
+    markReserved,
     cancelReservation
 };
