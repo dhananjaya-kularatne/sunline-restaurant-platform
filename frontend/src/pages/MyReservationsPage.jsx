@@ -20,12 +20,7 @@ const MyReservationsPage = () => {
         setIsLoadingReservations(true);
         try {
             const response = await api.get(`/reservations/my-reservations?email=${user.email}`);
-            const sorted = response.data.sort((a, b) => {
-                const dateA = new Date(`${a.reservationDate}T${a.reservationTime}`);
-                const dateB = new Date(`${b.reservationDate}T${b.reservationTime}`);
-                return dateB - dateA;
-            });
-            setReservations(sorted);
+            setReservations(response.data);
         } catch (error) {
             console.error('Failed to fetch reservations:', error);
         } finally {

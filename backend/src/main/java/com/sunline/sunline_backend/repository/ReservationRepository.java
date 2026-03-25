@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findByCustomerEmail(String customerEmail);
+    List<Reservation> findByCustomerEmailOrderByCreatedAtDesc(String customerEmail);
+    List<Reservation> findAllByOrderByCreatedAtDesc();
 }
