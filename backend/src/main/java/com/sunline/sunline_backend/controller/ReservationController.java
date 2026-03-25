@@ -43,9 +43,9 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.confirmReservation(id));
     }
 
-    @PutMapping("/{id}/no-show")
+    @PutMapping("/{id}/reserved")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ReservationDto> markNoShow(@PathVariable Long id) {
-        return ResponseEntity.ok(reservationService.markNoShow(id));
+    public ResponseEntity<ReservationDto> markReserved(@PathVariable Long id) {
+        return ResponseEntity.ok(reservationService.markReserved(id));
     }
 }
