@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@SuppressWarnings("null")
 public class FoodPostService {
 
     private final FoodPostRepository foodPostRepository;
@@ -92,17 +91,15 @@ public class FoodPostService {
 
     private FoodPostResponse toResponse(FoodPost post, Long currentUserId) {
         List<PostReaction> reactions = postReactionRepository.findByPostId(post.getId());
-        
+
         // Initialize all 5 keys to 0
         Map<String, Long> reactionCounts = new LinkedHashMap<>();
         for (ReactionType type : ReactionType.values()) {
             reactionCounts.put(type.name(), 0L);
         }
-        
+
         // Count actual reactions
-        reactions.forEach(r -> 
-            reactionCounts.merge(r.getReactionType().name(), 1L, Long::sum)
-        );
+        reactions.forEach(r -> reactionCounts.merge(r.getReactionType().name(), 1L, Long::sum));
 
         String currentUserReaction = null;
         if (currentUserId != null) {

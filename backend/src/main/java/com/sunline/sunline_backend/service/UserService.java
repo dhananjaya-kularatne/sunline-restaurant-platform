@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@SuppressWarnings("null")
 public class UserService implements UserDetailsService {
 
     public List<User> getAllUsers(String search) {
