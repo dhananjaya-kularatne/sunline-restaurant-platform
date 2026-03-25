@@ -57,7 +57,7 @@ const AdminReservationManagement = () => {
     const [actionLoading, setActionLoading] = useState(null);
     const [expandedId, setExpandedId] = useState(null);
 
-    const statuses = ['All', 'PENDING', 'CONFIRMED', 'CANCELLED', 'NO_SHOW'];
+    const statuses = ['All', 'PENDING', 'CONFIRMED', 'CANCELLED', 'RESERVED'];
 
     useEffect(() => {
         fetchReservations();
@@ -107,9 +107,9 @@ const AdminReservationManagement = () => {
             if (type === 'CONFIRM') {
                 updatedRes = await reservationService.confirmReservation(reservationId);
                 setMessage('Reservation confirmed successfully.');
-            } else if (type === 'NO_SHOW') {
-                updatedRes = await reservationService.markNoShow(reservationId);
-                setMessage('Customer marked as No Show.');
+            } else if (type === 'RESERVED') {
+                updatedRes = await reservationService.markReserved(reservationId);
+                setMessage('Customer marked as Reserved.');
             }
 
             setReservations(prev => prev.map(res => 
@@ -143,7 +143,7 @@ const AdminReservationManagement = () => {
                 return 'bg-emerald-50 text-emerald-600 border-emerald-100';
             case 'CANCELLED':
                 return 'bg-rose-50 text-rose-600 border-rose-100';
-            case 'NO_SHOW':
+            case 'RESERVED':
                 return 'bg-gray-100 text-gray-500 border-gray-200';
             default:
                 return 'bg-slate-50 text-slate-500 border-slate-100';
@@ -158,11 +158,11 @@ const AdminReservationManagement = () => {
                 isOpen={actionModal.isOpen}
                 onClose={() => setActionModal({ isOpen: false, reservationId: null, type: null })}
                 onConfirm={handleAction}
-                title={actionModal.type === 'CONFIRM' ? 'Confirm Reservation' : 'Mark as No Show'}
+                title={actionModal.type === 'CONFIRM' ? 'Confirm Reservation' : 'Mark as Reserved'}
                 message={actionModal.type === 'CONFIRM' 
                     ? 'Are you sure you want to confirm this reservation? This will notify the customer (simulated).' 
-                    : 'Are you sure you want to mark this customer as a No Show? This will update the table availability.'}
-                confirmText={actionModal.type === 'CONFIRM' ? 'Confirm' : 'Mark No Show'}
+                    : 'Are you sure you want to mark this reservation as Reserved?'}
+                confirmText={actionModal.type === 'CONFIRM' ? 'Confirm' : 'Mark Reserved'}
                 type={actionModal.type === 'CONFIRM' ? 'success' : 'warning'}
             />
 
@@ -331,15 +331,15 @@ const AdminReservationManagement = () => {
                                                             Confirm
                                                         </button>
                                                     )}
-                                                    {res.status === 'CONFIRMED' && (
+                                                    {(res.status === 'PENDING' || res.status === 'CONFIRMED') && (
                                                         <button
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
-                                                                setActionModal({ isOpen: true, reservationId: res.id, type: 'NO_SHOW' });
+                                                                setActionModal({ isOpen: true, reservationId: res.id, type: 'RESERVED' });
                                                             }}
                                                             className="px-4 py-2 bg-amber-50 text-amber-600 rounded-xl font-bold text-xs hover:bg-amber-100 transition-all active:scale-95"
                                                         >
-                                                            No Show
+                                                            Reserved
                                                         </button>
                                                     )}
                                                 </div>
