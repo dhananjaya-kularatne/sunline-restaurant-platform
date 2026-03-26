@@ -68,7 +68,7 @@ const AdminPostManagement = () => {
             <main className="flex-1 p-8">
                 <div className="flex justify-between items-start mb-8">
                     <div>
-                        <h1 className="text-3xl font-bold text-[#3E4958]">Post Management</h1>
+                        <h1 className="text-3xl font-bold text-[#3E4958]">Social Feed Management</h1>
                         <p className="text-gray-500">Manage and moderate community food posts</p>
                     </div>
                     <div className="flex gap-4">
