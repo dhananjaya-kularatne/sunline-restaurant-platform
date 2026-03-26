@@ -8,12 +8,37 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const savedUser = localStorage.getItem('user');
-        if (savedUser && token) {
-            setUser(JSON.parse(savedUser));
-        }
-        setLoading(false);
-    }, [token]);
+        const initAuth = async () => {
+            const savedUser = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+            
+            if (savedUser && token) {
+                try {
+                    const parsedUser = JSON.parse(savedUser);
+                    // If the session is missing email (old session), fetch it from profile
+                    if (!parsedUser.email) {
+                        const response = await fetch('http://localhost:8080/api/user/profile', {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        if (response.ok) {
+                            const profileData = await response.json();
+                            const fullUser = { ...parsedUser, email: profileData.email };
+                            setUser(fullUser);
+                            localStorage.setItem('user', JSON.stringify(fullUser));
+                        } else {
+                            setUser(parsedUser);
+                        }
+                    } else {
+                        setUser(parsedUser);
+                    }
+                } catch (err) {
+                    console.error('Auth hydration error:', err);
+                }
+            }
+            setLoading(false);
+        };
+        initAuth();
+    }, []);
 
     const login = (userData, tokenValue) => {
         localStorage.setItem('token', tokenValue);

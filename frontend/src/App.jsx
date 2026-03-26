@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -14,6 +14,13 @@ import SocialFeedPage from './pages/SocialFeedPage';
 
 import AdminMenuManagement from './pages/AdminMenuManagement';
 import AdminPostManagement from './pages/AdminPostManagement';
+import SupportPage from './pages/SupportPage';
+import UserReportsPage from './pages/UserReportsPage';
+import AdminSupportManagement from './pages/AdminSupportManagement';
+import AdminReservationManagement from './pages/AdminReservationManagement';
+import ReservationsPage from './pages/ReservationsPage';
+import MyReservationsPage from './pages/MyReservationsPage';
+import Footer from './components/Footer';
 
 function App() {
     return (
@@ -26,16 +33,23 @@ function App() {
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/menu" element={<MenuPage />} />
+                        <Route path="/support" element={<SupportPage />} />
                         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                         <Route path="/reset-password" element={<ResetPasswordPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/user/:userId" element={<ProfilePage />} />
+                        <Route path="/my-reports" element={<UserReportsPage />} />
                         <Route path="/admin/users" element={<AdminUserManagement />} />
                         <Route path="/admin/menu" element={<AdminMenuManagement />} />
                         <Route path="/admin/posts" element={<AdminPostManagement />} />
+                        <Route path="/admin/support" element={<AdminSupportManagement />} />
+                        <Route path="/admin/reservations" element={<AdminReservationManagement />} />
+                        <Route path="/reservations" element={<MyReservationsPage />} />
+                        <Route path="/book-table" element={<ReservationsPage />} />
                         <Route path="/create-post" element={<CreatePostPage />} />
                         <Route path="/social-feed" element={<SocialFeedPage />} />
                     </Routes>
+                    <Footer />
                 </div>
             </Router>
         </AuthProvider>

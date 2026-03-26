@@ -21,9 +21,10 @@ const LoginPage = () => {
 
         try {
             const data = await authService.login(email, password);
-            login({ name: data.name, role: data.role }, data.token);
+            login({ name: data.name, role: data.role, email: data.email }, data.token);
             navigate('/');
         } catch (err) {
+            console.error('Login error details:', err.response || err);
             setError(err.response?.data?.message || err.message || 'Invalid credentials');
         } finally {
             setLoading(false);
