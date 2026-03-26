@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Menu, User, LogOut, ChevronDown, LayoutDashboard, Utensils, Truck } from 'lucide-react';
+import { Menu, User, LogOut, ChevronDown, LayoutDashboard, Utensils, Truck, FileText } from 'lucide-react';
 import { useState } from 'react';
 
 const CustomerNavbar = () => {
@@ -15,7 +15,7 @@ const CustomerNavbar = () => {
     };
 
     return (
-        <nav className="bg-white shadow-sm py-4 px-2 sticky top-0 z-50 bg-black">
+        <nav className="bg-white shadow-sm py-4 px-2 sticky top-0 z-50">
             <div className="flex justify-between items-center w-full px-4">
                 <Link to="/" className="text-2xl font-bold text-[#FF7F50]">
                     Sunline Restaurant
@@ -25,8 +25,7 @@ const CustomerNavbar = () => {
                     <Link to="/" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Home</Link>
                     <Link to="/menu" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Menu</Link>
                     <Link to="/social-feed" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Social Feed</Link>
-
-
+                    <Link to="/reservations" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Reservations</Link>
 
                     {user ? (
                         <div className="relative">
@@ -47,6 +46,15 @@ const CustomerNavbar = () => {
                                     >
                                         <User size={16} className="mr-2" /> Profile
                                     </Link>
+                                    {user.role === 'CUSTOMER' && (
+                                        <Link
+                                            to="/my-reports"
+                                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                                            onClick={() => setDropdownOpen(false)}
+                                        >
+                                            <FileText size={16} className="mr-2" /> My Reports
+                                        </Link>
+                                    )}
                                     {user.role === 'ADMIN' && (
                                         <Link
                                             to="/admin/users"
@@ -84,7 +92,7 @@ const CustomerNavbar = () => {
                             )}
                         </div>
                     ) : (
-                        <Link to="/login" className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity">
+                        <Link to="/login" className="bg-[#FF7F50] text-white px-6 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity">
                             Login
                         </Link>
                     )}

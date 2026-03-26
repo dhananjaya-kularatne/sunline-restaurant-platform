@@ -33,7 +33,9 @@ const ProfilePage = () => {
                     profilePicture: data.profilePicture || '',
                 });
             } catch (err) {
-                setMessage({ text: 'Failed to load profile details', type: 'error' });
+                console.error("Profile fetch error details:", err);
+                const errorMessage = err.message || "Unknown error";
+                setMessage({ text: `Failed to load profile details: ${errorMessage}`, type: 'error' });
             }
         };
         fetchProfile();
