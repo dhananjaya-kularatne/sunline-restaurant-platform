@@ -167,8 +167,8 @@ const AdminReservationManagement = () => {
             />
 
             {/* Main Content */}
-            <main className="flex-1 p-10">
-                <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-12 gap-8">
+            <main className="flex-1 p-8">
+                <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-8 gap-4">
                     <div>
                         
                         <h1 className="text-3xl font-bold text-[#3E4958]">
@@ -205,29 +205,8 @@ const AdminReservationManagement = () => {
                 </div>
 
                 {message && (
-                    <div className="fixed bottom-10 right-10 z-[100] animate-slide-in-right">
-                        <div className={`
-                            px-8 py-5 rounded-[2rem] flex items-center gap-4 shadow-[0_20px_50px_rgba(0,0,0,0.15)] 
-                            backdrop-blur-xl border-2
-                            ${message.toLowerCase().includes('failed') 
-                                ? 'bg-rose-50/90 border-rose-200 text-rose-600' 
-                                : 'bg-emerald-50/90 border-emerald-200 text-emerald-600'}
-                        `}>
-                            <div className="p-2 bg-white rounded-xl shadow-sm">
-                                {message.toLowerCase().includes('failed') ? <AlertCircle size={24} /> : <CheckCircle2 size={24} />}
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="font-black text-sm tracking-tight leading-tight">
-                                    {message.toLowerCase().includes('failed') ? 'Action Failed' : 'Action Successful'}
-                                </span>
-                                <span className="text-[11px] font-bold opacity-70 tracking-wide uppercase">
-                                    {message}
-                                </span>
-                            </div>
-                            <button onClick={() => setMessage('')} className="ml-4 p-1 hover:bg-black/5 rounded-full transition-colors">
-                                <X size={16} />
-                            </button>
-                        </div>
+                    <div className={`px-6 py-3 rounded-lg mb-6 flex items-center shadow-sm animate-fade-in ${message.toLowerCase().includes('failed') ? 'bg-red-500 text-white' : 'bg-[#48BB78] text-white'}`}>
+                        {message}
                     </div>
                 )}
 
@@ -242,7 +221,7 @@ const AdminReservationManagement = () => {
                                     <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-50/50">
+                            <tbody className="divide-y divide-gray-100">
                                 {loading ? (
                                     <tr>
                                         <td colSpan="4" className="px-8 py-32 text-center">

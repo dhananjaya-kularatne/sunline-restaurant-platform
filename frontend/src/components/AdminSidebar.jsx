@@ -8,7 +8,7 @@ const AdminSidebar = () => {
     const navItems = [
         { name: 'User Management', path: '/admin/users', icon: Users },
         { name: 'Menu Management', path: '/admin/menu', icon: Utensils },
-        { name: 'Post Management', path: '/admin/posts', icon: Image },
+        { name: 'Social Feed Management', path: '/admin/posts', icon: Image },
         { name: 'Support Management', path: '/admin/support', icon: MessageSquare },
         { name: 'Reservation Management', path: '/admin/reservations', icon: Calendar },
     ];
