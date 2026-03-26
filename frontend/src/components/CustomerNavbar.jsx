@@ -15,8 +15,8 @@ const CustomerNavbar = () => {
     };
 
     return (
-        <nav className="bg-white shadow-sm py-4 px-6 sticky top-0 z-50">
-            <div className="container mx-auto flex justify-between items-center">
+        <nav className="bg-white shadow-sm py-4 px-2 sticky top-0 z-50 bg-black">
+            <div className="flex justify-between items-center w-full px-4">
                 <Link to="/" className="text-2xl font-bold text-[#FF7F50]">
                     Sunline Restaurant
                 </Link>

@@ -41,8 +41,7 @@ public class FoodPostController {
             String originalFilename = file.getOriginalFilename();
             String filename = UUID.randomUUID().toString() + "_" + originalFilename;
 
-            String uploadDir = System.getProperty("user.dir") + "/uploads/";
-            Path uploadPath = Paths.get(uploadDir);
+            Path uploadPath = Paths.get("uploads").toAbsolutePath();
 
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
