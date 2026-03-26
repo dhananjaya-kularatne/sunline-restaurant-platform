@@ -133,24 +133,24 @@ const ReservationsPage = () => {
     if (submitSuccess) {
         return (
             <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-10 text-center mt-10 border border-orange-100 animate-in zoom-in duration-300">
+                <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center mt-10 border border-gray-100">
                     <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
                         <CheckCircle className="h-12 w-12 text-green-500" />
                     </div>
-                    <h2 className="text-3xl font-black text-gray-900 mb-2">Your reservation is pending</h2>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Your reservation is pending</h2>
                     <p className="text-gray-500 mb-8 font-medium">
                         Look out for a confirmation shortly.
                     </p>
-                    <div className="space-y-3 w-full max-w-sm mx-auto">
+                    <div className="space-y-3 w-full">
                         <button
                             onClick={() => setSubmitSuccess(false)}
-                            className="w-full bg-[#FF7F50] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#e06b3f] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#FF7F50]/20"
+                            className="w-full bg-[#FF7F50] text-white py-3 rounded-lg font-bold hover:bg-[#e06b3f] transition-all flex items-center justify-center gap-2 shadow-md active:scale-[0.98]"
                         >
                             Book Another Table
                         </button>
                         <Link
                             to="/"
-                            className="w-full border-2 border-[#FF7F50] text-[#FF7F50] py-4 rounded-xl font-bold text-lg hover:bg-orange-50 transition-all flex items-center justify-center gap-2"
+                            className="w-full border-2 border-[#FF7F50] text-[#FF7F50] py-3 rounded-lg font-bold hover:bg-orange-50 transition-all flex items-center justify-center gap-2"
                         >
                             Back to Home
                         </Link>
@@ -163,27 +163,25 @@ const ReservationsPage = () => {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl w-full">
-                <div className="bg-white rounded-[2rem] shadow-2xl p-10 mt-4 border border-gray-100 flex flex-col items-center">
-                    <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mb-6">
-                        <Calendar className="text-[#FF7F50]" size={40} />
+                <div className="bg-white rounded-2xl shadow-xl p-8 mt-4 border border-gray-100 flex flex-col items-center">
+                    <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-4">
+                        <Calendar className="text-[#FF7F50]" size={32} />
                     </div>
                     
-                    <div className="text-center mb-10">
-                        <h1 className="text-4xl font-black text-gray-900 mb-3 tracking-tight">Reserve a Table</h1>
-                        <p className="text-gray-500 font-medium">Quick and easy reservations in seconds</p>
+                    <div className="text-center mb-8">
+                        <h1 className="text-3xl font-bold text-gray-800 mb-2">Reserve a Table</h1>
+                        <p className="text-gray-500 mt-2 text-center">Quick and easy reservations in seconds</p>
                     </div>
 
                     {serverError && (
-                        <div className="w-full mb-8 bg-red-50 border-l-4 border-red-500 p-4 rounded-xl animate-in slide-in-from-left duration-300">
-                            <p className="text-red-700 font-medium">{serverError}</p>
-                        </div>
+                        <p className="w-full mb-6 text-red-500 text-sm font-medium">{serverError}</p>
                     )}
 
                     <form onSubmit={handleSubmit} className="w-full space-y-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Date Input */}
                             <div className="space-y-2">
-                                <label htmlFor="reservationDate" className="block text-sm font-bold text-gray-700 ml-1">
+                                <label htmlFor="reservationDate" className="block text-sm font-medium text-gray-700 mb-2">
                                     Reservation Date
                                 </label>
                                 <input
@@ -192,16 +190,16 @@ const ReservationsPage = () => {
                                     name="reservationDate"
                                     value={formData.reservationDate}
                                     onChange={handleChange}
-                                    className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-2xl focus:ring-4 focus:ring-orange-100 focus:border-[#FF7F50] outline-none transition-all font-medium ${
-                                        errors.reservationDate ? 'border-red-500 bg-red-50' : 'border-transparent'
+                                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all ${
+                                        errors.reservationDate ? 'border-red-500 bg-red-50' : 'border-gray-300'
                                     }`}
                                 />
-                                {errors.reservationDate && <p className="mt-1 text-xs text-red-500 font-bold ml-1">{errors.reservationDate}</p>}
+                                {errors.reservationDate && <p className="mt-1 text-xs text-red-500 font-medium">{errors.reservationDate}</p>}
                             </div>
 
                             {/* Time Select */}
                             <div className="space-y-2">
-                                <label htmlFor="reservationTime" className="block text-sm font-bold text-gray-700 ml-1">
+                                <label htmlFor="reservationTime" className="block text-sm font-medium text-gray-700 mb-2">
                                     Preferred Time
                                 </label>
                                 <div className="relative">
@@ -210,8 +208,8 @@ const ReservationsPage = () => {
                                         name="reservationTime"
                                         value={formData.reservationTime}
                                         onChange={handleChange}
-                                        className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-2xl focus:ring-4 focus:ring-orange-100 focus:border-[#FF7F50] outline-none transition-all appearance-none font-medium cursor-pointer ${
-                                            errors.reservationTime ? 'border-red-500 bg-red-50' : 'border-transparent'
+                                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all appearance-none cursor-pointer ${
+                                            errors.reservationTime ? 'border-red-500 bg-red-50' : 'border-gray-300'
                                         }`}
                                     >
                                         <option value="">Select a slot</option>
@@ -219,18 +217,18 @@ const ReservationsPage = () => {
                                             <option key={slot} value={slot}>{formatTime(slot)}</option>
                                         ))}
                                     </select>
-                                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                                        <Clock size={20} />
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                        <Clock size={18} />
                                     </div>
                                 </div>
-                                {errors.reservationTime && <p className="mt-1 text-xs text-red-500 font-bold ml-1">{errors.reservationTime}</p>}
+                                {errors.reservationTime && <p className="mt-1 text-xs text-red-500 font-medium">{errors.reservationTime}</p>}
                             </div>
                         </div>
 
                         <div className="grid grid-cols-1 gap-8">
                             {/* Guest Count */}
                             <div className="space-y-2">
-                                <label htmlFor="guestCount" className="block text-sm font-bold text-gray-700 ml-1">
+                                <label htmlFor="guestCount" className="block text-sm font-medium text-gray-700 mb-2">
                                     Number of Guests
                                 </label>
                                 <div className="relative">
@@ -241,20 +239,20 @@ const ReservationsPage = () => {
                                         min="1"
                                         value={formData.guestCount}
                                         onChange={handleChange}
-                                        className={`w-full px-5 py-4 bg-gray-50 border-2 rounded-2xl focus:ring-4 focus:ring-orange-100 focus:border-[#FF7F50] outline-none transition-all font-medium ${
-                                            errors.guestCount ? 'border-red-500 bg-red-50' : 'border-transparent'
+                                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all ${
+                                            errors.guestCount ? 'border-red-500 bg-red-50' : 'border-gray-300'
                                         }`}
                                     />
-                                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                                        <Users size={20} />
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                        <Users size={18} />
                                     </div>
                                 </div>
-                                {errors.guestCount && <p className="mt-1 text-xs text-red-500 font-bold ml-1">{errors.guestCount}</p>}
+                                {errors.guestCount && <p className="mt-1 text-xs text-red-500 font-medium">{errors.guestCount}</p>}
                             </div>
                         </div>
 
                         <div className="space-y-2">
-                            <label htmlFor="specialRequest" className="block text-sm font-bold text-gray-700 ml-1">
+                            <label htmlFor="specialRequest" className="block text-sm font-medium text-gray-700 mb-2">
                                 Special Requests (Optional)
                             </label>
                             <textarea
@@ -264,21 +262,21 @@ const ReservationsPage = () => {
                                 placeholder="Any dietary requirements or special occasions?"
                                 value={formData.specialRequest}
                                 onChange={handleChange}
-                                className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:ring-4 focus:ring-orange-100 focus:border-[#FF7F50] outline-none transition-all resize-none font-medium"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all resize-none"
                             ></textarea>
                         </div>
 
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className={`group w-full bg-[#FF7F50] text-white py-5 px-4 rounded-2xl font-black text-xl hover:bg-[#e06b3f] transition-all duration-300 flex justify-center items-center gap-3 shadow-xl shadow-[#FF7F50]/30 active:scale-[0.98] ${
+                            className={`w-full bg-[#FF7F50] text-white py-3 rounded-lg font-bold hover:bg-[#e06b3f] transition-all flex justify-center items-center gap-2 shadow-md active:scale-[0.98] ${
                                 isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
                             }`}
                         >
                             {isSubmitting ? (
-                                <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                             ) : (
-                                <>Reserve a Table <ArrowRight className="group-hover:translate-x-1 transition-transform" /></>
+                                <>Reserve a Table <ArrowRight size={18} /></>
                             )}
                         </button>
                     </form>

@@ -33,9 +33,8 @@ const Modal = ({ isOpen, onClose, onConfirm, title, message, confirmText = 'Conf
                         </button>
                         <button
                             onClick={onConfirm}
-                            className={`flex-1 px-6 py-4 text-white rounded-2xl font-bold transition-all shadow-xl active:scale-95 ${
-                                type === 'danger' ? 'bg-rose-500 hover:bg-rose-600 shadow-rose-200' : 'bg-[#FF7F50] hover:bg-[#e06b3f] shadow-orange-100'
-                            }`}
+                            className={`flex-1 px-6 py-4 text-white rounded-2xl font-bold transition-all shadow-xl active:scale-95 ${type === 'danger' ? 'bg-rose-500 hover:bg-rose-600 shadow-rose-200' : 'bg-[#FF7F50] hover:bg-[#e06b3f] shadow-orange-100'
+                                }`}
                         >
                             {confirmText}
                         </button>
@@ -126,29 +125,29 @@ const AdminSupportManagement = () => {
     ];
 
     const statusOptions = [
-        { 
-            value: 'PENDING', 
-            label: 'Pending', 
-            bgColor: 'bg-amber-50', 
-            textColor: 'text-amber-600', 
-            borderColor: 'border-amber-100',
-            icon: Clock 
+        {
+            value: 'PENDING',
+            label: 'Pending',
+            bgColor: 'bg-orange-100',
+            textColor: 'text-orange-600',
+            borderColor: 'border-orange-100',
+            icon: Clock
         },
-        { 
-            value: 'IN_REVIEW', 
-            label: 'In Review', 
-            bgColor: 'bg-indigo-50', 
-            textColor: 'text-indigo-600', 
-            borderColor: 'border-indigo-100',
-            icon: Eye 
+        {
+            value: 'IN_REVIEW',
+            label: 'In Review',
+            bgColor: 'bg-blue-100',
+            textColor: 'text-blue-600',
+            borderColor: 'border-blue-100',
+            icon: Eye
         },
-        { 
-            value: 'RESOLVED', 
-            label: 'Resolved', 
-            bgColor: 'bg-emerald-50', 
-            textColor: 'text-emerald-600', 
-            borderColor: 'border-emerald-100',
-            icon: CheckCircle2 
+        {
+            value: 'RESOLVED',
+            label: 'Resolved',
+            bgColor: 'bg-green-100',
+            textColor: 'text-green-600',
+            borderColor: 'border-green-100',
+            icon: CheckCircle2
         }
     ];
 
@@ -182,8 +181,8 @@ const AdminSupportManagement = () => {
 
         if (searchQuery) {
             const query = searchQuery.toLowerCase();
-            filtered = filtered.filter(report => 
-                report.fullName.toLowerCase().includes(query) || 
+            filtered = filtered.filter(report =>
+                report.fullName.toLowerCase().includes(query) ||
                 report.emailAddress.toLowerCase().includes(query) ||
                 report.description.toLowerCase().includes(query) ||
                 (report.orderId && report.orderId.toLowerCase().includes(query))
@@ -216,7 +215,7 @@ const AdminSupportManagement = () => {
         try {
             setStatusLoading(id);
             await supportService.updateReportStatus(id, newStatus);
-            setReports(prev => prev.map(report => 
+            setReports(prev => prev.map(report =>
                 report.id === id ? { ...report, status: newStatus } : report
             ));
             setMessage(`Ticket updated to ${newStatus.replace('_', ' ')}`);
@@ -234,9 +233,9 @@ const AdminSupportManagement = () => {
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A';
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { 
-            month: 'short', 
-            day: 'numeric', 
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
             year: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
@@ -247,7 +246,7 @@ const AdminSupportManagement = () => {
         <div className="flex min-h-screen bg-[#F8F9FA]">
             <AdminSidebar />
 
-            <Modal 
+            <Modal
                 isOpen={deleteModal.isOpen}
                 onClose={() => setDeleteModal({ isOpen: false, reportId: null })}
                 onConfirm={handleDeleteReport}
@@ -258,16 +257,16 @@ const AdminSupportManagement = () => {
             />
 
             {/* Main Content */}
-            <main className="flex-1 p-10">
-                <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-12 gap-8">
+            <main className="flex-1 p-8">
+                <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-8 gap-4">
                     <div>
-                        
+
                         <h1 className="text-3xl font-bold text-[#3E4958]">
                             Support Management
                         </h1>
                         <p className="text-gray-500 mt-1">Review and resolve customer support requests</p>
                     </div>
-                    
+
                     <div className="flex flex-col sm:flex-row gap-4 w-full xl:w-auto">
                         <div className="relative group flex-1 sm:flex-none">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
@@ -279,9 +278,9 @@ const AdminSupportManagement = () => {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
-                        
+
                         <div className="relative flex-1 sm:flex-none">
-                                                        <select
+                            <select
                                 className="pl-4 pr-10 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF7F50] appearance-none bg-white text-gray-600 cursor-pointer text-sm w-full sm:w-auto transition-all"
                                 value={categoryFilter}
                                 onChange={(e) => setCategoryFilter(e.target.value)}
@@ -296,29 +295,8 @@ const AdminSupportManagement = () => {
                 </div>
 
                 {message && (
-                    <div className="fixed bottom-10 right-10 z-[100] animate-slide-in-right">
-                        <div className={`
-                            px-8 py-5 rounded-[2rem] flex items-center gap-4 shadow-[0_20px_50px_rgba(0,0,0,0.15)] 
-                            backdrop-blur-xl border-2
-                            ${message.toLowerCase().includes('failed') 
-                                ? 'bg-rose-50/90 border-rose-200 text-rose-600' 
-                                : 'bg-emerald-50/90 border-emerald-200 text-emerald-600'}
-                        `}>
-                            <div className="p-2 bg-white rounded-xl shadow-sm">
-                                {message.toLowerCase().includes('failed') ? <AlertCircle size={24} /> : <CheckCircle2 size={24} />}
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="font-black text-sm tracking-tight leading-tight">
-                                    {message.toLowerCase().includes('failed') ? 'Action Failed' : 'Action Successful'}
-                                </span>
-                                <span className="text-[11px] font-bold opacity-70 tracking-wide uppercase">
-                                    {message}
-                                </span>
-                            </div>
-                            <button onClick={() => setMessage('')} className="ml-4 p-1 hover:bg-black/5 rounded-full transition-colors">
-                                <X size={16} />
-                            </button>
-                        </div>
+                    <div className={`px-6 py-3 rounded-lg mb-6 flex items-center shadow-sm animate-fade-in ${message.toLowerCase().includes('failed') ? 'bg-red-500 text-white' : 'bg-[#48BB78] text-white'}`}>
+                        {message}
                     </div>
                 )}
 
@@ -334,7 +312,7 @@ const AdminSupportManagement = () => {
                                     <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-50/50">
+                            <tbody className="divide-y divide-gray-100">
                                 {loading ? (
                                     <tr>
                                         <td colSpan="5" className="px-8 py-32 text-center">
@@ -359,7 +337,7 @@ const AdminSupportManagement = () => {
                                 ) : (
                                     filteredReports.map((report) => (
                                         <React.Fragment key={report.id}>
-                                            <tr 
+                                            <tr
                                                 onClick={() => setExpandedId(expandedId === report.id ? null : report.id)}
                                                 className={`cursor-pointer transition-colors ${expandedId === report.id ? 'bg-orange-50/30' : 'hover:bg-gray-50'}`}
                                             >
@@ -377,19 +355,18 @@ const AdminSupportManagement = () => {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                                                        report.category === 'Food Quality' ? 'bg-rose-50 text-rose-500 border-rose-100' :
+                                                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${report.category === 'Food Quality' ? 'bg-rose-50 text-rose-500 border-rose-100' :
                                                         report.category === 'Service Quality' ? 'bg-amber-50 text-amber-500 border-amber-100' :
-                                                        report.category === 'Billing Issues' ? 'bg-emerald-50 text-emerald-500 border-emerald-100' :
-                                                        report.category === 'Technical Issue' ? 'bg-sky-50 text-sky-500 border-sky-100' :
-                                                        'bg-gray-100 text-gray-600'
-                                                    }`}>
+                                                            report.category === 'Billing Issues' ? 'bg-emerald-50 text-emerald-500 border-emerald-100' :
+                                                                report.category === 'Technical Issue' ? 'bg-sky-50 text-sky-500 border-sky-100' :
+                                                                    'bg-gray-100 text-gray-600'
+                                                        }`}>
                                                         {report.category}
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
-                                                    <CustomStatusDropdown 
-                                                        currentStatus={report.status} 
+                                                    <CustomStatusDropdown
+                                                        currentStatus={report.status}
                                                         onUpdate={(newStatus) => handleStatusUpdate(report.id, newStatus)}
                                                         isLoading={statusLoading === report.id}
                                                         options={statusOptions}
@@ -451,7 +428,8 @@ const AdminSupportManagement = () => {
                 </div>
             </main>
 
-            <style dangerouslySetInnerHTML={{ __html: `
+            <style dangerouslySetInnerHTML={{
+                __html: `
                 
                 @keyframes fade-in {
                     from { opacity: 0; transform: translateY(-10px); }

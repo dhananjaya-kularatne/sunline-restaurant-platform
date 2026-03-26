@@ -118,11 +118,11 @@ const SupportPage = () => {
     if (!user) {
         return (
             <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center mt-10">
+                <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center mt-10 border border-gray-100">
                     <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Lock className="text-[#FF7F50]" size={40} />
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4 tracking-tight">Login Required</h2>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-tight">Login Required</h2>
                     <p className="text-gray-600 mb-8 leading-relaxed">
                         Please log in to your account to submit a support report. This helps us track your issue and respond more effectively.
                     </p>
@@ -148,21 +148,21 @@ const SupportPage = () => {
     if (submitSuccess) {
         return (
             <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center mt-10">
+                <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center mt-10 border border-gray-100">
                     <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Report Submitted Successfully</h2>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Report Submitted Successfully</h2>
                     <p className="text-gray-600 mb-6">
                         Thank you for reaching out. Our support team will review your report and get back to you shortly.
                     </p>
                     <button
                         onClick={() => setSubmitSuccess(false)}
-                        className="w-full bg-[#FF7F50] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#e06b3f] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F50]"
+                        className="w-full bg-[#FF7F50] text-white py-3 px-4 rounded-lg font-bold hover:bg-[#e06b3f] transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF7F50] shadow-md active:scale-[0.98]"
                     >
                         Submit Another Report
                     </button>
                     <Link
                         to="/my-reports"
-                        className="w-full block text-center border border-[#FF7F50] text-[#FF7F50] py-3 px-4 rounded-lg font-medium hover:bg-orange-50 transition-colors mt-3"
+                        className="w-full block text-center border border-[#FF7F50] text-[#FF7F50] py-3 px-4 rounded-lg font-bold hover:bg-orange-50 transition-all mt-3"
                     >
                         View My Reports
                     </Link>
@@ -173,19 +173,17 @@ const SupportPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-8 mt-4">
+            <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8 mt-4 border border-gray-100">
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center p-3 sm:p-4 bg-[#FF7F50] rounded-full text-white mb-4 shadow-sm">
                         <HelpCircle size={24} className="sm:w-8 sm:h-8" />
                     </div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Support Center</h1>
+                    <h1 className="text-3xl font-bold text-gray-800 mb-2">Support Center</h1>
                     <p className="text-gray-500">Let us know how we can help you today</p>
                 </div>
 
                 {serverError && (
-                    <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
-                        <p className="text-red-700">{serverError}</p>
-                    </div>
+                    <p className="mb-6 text-red-500 text-sm font-medium">{serverError}</p>
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -292,7 +290,7 @@ const SupportPage = () => {
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className={`w-full bg-[#FF7F50] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#e06b3f] transition-all duration-200 flex justify-center items-center ${
+                        className={`w-full bg-[#FF7F50] text-white py-3 px-4 rounded-lg font-bold hover:bg-[#e06b3f] transition-all shadow-md active:scale-[0.98] flex justify-center items-center ${
                             isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
                         }`}
                     >
