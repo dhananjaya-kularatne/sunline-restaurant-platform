@@ -21,7 +21,7 @@ const AddToCartModal = ({ item, isOpen, onClose, onAdd }) => {
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
             <div 
-                className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-500"
+                className="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-500"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header with Image */}
@@ -37,43 +37,43 @@ const AddToCartModal = ({ item, isOpen, onClose, onAdd }) => {
                     >
                         <X size={20} />
                     </button>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                     <div className="absolute bottom-4 left-6">
-                        <h2 className="text-2xl font-bold text-white">{item.name}</h2>
-                        <p className="text-orange-400 font-bold">LKR {item.price.toFixed(0)}</p>
+                        <h2 className="text-2xl font-bold text-white tracking-tight">{item.name}</h2>
+                        <p className="text-[#FF7F50] font-bold text-lg">LKR {item.price.toFixed(0)}</p>
                     </div>
                 </div>
 
                 <div className="p-8">
-                    <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+                    <p className="text-gray-500 text-sm mb-6 leading-relaxed">
                         {item.description}
                     </p>
 
-                    <form onSubmit={handleSubmit} className="space-y-8">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Quantity Selector */}
                         <div>
-                            <label className="block text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Select Quantity
                             </label>
                             <div className="flex items-center space-x-6">
-                                <div className="flex items-center border border-gray-100 bg-gray-50 rounded-2xl p-1 shadow-inner">
+                                <div className="flex items-center border border-gray-300 rounded-lg p-1">
                                     <button
                                         type="button"
                                         onClick={handleDecrement}
-                                        className="p-3 text-gray-500 hover:text-orange-600 hover:bg-white rounded-xl transition-all"
+                                        className="p-2 text-gray-500 hover:text-primary transition-all"
                                     >
                                         <Minus size={18} />
                                     </button>
-                                    <span className="w-12 text-center font-black text-lg text-gray-800">{quantity}</span>
+                                    <span className="w-10 text-center font-bold text-gray-800">{quantity}</span>
                                     <button
                                         type="button"
                                         onClick={handleIncrement}
-                                        className="p-3 text-gray-500 hover:text-orange-600 hover:bg-white rounded-xl transition-all"
+                                        className="p-2 text-gray-500 hover:text-primary transition-all"
                                     >
                                         <Plus size={18} />
                                     </button>
                                 </div>
-                                <div className="text-gray-400 text-sm font-medium">
+                                <div className="text-gray-500 text-sm font-medium">
                                     Total: <span className="text-gray-900 font-bold ml-1">LKR {(item.price * quantity).toFixed(0)}</span>
                                 </div>
                             </div>
@@ -81,15 +81,14 @@ const AddToCartModal = ({ item, isOpen, onClose, onAdd }) => {
 
                         {/* Special Instructions */}
                         <div>
-                            <label className="block text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
-                                Special Instructions
-                                <span className="lowercase font-normal italic tracking-normal">(optional)</span>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Special Instructions <span className="text-gray-400 font-normal italic">(optional)</span>
                             </label>
                             <textarea
                                 value={instructions}
                                 onChange={(e) => setInstructions(e.target.value)}
                                 placeholder="Extra spicy? No onions? Let us know!"
-                                className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-gray-700 focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all resize-none min-h-[100px] placeholder-gray-400"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none resize-none min-h-[100px] placeholder-gray-400 text-gray-700"
                             />
                         </div>
 
@@ -98,13 +97,13 @@ const AddToCartModal = ({ item, isOpen, onClose, onAdd }) => {
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="flex-1 py-4 border border-gray-100 rounded-2xl font-bold text-gray-500 hover:bg-gray-50 transition-all active:scale-95"
+                                className="flex-1 py-3 border border-gray-300 rounded-lg font-bold text-gray-600 hover:bg-gray-50 transition-all active:scale-[0.98]"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="submit"
-                                className="flex-[2] py-4 bg-orange-600 text-white rounded-2xl font-bold hover:bg-orange-700 hover:shadow-lg hover:shadow-orange-200 transition-all active:scale-95 flex items-center justify-center gap-2"
+                                className="flex-[2] py-3 bg-primary text-white rounded-lg font-bold hover:opacity-90 transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2"
                             >
                                 <span>Add to Cart</span>
                                 <Plus size={18} />

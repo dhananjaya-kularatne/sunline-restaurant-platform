@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import menuService from '../services/menuService';
 import { useCart } from '../context/CartContext';
+import { ShoppingCart } from 'lucide-react';
 import AddToCartModal from '../components/AddToCartModal';
 
 const MenuPage = () => {
@@ -195,15 +196,13 @@ const MenuPage = () => {
                                     <button
                                         disabled={!item.isAvailable}
                                         onClick={() => handleAddToCartClick(item)}
-                                        className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center space-x-3 transition-all duration-300 ${item.isAvailable
-                                            ? 'bg-primary text-white hover:opacity-90 hover:shadow-lg active:scale-95'
+                                        className={`w-full py-3 rounded-lg font-bold flex items-center justify-center space-x-2 transition-all duration-300 shadow-sm ${item.isAvailable
+                                            ? 'bg-primary text-white hover:opacity-90 active:scale-[0.98]'
                                             : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                                             }`}
                                     >
                                         <span>Add to Cart</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 100-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
-                                        </svg>
+                                        <ShoppingCart size={18} />
                                     </button>
                                 </div>
                             </div>
