@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import menuService from '../services/menuService';
+import { useCart } from '../context/CartContext';
+import AddToCartModal from '../components/AddToCartModal';
 
 const MenuPage = () => {
     const [menuItems, setMenuItems] = useState([]);
@@ -42,6 +44,15 @@ const MenuPage = () => {
             return matchesCategory && matchesSearch;
         });
     }, [menuItems, selectedCategory, searchQuery]);
+
+    const { addToCart } = useCart();
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleAddToCartClick = (item) => {
+        setSelectedItem(item);
+        setIsModalOpen(true);
+    };
 
     if (loading) {
         return (
@@ -183,6 +194,7 @@ const MenuPage = () => {
                                 <div className="mt-auto pt-6 border-t border-gray-50">
                                     <button
                                         disabled={!item.isAvailable}
+                                        onClick={() => handleAddToCartClick(item)}
                                         className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center space-x-3 transition-all duration-300 ${item.isAvailable
                                             ? 'bg-primary text-white hover:opacity-90 hover:shadow-lg active:scale-95'
                                             : 'bg-gray-200 text-gray-400 cursor-not-allowed'
@@ -214,6 +226,13 @@ const MenuPage = () => {
                         </div>
                     </div>
                 )}
+
+                <AddToCartModal
+                    item={selectedItem}
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    onAdd={addToCart}
+                />
             </div>
         </div>
     );
