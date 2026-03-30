@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Plus, Minus, Info } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 
 const AddToCartModal = ({ item, isOpen, onClose, onAdd }) => {
     const [quantity, setQuantity] = useState(1);
@@ -31,12 +31,6 @@ const AddToCartModal = ({ item, isOpen, onClose, onAdd }) => {
                         alt={item.name}
                         className="w-full h-full object-cover"
                     />
-                    <button 
-                        onClick={onClose}
-                        className="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-colors"
-                    >
-                        <X size={20} />
-                    </button>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                     <div className="absolute bottom-4 left-6">
                         <h2 className="text-2xl font-bold text-white tracking-tight">{item.name}</h2>
