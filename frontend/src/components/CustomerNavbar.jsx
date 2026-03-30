@@ -29,10 +29,10 @@ const CustomerNavbar = () => {
                     <Link to="/social-feed" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Social Feed</Link>
                     <Link to="/reservations" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Reservations</Link>
                     
-                    <Link to="/cart" className="relative p-2 text-gray-700 hover:text-[#FF7F50] transition-colors mr-2">
+                    <Link to="/cart" className="relative p-2 text-gray-700 hover:text-primary transition-colors mr-2">
                         <ShoppingCart size={24} />
                         {totalCount > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-orange-600 text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full shadow-lg shadow-orange-200 animate-in zoom-in duration-300">
+                            <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md animate-in zoom-in duration-300">
                                 {totalCount}
                             </span>
                         )}
