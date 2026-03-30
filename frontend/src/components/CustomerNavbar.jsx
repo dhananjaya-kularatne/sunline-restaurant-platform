@@ -1,10 +1,12 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Menu, User, LogOut, ChevronDown, LayoutDashboard, Utensils, Truck, FileText } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { Menu, User, LogOut, ChevronDown, LayoutDashboard, Utensils, Truck, FileText, ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
 
 const CustomerNavbar = () => {
     const { user, logout } = useAuth();
+    const { totalCount } = useCart();
     const navigate = useNavigate();
     const location = useLocation();
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -26,6 +28,15 @@ const CustomerNavbar = () => {
                     <Link to="/menu" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Menu</Link>
                     <Link to="/social-feed" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Social Feed</Link>
                     <Link to="/reservations" className="text-gray-700 hover:text-[#FF7F50] transition-colors font-medium">Reservations</Link>
+                    
+                    <Link to="/cart" className="relative p-2 text-gray-700 hover:text-[#FF7F50] transition-colors mr-2">
+                        <ShoppingCart size={24} />
+                        {totalCount > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-orange-600 text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full shadow-lg shadow-orange-200 animate-in zoom-in duration-300">
+                                {totalCount}
+                            </span>
+                        )}
+                    </Link>
 
                     {user ? (
                         <div className="relative">
