@@ -103,7 +103,7 @@ const MyOrdersPage = () => {
                     </div>
                 )}
 
-                <div className="space-y-4">
+                <div className="space-y-2.5">
                     {orders.length === 0 ? (
                         <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
                             <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -124,10 +124,10 @@ const MyOrdersPage = () => {
                             const config = getStatusConfig(order.status);
                             
                             return (
-                                <div key={order.id} className={`bg-white rounded-2xl shadow-md border ${isExpanded ? 'border-primary/20 ring-1 ring-primary/5' : 'border-gray-100'} overflow-hidden transition-all duration-300`}>
+                                <div key={order.id} className={`bg-white rounded-2xl shadow-sm border ${isExpanded ? 'border-primary/20 ring-1 ring-primary/5' : 'border-gray-100'} overflow-hidden transition-all duration-300`}>
                                     <div 
                                         onClick={() => toggleExpand(order.id)}
-                                        className="p-6 cursor-pointer flex flex-wrap items-center justify-between gap-4"
+                                        className="p-4 sm:p-5 cursor-pointer flex flex-wrap items-center justify-between gap-4"
                                     >
                                         <div className="flex items-center space-x-4">
                                             <div className="text-left">
