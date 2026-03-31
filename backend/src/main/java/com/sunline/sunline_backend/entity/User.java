@@ -3,7 +3,8 @@ package com.sunline.sunline_backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-
+import java.util.HashSet;
+import java.util.Set;
 @Entity
 @Table(name = "users")
 @Getter
@@ -48,6 +49,15 @@ public class User {
 
     @Column(name = "profile_picture")
     private String profilePicture;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_wishlist",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "menu_item_id")
+    )
+    @Builder.Default
+    private Set<MenuItem> wishlist = new HashSet<>();
 
     public enum Role {
         CUSTOMER, KITCHEN, DELIVERY, ADMIN

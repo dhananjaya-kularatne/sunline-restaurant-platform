@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import menuService from '../services/menuService';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { ShoppingCart } from 'lucide-react';
 import AddToCartModal from '../components/AddToCartModal';
 
@@ -10,6 +11,9 @@ const MenuPage = () => {
     const [error, setError] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
+    const { user } = useAuth();
+    const [wishlistIds, setWishlistIds] = useState(new Set());
+    const [wishlistMessage, setWishlistMessage] = useState('');
 
     useEffect(() => {
         const fetchMenu = async () => {
@@ -25,6 +29,20 @@ const MenuPage = () => {
 
         fetchMenu();
     }, []);
+
+    useEffect(() => {
+        if (!user) {
+            setWishlistIds(new Set());
+            return;
+        }
+        const fetchWishlist = async () => {
+            try {
+                const data = await menuService.getWishlist();
+                setWishlistIds(new Set(data.map(item => item.id)));
+            } catch (err) {}
+        };
+        fetchWishlist();
+    }, [user]);
 
     // Extract unique categories from all items
     const categories = useMemo(() => {
@@ -53,6 +71,23 @@ const MenuPage = () => {
     const handleAddToCartClick = (item) => {
         setSelectedItem(item);
         setIsModalOpen(true);
+    };
+
+    const handleWishlistToggle = async (itemId) => {
+        if (!user) {
+            setWishlistMessage('Please log in to save items to your Wishlist.');
+            setTimeout(() => setWishlistMessage(''), 3000);
+            return;
+        }
+        try {
+            if (wishlistIds.has(itemId)) {
+                await menuService.removeFromWishlist(itemId);
+                setWishlistIds(prev => { const next = new Set(prev); next.delete(itemId); return next; });
+            } else {
+                await menuService.addToWishlist(itemId);
+                setWishlistIds(prev => new Set(prev).add(itemId));
+            }
+        } catch (err) {}
     };
 
     if (loading) {
@@ -160,6 +195,20 @@ const MenuPage = () => {
                                     alt={item.name}
                                     className="h-64 w-full object-cover object-center group-hover:scale-110 transition-transform duration-700"
                                 />
+                                <button
+                                    onClick={(e) => { e.preventDefault(); handleWishlistToggle(item.id); }}
+                                    className="absolute top-3 left-3 p-2 rounded-full bg-white/90 backdrop-blur-md shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 z-10"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className={`h-5 w-5 transition-colors duration-200 ${wishlistIds.has(item.id) ? 'text-orange-500 fill-orange-500' : 'text-gray-400 fill-none'}`}
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                        strokeWidth={2}
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                    </svg>
+                                </button>
                                 {/* Availability Overlay */}
                                 {!item.isAvailable && (
                                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
@@ -233,6 +282,16 @@ const MenuPage = () => {
                     onAdd={addToCart}
                 />
             </div>
+            {wishlistMessage && (
+                <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
+                    <div className="bg-orange-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center space-x-3 font-bold">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>{wishlistMessage}</span>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
