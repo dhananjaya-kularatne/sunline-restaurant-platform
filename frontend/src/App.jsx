@@ -22,6 +22,9 @@ import AdminSupportManagement from './pages/AdminSupportManagement';
 import AdminReservationManagement from './pages/AdminReservationManagement';
 import ReservationsPage from './pages/ReservationsPage';
 import MyReservationsPage from './pages/MyReservationsPage';
+import CheckoutPage from './pages/CheckoutPage';
+import MyOrdersPage from './pages/MyOrdersPage';
+import OrderSuccessPage from './pages/OrderSuccessPage';
 import Footer from './components/Footer';
 
 function App() {
@@ -52,6 +55,9 @@ function App() {
                             <Route path="/create-post" element={<CreatePostPage />} />
                             <Route path="/social-feed" element={<SocialFeedPage />} />
                             <Route path="/cart" element={<CartPage />} />
+                            <Route path="/checkout" element={<CheckoutPage />} />
+                            <Route path="/my-orders" element={<MyOrdersPage />} />
+                            <Route path="/order-success" element={<OrderSuccessPage />} />
                         </Routes>
                         <Footer />
                     </div>

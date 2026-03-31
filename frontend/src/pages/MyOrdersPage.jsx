@@ -1,0 +1,233 @@
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import orderService from '../services/orderService';
+import { ShoppingBag, Clock, Package, CheckCircle, XCircle, ChevronDown, ChevronUp, MapPin, Phone, MessageSquare, AlertCircle } from 'lucide-react';
+
+const MyOrdersPage = () => {
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [expandedOrder, setExpandedOrder] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state?.message) {
+            setSuccessMessage(location.state.message);
+            window.history.replaceState({}, document.title);
+            setTimeout(() => setSuccessMessage(null), 5000);
+        }
+        fetchOrders();
+    }, [location]);
+
+    const fetchOrders = async () => {
+        try {
+            const data = await orderService.getMyOrders();
+            setOrders(data);
+        } catch (err) {
+            setError('Failed to fetch your orders. Please try again later.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleCancelOrder = async (orderId) => {
+        if (!window.confirm('Are you sure you want to cancel this order?')) return;
+
+        try {
+            await orderService.cancelOrder(orderId);
+            setSuccessMessage('Order cancelled successfully.');
+            fetchOrders();
+            setTimeout(() => setSuccessMessage(null), 5000);
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to cancel order.');
+        }
+    };
+
+    const getStatusConfig = (status) => {
+        const configs = {
+            'PENDING': { color: 'text-amber-600 bg-amber-50 border-amber-100', icon: <Clock size={16} />, label: 'Pending' },
+            'CONFIRMED': { color: 'text-blue-600 bg-blue-50 border-blue-100', icon: <CheckCircle size={16} />, label: 'Confirmed' },
+            'PREPARING': { color: 'text-orange-600 bg-orange-50 border-orange-100', icon: <Package size={16} />, label: 'Preparing' },
+            'OUT_FOR_DELIVERY': { color: 'text-purple-600 bg-purple-50 border-purple-100', icon: <ShoppingBag size={16} />, label: 'Out for Delivery' },
+            'COMPLETED': { color: 'text-green-600 bg-green-50 border-green-100', icon: <CheckCircle size={16} />, label: 'Delivered' },
+            'CANCELLED': { color: 'text-gray-500 bg-gray-100 border-gray-200', icon: <XCircle size={16} />, label: 'Cancelled' }
+        };
+        return configs[status] || configs['PENDING'];
+    };
+
+    const toggleExpand = (orderId) => {
+        setExpandedOrder(expandedOrder === orderId ? null : orderId);
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="flex flex-col items-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                    <p className="mt-4 text-gray-500 font-medium">Fetching your orders...</p>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="bg-gray-50 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+                <div className="flex items-center justify-between mb-8">
+                    <div>
+                        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">My Orders</h1>
+                        <p className="text-gray-500 mt-1">Track and manage your delicious requests</p>
+                    </div>
+                    <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center text-primary">
+                        <ShoppingBag size={24} />
+                    </div>
+                </div>
+
+                {successMessage && (
+                    <div className="mb-6 p-4 bg-green-50 border border-green-100 text-green-700 rounded-2xl flex items-center justify-between animate-in slide-in-from-top-4 duration-300">
+                        <div className="flex items-center space-x-3">
+                            <CheckCircle size={20} />
+                            <p className="font-bold">{successMessage}</p>
+                        </div>
+                        <button onClick={() => setSuccessMessage(null)} className="text-green-500 hover:text-green-700">
+                            <XCircle size={20} />
+                        </button>
+                    </div>
+                )}
+
+                {error && (
+                    <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-700 rounded-2xl flex items-center space-x-3">
+                        <AlertCircle size={20} />
+                        <p className="font-bold">{error}</p>
+                    </div>
+                )}
+
+                <div className="space-y-4">
+                    {orders.length === 0 ? (
+                        <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
+                            <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <ShoppingBag className="text-gray-300" size={40} />
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-800">No orders yet</h3>
+                            <p className="text-gray-500 mt-2">Hungry? Place your first order today!</p>
+                            <button 
+                                onClick={() => window.location.href = '/menu'}
+                                className="mt-8 px-10 py-3 bg-primary text-white rounded-lg font-bold shadow-md hover:opacity-90 active:scale-[0.98] transition-all"
+                            >
+                                Explore Menu
+                            </button>
+                        </div>
+                    ) : (
+                        orders.map((order) => {
+                            const isExpanded = expandedOrder === order.id;
+                            const config = getStatusConfig(order.status);
+                            
+                            return (
+                                <div key={order.id} className={`bg-white rounded-2xl shadow-md border ${isExpanded ? 'border-primary/20 ring-1 ring-primary/5' : 'border-gray-100'} overflow-hidden transition-all duration-300`}>
+                                    <div 
+                                        onClick={() => toggleExpand(order.id)}
+                                        className="p-6 cursor-pointer flex flex-wrap items-center justify-between gap-4"
+                                    >
+                                        <div className="flex items-center space-x-4">
+                                            <div className="text-left">
+                                                <p className="text-[10px] text-gray-400 uppercase font-black tracking-widest leading-none mb-1">Order ID</p>
+                                                <h3 className="text-lg font-bold text-gray-900 leading-none">#{order.id.toString().padStart(5, '0')}</h3>
+                                            </div>
+                                            <div className="h-8 w-px bg-gray-100" />
+                                            <div>
+                                                <p className="text-[10px] text-gray-400 uppercase font-black tracking-widest leading-none mb-1">Date</p>
+                                                <p className="text-sm font-bold text-gray-700 leading-none">{new Date(order.createdAt).toLocaleDateString()}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center space-x-6">
+                                            <div className="text-right hidden sm:block">
+                                                <p className="text-[10px] text-gray-400 uppercase font-black tracking-widest leading-none mb-1">Amount</p>
+                                                <p className="text-lg font-black text-primary leading-none">LKR {order.totalPrice.toFixed(0)}</p>
+                                            </div>
+                                            <div className={`px-4 py-1.5 rounded-full border text-xs font-bold flex items-center space-x-2 ${config.color}`}>
+                                                {config.icon}
+                                                <span>{config.label}</span>
+                                            </div>
+                                            <div className={`text-gray-400 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
+                                                <ChevronDown size={20} />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {isExpanded && (
+                                        <div className="px-6 pb-6 pt-2 border-t border-gray-50 flex flex-col gap-6 animate-in slide-in-from-top-2 duration-300">
+                                            {/* Order Details */}
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/50 p-6 rounded-2xl">
+                                                <div className="space-y-4">
+                                                    <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest border-b border-gray-100 pb-2">Delivery Details</h4>
+                                                    <div className="flex items-start space-x-3 text-sm">
+                                                        <MapPin size={16} className="text-primary flex-shrink-0 mt-0.5" />
+                                                        <p className="text-gray-700 font-medium leading-relaxed">{order.address}</p>
+                                                    </div>
+                                                    <div className="flex items-center space-x-3 text-sm">
+                                                        <Phone size={16} className="text-primary" />
+                                                        <p className="text-gray-700 font-bold">{order.phone}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-4">
+                                                    <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest border-b border-gray-100 pb-2">Order Items</h4>
+                                                    <div className="space-y-3">
+                                                        {order.items.map((item, idx) => (
+                                                            <div key={idx} className="flex justify-between items-center text-sm">
+                                                                <div className="flex items-center space-x-2">
+                                                                    <span className="w-5 h-5 bg-white border border-gray-200 rounded flex items-center justify-center text-[10px] font-bold text-primary">{item.quantity}x</span>
+                                                                    <span className="text-gray-700 font-medium">{item.menuItemName}</span>
+                                                                </div>
+                                                                <span className="font-bold text-gray-900">LKR {item.price * item.quantity}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div className="pt-2 border-t border-gray-100 flex justify-between items-center font-black text-primary">
+                                                        <span className="text-xs uppercase tracking-widest">Total Paid</span>
+                                                        <span className="text-lg">LKR {order.totalPrice.toFixed(0)}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Actions */}
+                                            <div className="flex flex-wrap items-center justify-between gap-4">
+                                                <p className="text-[10px] text-gray-400 font-medium italic">
+                                                    Payment Method: Cash on Delivery
+                                                </p>
+                                                {order.status === 'PENDING' && (
+                                                    <button 
+                                                        onClick={() => handleCancelOrder(order.id)}
+                                                        className="px-6 py-2 bg-white border border-gray-300 text-red-600 rounded-lg text-sm font-bold hover:bg-red-50 hover:border-red-400 transition-all active:scale-[0.98] flex items-center space-x-2 shadow-sm"
+                                                    >
+                                                        <XCircle size={16} />
+                                                        <span>Cancel Order</span>
+                                                    </button>
+                                                )}
+                                                {order.status === 'CANCELLED' && (
+                                                    <div className="flex items-center space-x-2 text-gray-400 text-xs font-bold">
+                                                        <AlertCircle size={16} />
+                                                        <span>Order was cancelled and cannot be reinstated</span>
+                                                    </div>
+                                                )}
+                                                {['CONFIRMED', 'PREPARING', 'OUT_FOR_DELIVERY', 'COMPLETED'].includes(order.status) && (
+                                                    <div className="flex items-center space-x-2 text-green-600 text-xs font-bold">
+                                                        <CheckCircle size={16} />
+                                                        <span>Order is being processed and cannot be cancelled</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default MyOrdersPage;
