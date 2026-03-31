@@ -137,9 +137,9 @@ const CartPage = () => {
                                     </div>
                                 </div>
 
-                                <button className="w-full bg-primary text-white py-3.5 rounded-lg font-bold text-lg hover:opacity-90 transition-all shadow-md active:scale-[0.98] mt-6">
+                                <Link to="/checkout" className="w-full bg-primary text-white py-3.5 rounded-lg font-bold text-lg hover:opacity-90 transition-all shadow-md active:scale-[0.98] mt-6 flex items-center justify-center">
                                     Place Order
-                                </button>
+                                </Link>
                                 
                                 <p className="text-[10px] text-center text-gray-400 uppercase font-bold tracking-widest pt-4">
                                     Secure Checkout Guaranteed
