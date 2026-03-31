@@ -21,8 +21,8 @@ public class DataSeeder {
                         // For Phase 2, we want to ensure multi-category support
                         // If we have old items, let's clear them to seed fresh with multi-categories
                         if (count > 0) {
-                                System.out.println("Clearing old menu items for Phase 2...");
-                                repository.deleteAll();
+                                System.out.println("Menu items already Exist. Skipping seeding.");
+                                return;
                         }
 
                         System.out.println("Seeding menu items with multi-categories...");
