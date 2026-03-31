@@ -13,6 +13,7 @@ import MenuPage from './pages/MenuPage';
 import CreatePostPage from './pages/CreatePostPage';
 import SocialFeedPage from './pages/SocialFeedPage';
 import CartPage from './pages/CartPage';
+import WishlistPage from './pages/WishlistPage';
 
 import AdminMenuManagement from './pages/AdminMenuManagement';
 import AdminPostManagement from './pages/AdminPostManagement';
@@ -52,6 +53,7 @@ function App() {
                             <Route path="/create-post" element={<CreatePostPage />} />
                             <Route path="/social-feed" element={<SocialFeedPage />} />
                             <Route path="/cart" element={<CartPage />} />
+                            <Route path="/wishlist" element={<WishlistPage />} />
                         </Routes>
                         <Footer />
                     </div>
