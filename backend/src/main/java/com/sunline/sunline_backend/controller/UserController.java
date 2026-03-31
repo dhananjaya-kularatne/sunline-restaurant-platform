@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.IOException;
+import java.util.Set;
+import com.sunline.sunline_backend.entity.MenuItem;
 
 @RestController
 @RequestMapping("/api/user")
@@ -49,6 +51,24 @@ public class UserController {
             Authentication authentication) throws IOException {
         String fileName = userService.saveProfilePicture(authentication.getName(), file);
         return ResponseEntity.ok(fileName);
+    }
+
+    @GetMapping("/wishlist")
+    public ResponseEntity<?> getWishlist(Authentication authentication) {
+        Set<MenuItem> wishlist = userService.getWishlist(authentication.getName());
+        return ResponseEntity.ok(wishlist);
+    }
+
+    @PostMapping("/wishlist/{menuItemId}")
+    public ResponseEntity<?> addToWishlist(@PathVariable Long menuItemId, Authentication authentication) {
+        userService.addToWishlist(authentication.getName(), menuItemId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/wishlist/{menuItemId}")
+    public ResponseEntity<?> removeFromWishlist(@PathVariable Long menuItemId, Authentication authentication) {
+        userService.removeFromWishlist(authentication.getName(), menuItemId);
+        return ResponseEntity.ok().build();
     }
 
     private UserResponse mapToResponse(User user) {

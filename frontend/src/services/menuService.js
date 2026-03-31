@@ -44,7 +44,20 @@ const menuService = {
             console.error('Error deleting menu item:', error);
             throw error;
         }
-    }
+    },
+
+    getWishlist: async () => {
+        const response = await api.get('/user/wishlist');
+        return response.data;
+    },
+
+    addToWishlist: async (menuItemId) => {
+        await api.post(`/user/wishlist/${menuItemId}`);
+    },
+
+    removeFromWishlist: async (menuItemId) => {
+        await api.delete(`/user/wishlist/${menuItemId}`);
+    },
 };
 
 export default menuService;
