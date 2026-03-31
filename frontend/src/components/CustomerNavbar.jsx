@@ -1,7 +1,7 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { Menu, User, LogOut, ChevronDown, LayoutDashboard, Utensils, Truck, FileText, ShoppingCart } from 'lucide-react';
+import { Menu, User, LogOut, ChevronDown, LayoutDashboard, Utensils, Truck, FileText, ShoppingCart, ShoppingBag } from 'lucide-react';
 import { useState } from 'react';
 
 const CustomerNavbar = () => {
@@ -57,15 +57,15 @@ const CustomerNavbar = () => {
                                     >
                                         <User size={16} className="mr-2" /> Profile
                                     </Link>
+                                    <Link
+                                        to="/my-orders"
+                                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100 pb-3"
+                                        onClick={() => setDropdownOpen(false)}
+                                    >
+                                        <ShoppingBag size={16} className="mr-2" /> My Orders
+                                    </Link>
                                     {user.role === 'CUSTOMER' && (
                                         <>
-                                            <Link
-                                                to="/my-orders"
-                                                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                                                onClick={() => setDropdownOpen(false)}
-                                            >
-                                                <ShoppingBag size={16} className="mr-2" /> My Orders
-                                            </Link>
                                             <Link
                                                 to="/my-reports"
                                                 className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
