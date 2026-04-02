@@ -24,6 +24,7 @@ import AdminReservationManagement from './pages/AdminReservationManagement';
 import ReservationsPage from './pages/ReservationsPage';
 import MyReservationsPage from './pages/MyReservationsPage';
 import Footer from './components/Footer';
+import ChatbotWidget from './components/ChatbotWidget';
 
 function App() {
     return (
@@ -56,6 +57,7 @@ function App() {
                             <Route path="/wishlist" element={<WishlistPage />} />
                         </Routes>
                         <Footer />
+                        <ChatbotWidget />
                     </div>
                 </Router>
             </CartProvider>
