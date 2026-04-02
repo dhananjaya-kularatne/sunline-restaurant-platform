@@ -79,8 +79,15 @@ const MyOrdersPage = () => {
                         <h1 className="text-3xl font-bold text-gray-900 tracking-tight">My Orders</h1>
                         <p className="text-gray-500 mt-1">Track and manage your delicious requests</p>
                     </div>
-                    <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center text-primary">
-                        <ShoppingBag size={24} />
+                    <div className="relative">
+                        <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center text-primary">
+                            <ShoppingBag size={24} />
+                        </div>
+                        {orders.length > 0 && (
+                            <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow-md">
+                                {orders.length}
+                            </span>
+                        )}
                     </div>
                 </div>
 
