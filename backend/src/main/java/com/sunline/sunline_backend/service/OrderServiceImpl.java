@@ -79,6 +79,36 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<OrderDto> getKitchenOrders() {
+        log.info("Fetching kitchen orders");
+        return orderRepository.findAllWithItems().stream()
+                .filter(order -> order.getStatus() == OrderStatus.CONFIRMED
+                        || order.getStatus() == OrderStatus.PREPARING
+                        || order.getStatus() == OrderStatus.READY)
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public OrderDto updateOrderStatus(Long orderId, OrderStatus status) {
+        log.info("Updating order {} status to {}", orderId, status);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        if (status == OrderStatus.PREPARING && order.getStatus() != OrderStatus.CONFIRMED) {
+            throw new RuntimeException("Only confirmed orders can be moved to preparing");
+        }
+        if (status == OrderStatus.READY && order.getStatus() != OrderStatus.PREPARING) {
+            throw new RuntimeException("Only preparing orders can be marked as ready");
+        }
+
+        order.setStatus(status);
+        return mapToDto(orderRepository.save(order));
+    }
+
+    @Override
     @Transactional
     public OrderDto cancelOrder(Long orderId, String userEmail) {
         log.info("Cancelling order ID: {} for user: {}", orderId, userEmail);
