@@ -26,7 +26,16 @@ public class GroqClient {
         this.webClient = builder.baseUrl(GROQ_BASE_URL).build();
     }
 
-    public String chat(List<Map<String, String>> messages) {
+    public String chat(List<Map<String, String>> originalMessages) {
+        List<Map<String, String>> messages = new java.util.ArrayList<>();
+        for (int i = 0; i < originalMessages.size(); i++) {
+            Map<String, String> msg = new java.util.HashMap<>(originalMessages.get(i));
+            if (i == 0 && "user".equals(msg.get("role")) && msg.get("content") != null && msg.get("content").contains("STRICT RULE:")) {
+                msg.put("role", "system");
+            }
+            messages.add(msg);
+        }
+
         Map<String, Object> body = Map.of(
                 "model", MODEL,
                 "messages", messages,

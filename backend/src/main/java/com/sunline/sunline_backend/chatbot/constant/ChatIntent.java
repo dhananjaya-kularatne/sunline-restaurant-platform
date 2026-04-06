@@ -12,6 +12,8 @@ public final class ChatIntent {
     public static final String CHECKOUT        = "CHECKOUT";
     public static final String RESTAURANT_INFO = "RESTAURANT_INFO";
     public static final String GENERAL         = "GENERAL";
+    public static final String PREFERENCE_FLOW = "PREFERENCE_FLOW";
+    public static final String CATEGORY_PICK   = "CATEGORY_PICK";
 
     public static final String ROUTE_MENU     = "/menu";
     public static final String ROUTE_CART     = "/cart";
