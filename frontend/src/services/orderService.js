@@ -16,6 +16,16 @@ const orderService = {
         return response.data;
     },
 
+    updateOrderStatus: async (orderId, status) => {
+        const response = await api.patch(`/orders/${orderId}/status`, { status });
+        return response.data;
+    },
+
+    getKitchenOrders: async () => {
+        const response = await api.get('/orders/kitchen');
+        return response.data;
+    },
+
     getAllOrders: async () => {
         const response = await api.get('/orders/all');
         return response.data;
