@@ -25,8 +25,8 @@ const ChatbotWidget = () => {
     // Quick reply suggestions shown at the start
     const QUICK_REPLIES = [
         "What's on the menu?",
+        "Help me choose something to eat",
         "I want to make a reservation",
-        "Recommend something spicy",
         "View my cart",
     ];
 
