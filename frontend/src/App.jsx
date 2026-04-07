@@ -14,6 +14,7 @@ import CreatePostPage from './pages/CreatePostPage';
 import SocialFeedPage from './pages/SocialFeedPage';
 import CartPage from './pages/CartPage';
 import KitchenPage from './pages/KitchenPage';
+import DeliveryPage from './pages/DeliveryPage';
 
 import AdminMenuManagement from './pages/AdminMenuManagement';
 import AdminPostManagement from './pages/AdminPostManagement';
@@ -59,6 +60,7 @@ function App() {
                             <Route path="/checkout" element={<CheckoutPage />} />
                             <Route path="/my-orders" element={<MyOrdersPage />} />
                             <Route path="/kitchen" element={<KitchenPage />} />
+                            <Route path="/delivery" element={<DeliveryPage />} />
                             <Route path="/order-success" element={<OrderSuccessPage />} />
                         </Routes>
                         <Footer />

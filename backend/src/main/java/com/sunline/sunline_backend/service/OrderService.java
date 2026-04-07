@@ -12,4 +12,5 @@ public interface OrderService {
     OrderDto updateOrderStatus(Long orderId, OrderStatus status);
     List<OrderDto> getAllOrders();
     List<OrderDto> getKitchenOrders();
+    List<OrderDto> getDeliveryOrders();
 }
