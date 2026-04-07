@@ -26,6 +26,11 @@ const orderService = {
         return response.data;
     },
 
+    getDeliveryOrders: async () => {
+        const response = await api.get('/orders/delivery');
+        return response.data;
+    },
+
     getAllOrders: async () => {
         const response = await api.get('/orders/all');
         return response.data;
