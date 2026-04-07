@@ -1,11 +1,15 @@
 package com.sunline.sunline_backend.chatbot.dto;
 
+import java.util.List;
+import java.util.Map;
+
 public class ChatMessageResponse {
 
     private String reply;
     private String intent;
     private String redirectTo;
     private String sessionId;
+    private List<Map<String, Object>> cartItems;
 
     public ChatMessageResponse() {}
 
@@ -17,6 +21,7 @@ public class ChatMessageResponse {
         public Builder intent(String v)     { r.intent = v; return this; }
         public Builder redirectTo(String v) { r.redirectTo = v; return this; }
         public Builder sessionId(String v)  { r.sessionId = v; return this; }
+        public Builder cartItems(List<Map<String, Object>> v) { r.cartItems = v; return this; }
         public ChatMessageResponse build()  { return r; }
     }
 
@@ -24,4 +29,5 @@ public class ChatMessageResponse {
     public String getIntent()     { return intent; }
     public String getRedirectTo() { return redirectTo; }
     public String getSessionId()  { return sessionId; }
+    public List<Map<String, Object>> getCartItems() { return cartItems; }
 }

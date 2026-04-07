@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot } from 'lucide-react';
 import { sendChatMessage, clearChatSession } from '../services/chatbotService';
 import { useLocation } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const ChatbotWidget = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +18,7 @@ const ChatbotWidget = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [sessionId, setSessionId] = useState(null);
     const messagesEndRef = useRef(null);
+    const { addToCart } = useCart();
 
     const location = useLocation();
     const allowedRoutes = ['/', '/menu'];
@@ -26,7 +28,7 @@ const ChatbotWidget = () => {
     const QUICK_REPLIES = [
         "What's on the menu?",
         "Help me choose something to eat",
-        "I want to make a reservation",
+        "Add items to my cart",
         "View my cart",
     ];
 
@@ -59,6 +61,23 @@ const ChatbotWidget = () => {
 
             // Save sessionId for conversation continuity
             if (data.sessionId && !sessionId) setSessionId(data.sessionId);
+
+            // If the backend returned cartItems, add them to the cart context
+            if (data.cartItems && data.cartItems.length > 0) {
+                data.cartItems.forEach((item) => {
+                    addToCart(
+                        {
+                            id: item.id,
+                            name: item.name,
+                            price: item.price,
+                            description: item.description,
+                            imageUrl: item.imageUrl,
+                        },
+                        item.quantity || 1,
+                        ''
+                    );
+                });
+            }
 
             const botMsg = {
                 id: Date.now() + 1,
