@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/feed/posts/*/comments").permitAll()
                         .requestMatchers("/api/feed/**").authenticated()
                         .requestMatchers("/api/public/**").permitAll()
-                        .requestMatchers("/api/user/wishlist/**").authenticated()
+                        .requestMatchers("/api/user/wishlist", "/api/user/wishlist/**").authenticated()
                         .requestMatchers("/api/chatbot/**").permitAll()
                         .anyRequest().authenticated());
 
