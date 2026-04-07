@@ -91,6 +91,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<OrderDto> getDeliveryOrders() {
+        log.info("Fetching delivery orders");
+        return orderRepository.findAllWithItems().stream()
+                .filter(order -> order.getStatus() == OrderStatus.READY
+                        || order.getStatus() == OrderStatus.OUT_FOR_DELIVERY)
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public OrderDto updateOrderStatus(Long orderId, OrderStatus status) {
         log.info("Updating order {} status to {}", orderId, status);
@@ -102,6 +113,12 @@ public class OrderServiceImpl implements OrderService {
         }
         if (status == OrderStatus.READY && order.getStatus() != OrderStatus.PREPARING) {
             throw new RuntimeException("Only preparing orders can be marked as ready");
+        }
+        if (status == OrderStatus.OUT_FOR_DELIVERY && order.getStatus() != OrderStatus.READY) {
+            throw new RuntimeException("Only ready orders can be marked out for delivery");
+        }
+        if (status == OrderStatus.DELIVERED && order.getStatus() != OrderStatus.OUT_FOR_DELIVERY) {
+            throw new RuntimeException("Only out for delivery orders can be marked as delivered");
         }
 
         order.setStatus(status);

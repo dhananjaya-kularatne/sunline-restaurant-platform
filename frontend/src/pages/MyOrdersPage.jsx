@@ -50,7 +50,8 @@ const MyOrdersPage = () => {
             'CONFIRMED': { color: 'text-blue-600 bg-blue-50 border-blue-100', icon: <CheckCircle size={16} />, label: 'Confirmed' },
             'PREPARING': { color: 'text-orange-600 bg-orange-50 border-orange-100', icon: <Package size={16} />, label: 'Preparing' },
             'OUT_FOR_DELIVERY': { color: 'text-purple-600 bg-purple-50 border-purple-100', icon: <ShoppingBag size={16} />, label: 'Out for Delivery' },
-            'COMPLETED': { color: 'text-green-600 bg-green-50 border-green-100', icon: <CheckCircle size={16} />, label: 'Delivered' },
+            'DELIVERED': { color: 'text-teal-600 bg-teal-50 border-teal-100', icon: <CheckCircle size={16} />, label: 'Delivered' },
+            'COMPLETED': { color: 'text-green-600 bg-green-50 border-green-100', icon: <CheckCircle size={16} />, label: 'Completed' },
             'CANCELLED': { color: 'text-gray-500 bg-gray-100 border-gray-200', icon: <XCircle size={16} />, label: 'Cancelled' }
         };
         return configs[status] || configs['PENDING'];
