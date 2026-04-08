@@ -13,6 +13,7 @@ import MenuPage from './pages/MenuPage';
 import CreatePostPage from './pages/CreatePostPage';
 import SocialFeedPage from './pages/SocialFeedPage';
 import CartPage from './pages/CartPage';
+import WishlistPage from './pages/WishlistPage';
 import KitchenPage from './pages/KitchenPage';
 import DeliveryPage from './pages/DeliveryPage';
 
@@ -29,6 +30,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import MyOrdersPage from './pages/MyOrdersPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import Footer from './components/Footer';
+import ChatbotWidget from './components/ChatbotWidget';
 
 function App() {
     return (
@@ -59,13 +61,9 @@ function App() {
                             <Route path="/create-post" element={<CreatePostPage />} />
                             <Route path="/social-feed" element={<SocialFeedPage />} />
                             <Route path="/cart" element={<CartPage />} />
-                            <Route path="/checkout" element={<CheckoutPage />} />
-                            <Route path="/my-orders" element={<MyOrdersPage />} />
-                            <Route path="/kitchen" element={<KitchenPage />} />
-                            <Route path="/delivery" element={<DeliveryPage />} />
-                            <Route path="/order-success" element={<OrderSuccessPage />} />
                         </Routes>
                         <Footer />
+                        <ChatbotWidget />
                     </div>
                 </Router>
             </CartProvider>
