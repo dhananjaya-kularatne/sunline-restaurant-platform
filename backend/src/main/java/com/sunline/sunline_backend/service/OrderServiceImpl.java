@@ -15,12 +15,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+/**
+ * Implementation of OrderService for managing restaurant orders.
+ * Handles placement, filtering for kitchen/delivery, and status transitions.
+ */
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
@@ -81,9 +87,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<OrderDto> getKitchenOrders() {
-        log.info("Fetching kitchen orders");
+        log.info("Fetching kitchen orders for today");
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         return orderRepository.findAllWithItems().stream()
-                .filter(order -> order.getStatus() == OrderStatus.CONFIRMED
+                .filter(order -> order.getCreatedAt().isAfter(startOfDay))
+                .filter(order -> order.getStatus() == OrderStatus.PENDING
+                        || order.getStatus() == OrderStatus.CONFIRMED
                         || order.getStatus() == OrderStatus.PREPARING
                         || order.getStatus() == OrderStatus.READY)
                 .map(this::mapToDto)
@@ -108,8 +117,10 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        if (status == OrderStatus.PREPARING && order.getStatus() != OrderStatus.CONFIRMED) {
-            throw new RuntimeException("Only confirmed orders can be moved to preparing");
+        if (status == OrderStatus.PREPARING && 
+            order.getStatus() != OrderStatus.PENDING && 
+            order.getStatus() != OrderStatus.CONFIRMED) {
+            throw new RuntimeException("Only pending or confirmed orders can be moved to preparing");
         }
         if (status == OrderStatus.READY && order.getStatus() != OrderStatus.PREPARING) {
             throw new RuntimeException("Only preparing orders can be marked as ready");
@@ -121,6 +132,7 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("Only out for delivery orders can be marked as delivered");
         }
 
+        log.info("Persisting order {} with status {}", order.getId(), status);
         order.setStatus(status);
         return mapToDto(orderRepository.save(order));
     }
@@ -132,11 +144,16 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        if (!order.getUser().getEmail().equals(userEmail)) {
+        User currentUser = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        boolean isAdmin = currentUser.getRole() == User.Role.ADMIN;
+
+        if (!isAdmin && !order.getUser().getEmail().equals(userEmail)) {
             throw new RuntimeException("Unauthorized to cancel this order");
         }
 
-        if (order.getStatus() != OrderStatus.PENDING) {
+        if (!isAdmin && order.getStatus() != OrderStatus.PENDING) {
             throw new RuntimeException("Only pending orders can be cancelled");
         }
 

@@ -22,6 +22,7 @@ import SupportPage from './pages/SupportPage';
 import UserReportsPage from './pages/UserReportsPage';
 import AdminSupportManagement from './pages/AdminSupportManagement';
 import AdminReservationManagement from './pages/AdminReservationManagement';
+import AdminOrdersPage from './pages/AdminOrdersPage';
 import ReservationsPage from './pages/ReservationsPage';
 import MyReservationsPage from './pages/MyReservationsPage';
 import CheckoutPage from './pages/CheckoutPage';
@@ -52,6 +53,7 @@ function App() {
                             <Route path="/admin/posts" element={<AdminPostManagement />} />
                             <Route path="/admin/support" element={<AdminSupportManagement />} />
                             <Route path="/admin/reservations" element={<AdminReservationManagement />} />
+                            <Route path="/admin/orders" element={<AdminOrdersPage />} />
                             <Route path="/reservations" element={<MyReservationsPage />} />
                             <Route path="/book-table" element={<ReservationsPage />} />
                             <Route path="/create-post" element={<CreatePostPage />} />

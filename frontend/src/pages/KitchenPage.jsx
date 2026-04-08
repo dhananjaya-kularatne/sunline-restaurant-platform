@@ -36,7 +36,7 @@ const KitchenPage = () => {
         }
     };
 
-    const incomingOrders = orders.filter(order => order.status === 'CONFIRMED');
+    const incomingOrders = orders.filter(order => order.status === 'PENDING' || order.status === 'CONFIRMED');
     const preparingOrders = orders.filter(order => order.status === 'PREPARING');
     const readyOrders = orders.filter(order => order.status === 'READY');
 
@@ -52,7 +52,7 @@ const KitchenPage = () => {
                         <Utensils className="text-primary" size={24} />
                         <div>
                             <p className="text-xs uppercase tracking-[0.2em] text-gray-400">Incoming Queue</p>
-                            <p className="text-lg font-bold text-gray-900">{incomingOrders.length} confirmed orders</p>
+                            <p className="text-lg font-bold text-gray-900">{incomingOrders.length} placed orders</p>
                         </div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@ const KitchenPage = () => {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-sm uppercase tracking-[0.18em] text-gray-400 font-bold">Incoming</p>
-                                    <h2 className="text-xl font-bold text-gray-900">Confirmed Orders</h2>
+                                    <h2 className="text-xl font-bold text-gray-900">Placed Orders</h2>
                                 </div>
                                 <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary text-xs font-bold">
                                     <Clock size={14} /> {incomingOrders.length}
@@ -86,7 +86,7 @@ const KitchenPage = () => {
                             <div className="space-y-4">
                                 {incomingOrders.length === 0 ? (
                                     <div className="rounded-3xl border border-dashed border-gray-200 bg-gray-50 p-5 text-center text-sm text-gray-500">
-                                        No confirmed orders preparing yet.
+                                        No orders waiting to be claimed.
                                     </div>
                                 ) : incomingOrders.map(order => (
                                     <div key={order.id} className="rounded-3xl border border-gray-100 p-4 shadow-sm">
@@ -101,7 +101,7 @@ const KitchenPage = () => {
                                                 disabled={updating}
                                                 className="rounded-full bg-primary px-4 py-2 text-sm font-bold text-white hover:bg-primary-dark disabled:opacity-50"
                                             >
-                                                Mark as Preparing
+                                                Claim Order
                                             </button>
                                         </div>
                                     </div>
@@ -137,7 +137,7 @@ const KitchenPage = () => {
                                                 disabled={updating}
                                                 className="rounded-full bg-emerald-600 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-700 disabled:opacity-50"
                                             >
-                                                Mark as Ready
+                                                Mark as Done
                                             </button>
                                         </div>
                                     </div>
@@ -149,7 +149,7 @@ const KitchenPage = () => {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-sm uppercase tracking-[0.18em] text-gray-400 font-bold">Ready</p>
-                                    <h2 className="text-xl font-bold text-gray-900">Ready for Pickup</h2>
+                                    <h2 className="text-xl font-bold text-gray-900">Done / Pickup</h2>
                                 </div>
                                 <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-green-700 text-xs font-bold">
                                     <CheckCircle2 size={14} /> {readyOrders.length}
