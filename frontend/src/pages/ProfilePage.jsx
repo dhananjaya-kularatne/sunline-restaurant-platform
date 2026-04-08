@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import authService from '../services/authService';
 import api from '../services/api';
@@ -209,7 +209,16 @@ const ProfilePage = () => {
                                     </div>
                                 )}
 
-                                <div className="flex justify-end">
+                                <div className="flex justify-between items-center">
+                                    <Link
+                                        to="/wishlist"
+                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl border-2 border-orange-500 text-orange-500 font-bold hover:bg-orange-50 transition-all duration-300"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                        </svg>
+                                        My Wishlist
+                                    </Link>
                                     <button
                                         type="submit"
                                         disabled={loading || uploading}
