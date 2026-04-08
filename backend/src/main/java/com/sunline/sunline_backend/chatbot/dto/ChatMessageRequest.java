@@ -10,6 +10,7 @@ public class ChatMessageRequest {
     private String message;
 
     private String sessionId; // optional
+    private String userEmail; // optional — populated by frontend when user is logged in
 
     public ChatMessageRequest() {}
 
@@ -17,4 +18,6 @@ public class ChatMessageRequest {
     public void setMessage(String message) { this.message = message; }
     public String getSessionId() { return sessionId; }
     public void setSessionId(String sessionId) { this.sessionId = sessionId; }
+    public String getUserEmail() { return userEmail; }
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
 }

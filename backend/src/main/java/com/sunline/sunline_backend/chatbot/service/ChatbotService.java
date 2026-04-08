@@ -11,6 +11,11 @@ import com.sunline.sunline_backend.chatbot.util.GroqClient;
 import com.sunline.sunline_backend.chatbot.util.IntentDetector;
 import com.sunline.sunline_backend.entity.MenuItem;
 import com.sunline.sunline_backend.repository.MenuItemRepository;
+import com.sunline.sunline_backend.entity.Reservation;
+import com.sunline.sunline_backend.repository.ReservationRepository;
+import com.sunline.sunline_backend.entity.Order;
+import com.sunline.sunline_backend.repository.OrderRepository;
+import com.sunline.sunline_backend.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,16 +46,25 @@ public class ChatbotService {
     private final IntentDetector intentDetector;
     private final ChatSessionRepository chatSessionRepository;
     private final MenuItemRepository menuItemRepository;
+    private final ReservationRepository reservationRepository;
+    private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
 
     public ChatbotService(GroqClient groqClient,
                           IntentDetector intentDetector,
                           ChatSessionRepository chatSessionRepository,
-                          MenuItemRepository menuItemRepository) {
+                          MenuItemRepository menuItemRepository,
+                          ReservationRepository reservationRepository,
+                          OrderRepository orderRepository,
+                          UserRepository userRepository) {
         this.groqClient = groqClient;
         this.intentDetector = intentDetector;
         this.chatSessionRepository = chatSessionRepository;
         this.menuItemRepository = menuItemRepository;
+        this.reservationRepository = reservationRepository;
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
         this.objectMapper = new ObjectMapper();
     }
 
@@ -165,6 +179,10 @@ public class ChatbotService {
             return handleAddToCart(userMessage, sessionId);
         }
 
+        if (ChatIntent.ORDER_STATUS.equals(intent)) {
+            return handleOrderStatus(request.getUserEmail(), userMessage, sessionId);
+        }
+
         List<Map<String, String>> messages = buildMessages(sessionId, userMessage);
         String reply = groqClient.chat(messages);
 
@@ -261,6 +279,71 @@ public class ChatbotService {
                     .build();
             }
         }
+    }
+
+    private ChatMessageResponse handleOrderStatus(String userEmail, String userMessage, String sessionId) {
+        if (userEmail == null || userEmail.isBlank()) {
+            String reply = "To check your order status, please log in first! 🔐";
+            saveHistory(sessionId, userMessage, reply);
+            return ChatMessageResponse.builder()
+                .reply(reply)
+                .intent(ChatIntent.ORDER_STATUS)
+                .redirectTo(null)
+                .sessionId(sessionId)
+                .cartItems(null)
+                .build();
+        }
+
+        var userOpt = userRepository.findByEmail(userEmail);
+        if (userOpt.isEmpty()) {
+            String reply = "I couldn't find your account. Please log in and try again! 🔐";
+            saveHistory(sessionId, userMessage, reply);
+            return ChatMessageResponse.builder()
+                .reply(reply)
+                .intent(ChatIntent.ORDER_STATUS)
+                .redirectTo(null)
+                .sessionId(sessionId)
+                .cartItems(null)
+                .build();
+        }
+
+        List<Order> orders = orderRepository.findByUserWithItems(userOpt.get());
+
+        if (orders.isEmpty()) {
+            String reply = "You haven't placed any food orders yet. 🍽 Browse our menu and place your first order!";
+            saveHistory(sessionId, userMessage, reply);
+            return ChatMessageResponse.builder()
+                .reply(reply)
+                .intent(ChatIntent.ORDER_STATUS)
+                .redirectTo("/menu")
+                .sessionId(sessionId)
+                .cartItems(null)
+                .build();
+        }
+
+        StringBuilder sb = new StringBuilder("Here are your recent orders: 🧾\n\n");
+        orders.stream().limit(3).forEach(order -> {
+            sb.append("📦 Order #").append(order.getId())
+              .append(" — LKR ").append(order.getTotalPrice())
+              .append("\n   Status: ").append(order.getStatus())
+              .append("\n   Items: ");
+            List<String> itemNames = order.getItems().stream()
+                .map(item -> item.getMenuItem() != null ? item.getMenuItem().getName() : "Unknown item")
+                .collect(Collectors.toList());
+            sb.append(String.join(", ", itemNames));
+            sb.append("\n   Placed: ").append(order.getCreatedAt().toLocalDate())
+              .append("\n\n");
+        });
+
+        String reply = sb.toString().trim();
+        saveHistory(sessionId, userMessage, reply);
+        return ChatMessageResponse.builder()
+            .reply(reply)
+            .intent(ChatIntent.ORDER_STATUS)
+            .redirectTo("/cart")
+            .sessionId(sessionId)
+            .cartItems(null)
+            .build();
     }
 
     private String resolveSessionId(String provided) {

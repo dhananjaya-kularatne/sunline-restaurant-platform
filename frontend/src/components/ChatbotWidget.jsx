@@ -3,6 +3,7 @@ import { MessageCircle, X, Send, Bot } from 'lucide-react';
 import { sendChatMessage, clearChatSession } from '../services/chatbotService';
 import { useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 const ChatbotWidget = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +20,7 @@ const ChatbotWidget = () => {
     const [sessionId, setSessionId] = useState(null);
     const messagesEndRef = useRef(null);
     const { addToCart } = useCart();
+    const { user } = useAuth();
 
     const location = useLocation();
     const allowedRoutes = ['/', '/menu'];
@@ -28,6 +30,7 @@ const ChatbotWidget = () => {
     const QUICK_REPLIES = [
         "What's on the menu?",
         "Help me choose something to eat",
+        "Show my order status",
         "Add items to my cart",
         "View my cart",
     ];
@@ -57,7 +60,7 @@ const ChatbotWidget = () => {
         setIsLoading(true);
 
         try {
-            const data = await sendChatMessage(messageText, sessionId);
+            const data = await sendChatMessage(messageText, sessionId, user?.email || null);
 
             // Save sessionId for conversation continuity
             if (data.sessionId && !sessionId) setSessionId(data.sessionId);
