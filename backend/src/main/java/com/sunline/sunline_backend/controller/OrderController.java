@@ -35,13 +35,13 @@ public class OrderController {
     }
 
     @GetMapping("/kitchen")
-    @PreAuthorize("hasRole('KITCHEN')")
+    @PreAuthorize("hasRole('KITCHEN') or hasRole('ADMIN')")
     public ResponseEntity<List<OrderDto>> getKitchenOrders() {
         return ResponseEntity.ok(orderService.getKitchenOrders());
     }
 
     @GetMapping("/delivery")
-    @PreAuthorize("hasRole('DELIVERY')")
+    @PreAuthorize("hasRole('DELIVERY') or hasRole('ADMIN')")
     public ResponseEntity<List<OrderDto>> getDeliveryOrders() {
         return ResponseEntity.ok(orderService.getDeliveryOrders());
     }
@@ -54,7 +54,7 @@ public class OrderController {
     }
 
     @PatchMapping("/{id}/status")
-    @PreAuthorize("hasRole('KITCHEN') or hasRole('DELIVERY')")
+    @PreAuthorize("hasRole('KITCHEN') or hasRole('DELIVERY') or hasRole('ADMIN')")
     public ResponseEntity<OrderDto> updateOrderStatus(
             @PathVariable Long id,
             @RequestBody StatusUpdateDto statusDto) {
@@ -62,6 +62,7 @@ public class OrderController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<OrderDto>> getAllOrders() {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
