@@ -14,8 +14,14 @@ public class IntentDetector {
     private static final Map<String, List<String>> INTENT_KEYWORDS;
     static {
         INTENT_KEYWORDS = new LinkedHashMap<>();
+        INTENT_KEYWORDS.put(ChatIntent.ORDER_STATUS, Arrays.asList(
+            "order status", "my order status", "check my order", "what's my order",
+            "show my order status", "show order status", "where is my reservation",
+            "my reservation status", "check my reservation", "reservation status",
+            "status of my order", "status of my reservation", "what's the status", "order update"
+        ));
         INTENT_KEYWORDS.put(ChatIntent.ADD_TO_CART, Arrays.asList(
-            "add", "order", "buy", "get me", "i want", "i'll have", "put in cart",
+            "add", "buy", "get me", "i want", "i'll have", "put in cart",
             "yes", "yes please", "add it", "add that", "add this", "yeah add", "sure add",
             "add [", "please add", "can you add", "put it in my cart", "add to my cart",
             "i'll take", "i'd like", "yes i want"
@@ -43,7 +49,7 @@ public class IntentDetector {
     public String resolveRoute(String intent) {
         return switch (intent) {
             case ChatIntent.ADD_TO_CART, ChatIntent.VIEW_CART -> ChatIntent.ROUTE_CART;
-            case ChatIntent.TRACK_ORDER -> ChatIntent.ROUTE_ORDERS;
+            case ChatIntent.TRACK_ORDER, ChatIntent.ORDER_STATUS -> ChatIntent.ROUTE_ORDERS;
             case ChatIntent.CATEGORY_BROWSE,
                  ChatIntent.MENU_SEARCH,
                  ChatIntent.CATEGORY_PICK,

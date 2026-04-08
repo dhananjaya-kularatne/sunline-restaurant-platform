@@ -8,6 +8,7 @@ public final class ChatIntent {
     public static final String CATEGORY_BROWSE = "CATEGORY_BROWSE";
     public static final String ADD_TO_CART     = "ADD_TO_CART";
     public static final String TRACK_ORDER     = "TRACK_ORDER";
+    public static final String ORDER_STATUS    = "ORDER_STATUS";
     public static final String VIEW_CART       = "VIEW_CART";
     public static final String CHECKOUT        = "CHECKOUT";
     public static final String RESTAURANT_INFO = "RESTAURANT_INFO";

@@ -61,6 +61,12 @@ function App() {
                             <Route path="/create-post" element={<CreatePostPage />} />
                             <Route path="/social-feed" element={<SocialFeedPage />} />
                             <Route path="/cart" element={<CartPage />} />
+                            <Route path="/checkout" element={<CheckoutPage />} />
+                            <Route path="/my-orders" element={<MyOrdersPage />} />
+                            <Route path="/order-success" element={<OrderSuccessPage />} />
+                            <Route path="/wishlist" element={<WishlistPage />} />
+                            <Route path="/kitchen" element={<KitchenPage />} />
+                            <Route path="/delivery" element={<DeliveryPage />} />
                         </Routes>
                         <Footer />
                         <ChatbotWidget />
