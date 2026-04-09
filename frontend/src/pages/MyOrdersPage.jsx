@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import orderService from '../services/orderService';
-import { ShoppingBag, Clock, Package, CheckCircle, XCircle, ChevronDown, ChevronUp, MapPin, Phone, MessageSquare, AlertCircle } from 'lucide-react';
+import { ShoppingBag, Clock, Package, CheckCircle, XCircle, ChevronDown, MapPin, Phone, AlertCircle, AlertTriangle, X } from 'lucide-react';
 
 const MyOrdersPage = () => {
     const [orders, setOrders] = useState([]);
@@ -9,6 +9,8 @@ const MyOrdersPage = () => {
     const [error, setError] = useState(null);
     const [expandedOrder, setExpandedOrder] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
+    const [confirmModal, setConfirmModal] = useState({ show: false, orderId: null });
+    const [errorBanner, setErrorBanner] = useState(null);
     const location = useLocation();
 
     useEffect(() => {
@@ -31,8 +33,13 @@ const MyOrdersPage = () => {
         }
     };
 
-    const handleCancelOrder = async (orderId) => {
-        if (!window.confirm('Are you sure you want to cancel this order?')) return;
+    const promptCancelOrder = (orderId) => {
+        setConfirmModal({ show: true, orderId });
+    };
+
+    const handleCancelOrder = async () => {
+        const orderId = confirmModal.orderId;
+        setConfirmModal({ show: false, orderId: null });
 
         try {
             await orderService.cancelOrder(orderId);
@@ -40,7 +47,8 @@ const MyOrdersPage = () => {
             fetchOrders();
             setTimeout(() => setSuccessMessage(null), 5000);
         } catch (err) {
-            alert(err.response?.data?.message || 'Failed to cancel order.');
+            setErrorBanner(err.response?.data?.message || 'Failed to cancel order. Please try again.');
+            setTimeout(() => setErrorBanner(null), 5000);
         }
     };
 
@@ -73,6 +81,7 @@ const MyOrdersPage = () => {
     }
 
     return (
+        <>
         <div className="bg-gray-50 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
                 <div className="flex items-center justify-between mb-8">
@@ -93,13 +102,25 @@ const MyOrdersPage = () => {
                 </div>
 
                 {successMessage && (
-                    <div className="mb-6 p-4 bg-green-50 border border-green-100 text-green-700 rounded-2xl flex items-center justify-between animate-in slide-in-from-top-4 duration-300">
+                    <div className="mb-6 p-4 bg-green-50 border border-green-100 text-green-700 rounded-2xl flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                             <CheckCircle size={20} />
-                            <p className="font-bold">{successMessage}</p>
+                            <p className="font-semibold">{successMessage}</p>
                         </div>
-                        <button onClick={() => setSuccessMessage(null)} className="text-green-500 hover:text-green-700">
-                            <XCircle size={20} />
+                        <button onClick={() => setSuccessMessage(null)} className="text-green-500 hover:text-green-700 transition-colors">
+                            <X size={18} />
+                        </button>
+                    </div>
+                )}
+
+                {errorBanner && (
+                    <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-700 rounded-2xl flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                            <AlertTriangle size={20} />
+                            <p className="font-semibold">{errorBanner}</p>
+                        </div>
+                        <button onClick={() => setErrorBanner(null)} className="text-red-400 hover:text-red-600 transition-colors">
+                            <X size={18} />
                         </button>
                     </div>
                 )}
@@ -205,12 +226,11 @@ const MyOrdersPage = () => {
                                                     Payment Method: Cash on Delivery
                                                 </p>
                                                 {order.status === 'PENDING' && (
-                                                    <button 
-                                                        onClick={() => handleCancelOrder(order.id)}
-                                                        className="px-6 py-2 bg-white border border-gray-300 text-red-600 rounded-lg text-sm font-bold hover:bg-red-50 hover:border-red-400 transition-all active:scale-[0.98] flex items-center space-x-2 shadow-sm"
+                                                    <button
+                                                        onClick={() => promptCancelOrder(order.id)}
+                                                        className="px-6 py-2 bg-white border border-red-200 text-red-600 rounded-lg text-sm font-bold hover:bg-red-50 hover:border-red-400 transition-all active:scale-[0.98] shadow-sm"
                                                     >
-                                                        <XCircle size={16} />
-                                                        <span>Cancel Order</span>
+                                                        Cancel Order
                                                     </button>
                                                 )}
                                                 {order.status === 'CANCELLED' && (
@@ -235,6 +255,40 @@ const MyOrdersPage = () => {
                 </div>
             </div>
         </div>
+
+        {/* ── Confirm Cancel Modal ── */}
+        {confirmModal.show && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+                    <div className="px-6 pt-6 pb-2 flex items-start gap-4">
+                        <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                            <AlertTriangle size={20} className="text-red-600" />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-bold text-gray-900">Cancel this order?</h3>
+                            <p className="text-sm text-gray-500 mt-1">
+                                Are you sure you want to cancel order #{confirmModal.orderId}? This action cannot be undone.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="px-6 py-5 flex justify-end gap-3 border-t border-gray-100 mt-4">
+                        <button
+                            onClick={() => setConfirmModal({ show: false, orderId: null })}
+                            className="px-5 py-2.5 text-sm font-semibold text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                        >
+                            Keep Order
+                        </button>
+                        <button
+                            onClick={handleCancelOrder}
+                            className="px-5 py-2.5 text-sm font-semibold text-white bg-red-500 rounded-lg hover:bg-red-600 transition-colors shadow-sm"
+                        >
+                            Yes, Cancel Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+    </>
     );
 };
 
