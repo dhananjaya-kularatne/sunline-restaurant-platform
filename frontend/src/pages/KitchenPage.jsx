@@ -51,7 +51,7 @@ const KitchenPage = () => {
                     <div className="rounded-2xl bg-white p-4 border border-gray-200 shadow-sm flex items-center gap-3">
                         <Utensils className="text-primary" size={24} />
                         <div>
-                            <p className="text-xs uppercase tracking-[0.2em] text-gray-400">Incoming Queue</p>
+                            <p className="text-xs text-gray-400">Incoming Queue</p>
                             <p className="text-lg font-bold text-gray-900">{incomingOrders.length} placed orders</p>
                         </div>
                     </div>
@@ -76,7 +76,7 @@ const KitchenPage = () => {
                         <section className="space-y-4 rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm uppercase tracking-[0.18em] text-gray-400 font-bold">Incoming</p>
+                                    <p className="text-sm text-gray-400 font-semibold">Incoming</p>
                                     <h2 className="text-xl font-bold text-gray-900">Placed Orders</h2>
                                 </div>
                                 <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary text-xs font-bold">
@@ -112,7 +112,7 @@ const KitchenPage = () => {
                         <section className="space-y-4 rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm uppercase tracking-[0.18em] text-gray-400 font-bold">Preparing</p>
+                                    <p className="text-sm text-gray-400 font-semibold">Preparing</p>
                                     <h2 className="text-xl font-bold text-gray-900">In Progress</h2>
                                 </div>
                                 <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-3 py-1 text-orange-700 text-xs font-bold">
@@ -148,7 +148,7 @@ const KitchenPage = () => {
                         <section className="space-y-4 rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm uppercase tracking-[0.18em] text-gray-400 font-bold">Ready</p>
+                                    <p className="text-sm text-gray-400 font-semibold">Ready</p>
                                     <h2 className="text-xl font-bold text-gray-900">Done / Pickup</h2>
                                 </div>
                                 <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-green-700 text-xs font-bold">
