@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Trash2, Loader2 } from 'lucide-react';
 import userService from '../services/userService';
 import AdminSidebar from '../components/AdminSidebar';
+import { getImageUrl, FOOD_PLACEHOLDER } from '../utils/imageUtils';
 
 const AdminPostManagement = () => {
     const [posts, setPosts] = useState([]);
@@ -49,13 +50,6 @@ const AdminPostManagement = () => {
         setConfirmPostId(null);
     };
 
-    const getImageUrl = (url) => {
-        if (!url) return null;
-        if (url.startsWith('http')) return url;
-        if (url.startsWith('/uploads/')) return `http://localhost:8080${url}`;
-        return `http://localhost:8080/uploads/${url}`;
-    };
-
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleString();
@@ -77,7 +71,7 @@ const AdminPostManagement = () => {
                             <input
                                 type="text"
                                 placeholder="Search by username..."
-                                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-[#FF7F50]"
+                                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-[#FF7F50]"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -124,7 +118,7 @@ const AdminPostManagement = () => {
                                     <tr key={post.id} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-6 py-4">
                                             <img
-                                                src={getImageUrl(post.imageUrl) || 'https://via.placeholder.com/50'}
+                                                src={getImageUrl(post.imageUrl) || FOOD_PLACEHOLDER}
                                                 alt="Post"
                                                 className="w-10 h-10 rounded-lg object-cover"
                                             />

@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
                     const parsedUser = JSON.parse(savedUser);
                     // If the session is missing email (old session), fetch it from profile
                     if (!parsedUser.email) {
-                        const response = await fetch('http://localhost:8080/api/user/profile', {
+                        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080'}/api/user/profile`, {
                             headers: { 'Authorization': `Bearer ${token}` }
                         });
                         if (response.ok) {

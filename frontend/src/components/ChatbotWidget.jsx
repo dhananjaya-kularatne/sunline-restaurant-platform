@@ -121,13 +121,12 @@ const ChatbotWidget = () => {
             {/* Chat window */}
             {isOpen && (
                 <div
-                    className="fixed right-6 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col z-[1000] overflow-hidden"
-                    style={{ bottom: 'calc(74px + 8px + 64px)', maxHeight: '520px' }}
+                    className="fixed right-6 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col z-[1000] overflow-hidden bottom-[146px] max-h-[520px]"
                 >
                     {/* Header */}
                     <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100">
                         <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-full bg-[#f97316] flex items-center justify-center">
+                            <div className="w-8 h-8 rounded-full bg-[#FF7F50] flex items-center justify-center">
                                 <Bot size={16} className="text-white" />
                             </div>
                             <span className="font-semibold text-gray-800 text-sm">Virtual Assistant</span>
@@ -151,7 +150,7 @@ const ChatbotWidget = () => {
                                     <div
                                         className={`px-4 py-2 rounded-2xl text-sm leading-relaxed ${
                                             msg.role === 'user'
-                                                ? 'bg-[#f97316] text-white rounded-br-sm'
+                                                ? 'bg-[#FF7F50] text-white rounded-br-sm'
                                                 : 'bg-white text-gray-800 shadow-sm border border-gray-100 rounded-bl-sm'
                                         }`}
                                     >
@@ -184,7 +183,7 @@ const ChatbotWidget = () => {
                                     <button
                                         key={qr}
                                         onClick={() => handleSend(qr)}
-                                        className="text-xs px-3 py-1.5 bg-[#f97316] text-white rounded-full hover:bg-orange-600 transition-colors"
+                                        className="text-xs px-3 py-1.5 bg-[#FF7F50] text-white rounded-full hover:bg-[#e06b3f] transition-colors"
                                     >
                                         {qr}
                                     </button>
@@ -205,12 +204,12 @@ const ChatbotWidget = () => {
                                 onKeyDown={handleKeyDown}
                                 placeholder="Write your message..."
                                 disabled={isLoading}
-                                className="flex-1 text-sm px-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:border-[#f97316] focus:ring-1 focus:ring-[#f97316] disabled:opacity-50 transition-colors"
+                                className="flex-1 text-sm px-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:border-[#FF7F50] focus:ring-1 focus:ring-[#FF7F50] disabled:opacity-50 transition-colors"
                             />
                             <button
                                 onClick={() => handleSend()}
                                 disabled={!input.trim() || isLoading}
-                                className="w-9 h-9 flex items-center justify-center rounded-full bg-[#f97316] text-white hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex-shrink-0"
+                                className="w-9 h-9 flex items-center justify-center rounded-full bg-[#FF7F50] text-white hover:bg-[#e06b3f] disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex-shrink-0"
                             >
                                 <Send size={15} />
                             </button>
@@ -222,8 +221,7 @@ const ChatbotWidget = () => {
             {/* Floating toggle button */}
             <button
                 onClick={() => setIsOpen((prev) => !prev)}
-                className="fixed right-6 w-14 h-14 rounded-full bg-[#f97316] text-white shadow-lg hover:bg-orange-600 flex items-center justify-center z-[1000] transition-all hover:scale-105 active:scale-95"
-                style={{ bottom: 'calc(74px + 8px)' }}
+                className="fixed right-6 bottom-[82px] w-14 h-14 rounded-full bg-[#FF7F50] text-white shadow-lg hover:bg-[#e06b3f] flex items-center justify-center z-[1000] transition-all hover:scale-105 active:scale-95"
                 aria-label="Open chat"
             >
                 {isOpen ? <X size={22} /> : <MessageCircle size={22} />}

@@ -23,7 +23,7 @@ const HomePage = () => {
                         </div>
 
                         <h1 className="text-5xl md:text-6xl font-black text-gray-900 mb-6 tracking-tight">
-                            Welcome back, <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-orange-500">{user.name}</span>!
+                            Welcome back, <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF7F50] to-[#ffb347]">{user.name}</span>!
                         </h1>
 
                         <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
@@ -72,7 +72,7 @@ const HomePage = () => {
 
                         <h1 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 tracking-tight">
                             Delicious food, <br />
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-orange-500">delivered to you.</span>
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF7F50] to-[#ffb347]">delivered to you.</span>
                         </h1>
 
                         <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
