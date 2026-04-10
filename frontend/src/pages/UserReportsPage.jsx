@@ -95,7 +95,7 @@ const UserReportsPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50/30 px-4 py-12">
+        <div className="min-h-screen bg-transparent px-4 py-12">
             <div className="max-w-5xl mx-auto">
 
                 {/* Header */}

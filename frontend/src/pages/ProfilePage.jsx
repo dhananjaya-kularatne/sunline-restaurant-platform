@@ -94,7 +94,7 @@ const ProfilePage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50/30 flex flex-col items-center justify-center px-4 py-12 animate-in fade-in duration-700">
+        <div className="min-h-screen bg-transparent flex flex-col items-center justify-center px-4 py-12 animate-in fade-in duration-700">
             <div className="max-w-5xl w-full mb-8 transform transition-all duration-500 hover:translate-x-1">
                 <h1 className="text-4xl font-bold text-secondary tracking-tight">
                     {isViewingOther ? `${viewedUser?.name || 'User'}'s Profile` : 'My Profile'}
