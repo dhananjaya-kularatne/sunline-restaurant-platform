@@ -46,6 +46,16 @@ const menuService = {
         }
     },
 
+    getTrendingItems: async (limit = 6) => {
+        try {
+            const response = await api.get(`/menu/trending?limit=${limit}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching trending items:', error);
+            throw error;
+        }
+    },
+
     getWishlist: async () => {
         const response = await api.get('/user/wishlist');
         return response.data;

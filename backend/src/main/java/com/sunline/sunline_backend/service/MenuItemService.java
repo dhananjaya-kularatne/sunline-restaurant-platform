@@ -4,6 +4,7 @@ import com.sunline.sunline_backend.dto.MenuItemDTO;
 import com.sunline.sunline_backend.entity.MenuItem;
 import com.sunline.sunline_backend.repository.MenuItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -58,6 +59,13 @@ public class MenuItemService {
 
         MenuItem updatedItem = menuItemRepository.save(existingItem);
         return convertToDTO(updatedItem);
+    }
+
+    public List<MenuItemDTO> getTrendingMenuItems(int limit) {
+        return menuItemRepository.findTrendingMenuItems(PageRequest.of(0, limit))
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     public void deleteMenuItem(Long id) {
