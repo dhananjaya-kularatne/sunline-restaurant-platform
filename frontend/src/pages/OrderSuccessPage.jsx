@@ -8,7 +8,7 @@ const OrderSuccessPage = () => {
     const orderData = location.state?.order;
 
     return (
-        <div className="bg-gray-50 min-h-[80vh] flex items-center justify-center px-4">
+        <div className="bg-transparent min-h-[80vh] flex items-center justify-center px-4">
             <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 animate-in zoom-in duration-500">
                 <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <CheckCircle className="text-white" size={32} />

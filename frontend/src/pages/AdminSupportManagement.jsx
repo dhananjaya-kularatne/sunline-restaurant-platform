@@ -243,7 +243,7 @@ const AdminSupportManagement = () => {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#F8F9FA]">
+        <div className="flex min-h-screen bg-transparent">
             <AdminSidebar />
 
             <Modal

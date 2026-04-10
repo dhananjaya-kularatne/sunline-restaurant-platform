@@ -10,7 +10,7 @@ const CreatePostPage = () => {
 
     if (!user) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+            <div className="flex min-h-screen items-center justify-center bg-transparent px-4 py-12 sm:px-6 lg:px-8">
                 <div className="w-full max-w-md space-y-8 text-center">
                     <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Please log in to create a post</h2>
                     <div className="mt-4">
@@ -33,7 +33,7 @@ const CreatePostPage = () => {
         const caption = createdPost.caption || '';
 
         return (
-            <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+            <div className="flex min-h-screen items-center justify-center bg-transparent px-4 py-12 sm:px-6 lg:px-8">
                 <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-xl">
                     <div className="p-8 text-center">
                         <div className="mb-4 flex justify-center">
@@ -72,7 +72,7 @@ const CreatePostPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-transparent">
             <CreatePostModal 
                 onClose={() => navigate(-1)} 
                 onCreated={(post) => setCreatedPost(post)} 

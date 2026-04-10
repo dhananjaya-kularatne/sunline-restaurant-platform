@@ -154,7 +154,7 @@ const SocialFeedPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-transparent">
 
             {/* Main Content */}
             <div className="mx-auto max-w-6xl px-4 pt-5 pb-12">

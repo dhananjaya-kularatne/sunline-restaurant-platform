@@ -62,7 +62,7 @@ const AdminPostManagement = () => {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#F8F9FA]">
+        <div className="flex min-h-screen bg-transparent">
             <AdminSidebar />
 
             <main className="flex-1 p-8">

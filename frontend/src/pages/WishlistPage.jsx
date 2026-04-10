@@ -42,14 +42,14 @@ const WishlistPage = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="min-h-screen flex items-center justify-center bg-transparent">
                 <Loader2 className="h-12 w-12 animate-spin text-orange-600" />
             </div>
         );
     }
 
     return (
-        <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div className="bg-transparent min-h-screen py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <header className="text-center mb-12">
                     <h1 className="text-5xl font-extrabold text-gray-900 tracking-tight sm:text-6xl">

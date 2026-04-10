@@ -40,7 +40,7 @@ const DeliveryPage = () => {
     const outForDeliveryOrders = orders.filter(order => order.status === 'OUT_FOR_DELIVERY');
 
     return (
-        <div className="bg-gray-50 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+        <div className="bg-transparent min-h-screen py-10 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>

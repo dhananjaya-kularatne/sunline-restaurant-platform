@@ -71,7 +71,7 @@ const MyOrdersPage = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="bg-transparent min-h-screen py-10 px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col items-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
                     <p className="mt-4 text-gray-500 font-medium">Fetching your orders...</p>
@@ -82,7 +82,7 @@ const MyOrdersPage = () => {
 
     return (
         <>
-        <div className="bg-gray-50 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+        <div className="bg-transparent min-h-screen py-10 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
                 <div className="flex items-center justify-between mb-8">
                     <div>

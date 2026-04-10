@@ -92,7 +92,7 @@ const MenuPage = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="min-h-screen flex items-center justify-center bg-transparent">
                 <div className="flex flex-col items-center">
                     <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-600"></div>
                     <p className="mt-4 text-gray-600 font-medium animate-pulse">Loading Sri Lankan Delicacies...</p>
@@ -103,7 +103,7 @@ const MenuPage = () => {
 
     if (error) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4 text-center">
+            <div className="min-h-screen flex items-center justify-center bg-transparent p-4 text-center">
                 <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md">
                     <div className="text-red-500 text-5xl mb-4">⚠️</div>
                     <h2 className="text-2xl font-bold text-gray-800 mb-2">Oops! Something went wrong</h2>
@@ -120,7 +120,7 @@ const MenuPage = () => {
     }
 
     return (
-        <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div className="bg-transparent min-h-screen py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <header className="text-center mb-12">
                     <h1 className="text-5xl font-extrabold text-gray-900 tracking-tight sm:text-6xl">
