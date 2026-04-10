@@ -132,7 +132,7 @@ const CartPage = () => {
                                 
                                 <div className="pt-4 border-t border-gray-100 flex justify-between items-end">
                                     <div>
-                                        <p className="text-[11px] text-gray-400 uppercase font-black tracking-widest mb-0.5">Total Amount</p>
+                                        <p className="text-[11px] text-gray-400 font-semibold mb-0.5">Total Amount</p>
                                         <p className="text-3xl font-bold text-gray-800">LKR {finalTotal.toFixed(0)}</p>
                                     </div>
                                 </div>
@@ -141,7 +141,7 @@ const CartPage = () => {
                                     Place Order
                                 </Link>
                                 
-                                <p className="text-[10px] text-center text-gray-400 uppercase font-bold tracking-widest pt-4">
+                                <p className="text-[10px] text-center text-gray-400 font-medium pt-4">
                                     Secure Checkout Guaranteed
                                 </p>
                             </div>

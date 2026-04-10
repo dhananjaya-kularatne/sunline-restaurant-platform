@@ -212,7 +212,7 @@ const MenuPage = () => {
                                 {/* Availability Overlay */}
                                 {!item.isAvailable && (
                                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-                                        <span className="text-white font-bold text-xl uppercase tracking-widest px-4 py-2 border-2 border-white">Sold Out</span>
+                                        <span className="text-white font-semibold text-base px-5 py-2 rounded-full bg-black/50 border border-white/60">Sold Out</span>
                                     </div>
                                 )}
                                 {/* Price Tag */}

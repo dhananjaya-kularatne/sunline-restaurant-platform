@@ -50,7 +50,7 @@ const DeliveryPage = () => {
                     <div className="rounded-2xl bg-white p-4 border border-gray-200 shadow-sm flex items-center gap-3">
                         <Truck className="text-primary" size={24} />
                         <div>
-                            <p className="text-xs uppercase tracking-[0.2em] text-gray-400">Delivery Queue</p>
+                            <p className="text-xs text-gray-400">Delivery Queue</p>
                             <p className="text-lg font-bold text-gray-900">{readyOrders.length + outForDeliveryOrders.length} active orders</p>
                         </div>
                     </div>
@@ -75,7 +75,7 @@ const DeliveryPage = () => {
                         <section className="space-y-4 rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm uppercase tracking-[0.18em] text-gray-400 font-bold">Ready</p>
+                                    <p className="text-sm text-gray-400 font-semibold">Ready</p>
                                     <h2 className="text-xl font-bold text-gray-900">Ready for Pickup</h2>
                                 </div>
                                 <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-green-700 text-xs font-bold">
@@ -111,7 +111,7 @@ const DeliveryPage = () => {
                         <section className="space-y-4 rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm uppercase tracking-[0.18em] text-gray-400 font-bold">Out for Delivery</p>
+                                    <p className="text-sm text-gray-400 font-semibold">Out for Delivery</p>
                                     <h2 className="text-xl font-bold text-gray-900">In Transit</h2>
                                 </div>
                                 <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-blue-700 text-xs font-bold">
