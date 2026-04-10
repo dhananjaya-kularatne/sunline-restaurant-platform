@@ -65,7 +65,7 @@ const MyReservationsPage = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-12">
+            <div className="min-h-screen bg-transparent flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
                 <div className="w-12 h-12 border-4 border-[#FF7F50]/20 border-t-[#FF7F50] rounded-full animate-spin mb-4"></div>
                 <p className="text-gray-500 font-medium">Checking authentication...</p>
             </div>
@@ -74,7 +74,7 @@ const MyReservationsPage = () => {
 
     if (!user) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-transparent flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center mt-10 border border-gray-100">
                     <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Lock className="text-[#FF7F50]" size={40} />
@@ -95,7 +95,7 @@ const MyReservationsPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-transparent flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl w-full">
                 <div className="bg-white rounded-2xl shadow-xl p-8 overflow-hidden h-fit border border-gray-100">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
@@ -160,7 +160,7 @@ const MyReservationsPage = () => {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-20 px-4 bg-gray-50/50 rounded-lg border-2 border-dashed border-gray-200">
+                        <div className="text-center py-20 px-4 bg-transparent rounded-lg border-2 border-dashed border-gray-200">
                             <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <Calendar className="text-[#FF7F50]" size={40} />
                             </div>

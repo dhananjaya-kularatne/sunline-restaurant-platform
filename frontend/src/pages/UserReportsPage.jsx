@@ -95,7 +95,7 @@ const UserReportsPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50/30 px-4 py-12">
+        <div className="min-h-screen bg-transparent px-4 py-12">
             <div className="max-w-5xl mx-auto">
 
                 {/* Header */}
@@ -273,15 +273,6 @@ const UserReportsPage = () => {
                 </div>
             )}
 
-            <style>{`
-                @keyframes slide-in-right {
-                    from { transform: translateX(100%) scale(0.9); opacity: 0; }
-                    to { transform: translateX(0) scale(1); opacity: 1; }
-                }
-                .animate-slide-in-right {
-                    animation: slide-in-right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-                }
-            `}</style>
         </div>
     );
 };

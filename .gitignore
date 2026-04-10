@@ -1,3 +1,6 @@
+# Uploaded files
+backend/uploads/
+
 # Build artifacts
 node_modules/
 target/
@@ -5,6 +8,7 @@ target/
 Thumbs.db
 
 ./resources/application.properties
+backend/src/main/resources/application.properties
 
 # IDE specific
 .idea/

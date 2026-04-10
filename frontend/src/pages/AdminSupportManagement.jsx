@@ -243,7 +243,7 @@ const AdminSupportManagement = () => {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#F8F9FA]">
+        <div className="flex min-h-screen bg-transparent">
             <AdminSidebar />
 
             <Modal
@@ -428,46 +428,6 @@ const AdminSupportManagement = () => {
                 </div>
             </main>
 
-            <style dangerouslySetInnerHTML={{
-                __html: `
-                
-                @keyframes fade-in {
-                    from { opacity: 0; transform: translateY(-10px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                @keyframes scale-up {
-                    from { opacity: 0; transform: scale(0.95); }
-                    to { opacity: 1; transform: scale(1); }
-                }
-                .animate-fade-in {
-                    animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-                }
-                .animate-scale-up {
-                    animation: scale-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-                }
-                .line-clamp-3 {
-                    display: -webkit-box;
-                    -webkit-line-clamp: 3;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                }
-                /* Hide scrollbar for Chrome, Safari and Opera */
-                .overflow-x-auto::-webkit-scrollbar {
-                    display: none;
-                }
-                /* Hide scrollbar for IE, Edge and Firefox */
-                @keyframes slide-in-right {
-                    from { transform: translateX(100%) scale(0.9); opacity: 0; }
-                    to { transform: translateX(0) scale(1); opacity: 1; }
-                }
-                .animate-slide-in-right {
-                    animation: slide-in-right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-                }
-                .overflow-x-auto {
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }
-            `}} />
         </div>
     );
 };

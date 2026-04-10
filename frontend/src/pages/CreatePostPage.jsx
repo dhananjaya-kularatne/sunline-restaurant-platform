@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import CreatePostModal from '../components/CreatePostModal';
+import { getImageUrl } from '../utils/imageUtils';
 
 const CreatePostPage = () => {
     const { user } = useAuth();
@@ -10,13 +11,13 @@ const CreatePostPage = () => {
 
     if (!user) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+            <div className="flex min-h-screen items-center justify-center bg-transparent px-4 py-12 sm:px-6 lg:px-8">
                 <div className="w-full max-w-md space-y-8 text-center">
                     <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Please log in to create a post</h2>
                     <div className="mt-4">
                         <Link 
                             to="/login"
-                            className="inline-flex items-center rounded-md border border-transparent bg-orange-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-orange-700"
+                            className="inline-flex items-center rounded-xl border border-transparent bg-[#FF7F50] px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-[#e06b3f]"
                         >
                             Go to Login
                         </Link>
@@ -27,13 +28,11 @@ const CreatePostPage = () => {
     }
 
     if (createdPost) {
-        const imageUrl = createdPost.imageUrl?.startsWith('/uploads/')
-            ? `http://localhost:8080${createdPost.imageUrl}`
-            : createdPost.imageUrl;
+        const imageUrl = getImageUrl(createdPost.imageUrl);
         const caption = createdPost.caption || '';
 
         return (
-            <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+            <div className="flex min-h-screen items-center justify-center bg-transparent px-4 py-12 sm:px-6 lg:px-8">
                 <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-xl">
                     <div className="p-8 text-center">
                         <div className="mb-4 flex justify-center">
@@ -61,7 +60,7 @@ const CreatePostPage = () => {
 
                         <button
                             onClick={() => navigate('/')}
-                            className="inline-flex w-full justify-center rounded-lg bg-orange-600 px-6 py-3 text-base font-medium text-white shadow-lg transition-transform hover:scale-105 hover:bg-orange-700 focus:outline-none"
+                            className="inline-flex w-full justify-center rounded-xl bg-[#FF7F50] px-6 py-3 text-base font-medium text-white shadow-lg transition-colors hover:bg-[#e06b3f] focus:outline-none"
                         >
                             Back to Home
                         </button>
@@ -72,7 +71,7 @@ const CreatePostPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-transparent">
             <CreatePostModal 
                 onClose={() => navigate(-1)} 
                 onCreated={(post) => setCreatedPost(post)} 

@@ -81,7 +81,7 @@ const CreatePostModal = ({ onClose, onCreated }) => {
                 </button>
 
                 <h2 className="mb-6 flex items-center gap-2 text-2xl font-bold text-gray-800">
-                    <ImagePlus className="h-6 w-6 text-orange-500" />
+                    <ImagePlus className="h-6 w-6 text-[#FF7F50]" />
                     Share Your Meal
                 </h2>
 
@@ -92,7 +92,7 @@ const CreatePostModal = ({ onClose, onCreated }) => {
                             <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                     <Upload className="w-10 h-10 mb-3 text-gray-400" />
-                                    <p className="mb-2 text-sm text-gray-500"><span className="font-semibold text-orange-600">Click to upload a photo</span></p>
+                                    <p className="mb-2 text-sm text-gray-500"><span className="font-semibold text-[#FF7F50]">Click to upload a photo</span></p>
                                     <p className="text-xs text-gray-400">PNG, JPG or JPEG</p>
                                 </div>
                                 <input
@@ -148,7 +148,7 @@ const CreatePostModal = ({ onClose, onCreated }) => {
                             <button
                                 type="button"
                                 onClick={handleAddTag}
-                                className="inline-flex items-center rounded-md border border-transparent bg-orange-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
+                                className="inline-flex items-center rounded-xl border border-transparent bg-[#FF7F50] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#e06b3f] focus:outline-none focus:ring-2 focus:ring-[#FF7F50] focus:ring-offset-2"
                             >
                                 Add
                             </button>
@@ -163,7 +163,7 @@ const CreatePostModal = ({ onClose, onCreated }) => {
                                     <button
                                         type="button"
                                         onClick={() => handleRemoveTag(tag)}
-                                        className="ml-1.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-orange-400 hover:bg-orange-200 hover:text-orange-500 focus:bg-orange-500 focus:text-white focus:outline-none"
+                                        className="ml-1.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-orange-400 hover:bg-orange-100 hover:text-[#FF7F50] focus:bg-[#FF7F50] focus:text-white focus:outline-none"
                                     >
                                         <X className="h-3 w-3" />
                                     </button>
@@ -182,7 +182,7 @@ const CreatePostModal = ({ onClose, onCreated }) => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex w-full justify-center rounded-md border border-transparent bg-orange-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 disabled:bg-orange-300"
+                            className="flex w-full justify-center rounded-xl border border-transparent bg-[#FF7F50] px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-[#e06b3f] focus:outline-none focus:ring-2 focus:ring-[#FF7F50] focus:ring-offset-2 disabled:opacity-50"
                         >
                             {loading ? (
                                 <svg className="h-5 w-5 animate-spin text-white" fill="none" viewBox="0 0 24 24">

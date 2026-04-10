@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit2, Trash2, X, Check, AlertCircle } from 'lucide-react';
 import menuService from '../services/menuService';
 import AdminSidebar from '../components/AdminSidebar';
+import { FOOD_PLACEHOLDER } from '../utils/imageUtils';
 
 const AdminMenuManagement = () => {
     const [menuItems, setMenuItems] = useState([]);
@@ -114,7 +115,7 @@ const AdminMenuManagement = () => {
     );
 
     return (
-        <div className="flex min-h-screen bg-[#F8F9FA]">
+        <div className="flex min-h-screen bg-transparent">
             <AdminSidebar />
 
             <main className="flex-1 p-8">
@@ -129,7 +130,7 @@ const AdminMenuManagement = () => {
                             <input
                                 type="text"
                                 placeholder="Search menu..."
-                                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-[#FF7F50]"
+                                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-[#FF7F50]"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -173,7 +174,7 @@ const AdminMenuManagement = () => {
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
                                                 <img
-                                                    src={item.imageUrl || 'https://via.placeholder.com/50'}
+                                                    src={item.imageUrl || FOOD_PLACEHOLDER}
                                                     alt={item.name}
                                                     className="w-10 h-10 rounded-lg object-cover"
                                                 />

@@ -4,6 +4,9 @@ import com.sunline.sunline_backend.entity.User;
 import com.sunline.sunline_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.sunline.sunline_backend.entity.MenuItem;
+import com.sunline.sunline_backend.repository.MenuItemRepository;
+import java.util.Set;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +26,14 @@ import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
+
+    public long countAllUsers() {
+        return userRepository.count();
+    }
+
+    public long countAllMenuItems() {
+        return menuItemRepository.count();
+    }
 
     public List<User> getAllUsers(String search) {
         if (search != null && !search.isEmpty()) {
@@ -47,6 +58,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MenuItemRepository menuItemRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -130,6 +144,24 @@ public class UserService implements UserDetailsService {
         if (user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("The password reset link has expired");
         }
+    }
+
+    public Set<MenuItem> getWishlist(String email) {
+        return findByEmail(email).getWishlist();
+    }
+
+    public void addToWishlist(String email, Long menuItemId) {
+        User user = findByEmail(email);
+        MenuItem item = menuItemRepository.findById(menuItemId)
+                .orElseThrow(() -> new RuntimeException("Menu item not found"));
+        user.getWishlist().add(item);
+        userRepository.save(user);
+    }
+
+    public void removeFromWishlist(String email, Long menuItemId) {
+        User user = findByEmail(email);
+        user.getWishlist().removeIf(item -> item.getId().equals(menuItemId));
+        userRepository.save(user);
     }
 
     public User updateProfile(String email, String name, String bio) {
