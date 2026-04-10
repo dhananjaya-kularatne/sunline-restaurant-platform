@@ -23,6 +23,11 @@ public class MenuItemController {
         return menuItemService.getAllMenuItems();
     }
 
+    @GetMapping("/trending")
+    public List<MenuItemDTO> getTrendingMenuItems(@RequestParam(defaultValue = "4") int limit) {
+        return menuItemService.getTrendingMenuItems(limit);
+    }
+
     @GetMapping("/all")
     @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public List<MenuItemDTO> getAllMenu() {
