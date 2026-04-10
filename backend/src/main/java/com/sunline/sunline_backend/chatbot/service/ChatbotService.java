@@ -11,8 +11,7 @@ import com.sunline.sunline_backend.chatbot.util.GroqClient;
 import com.sunline.sunline_backend.chatbot.util.IntentDetector;
 import com.sunline.sunline_backend.entity.MenuItem;
 import com.sunline.sunline_backend.repository.MenuItemRepository;
-import com.sunline.sunline_backend.entity.Reservation;
-import com.sunline.sunline_backend.repository.ReservationRepository;
+
 import com.sunline.sunline_backend.entity.Order;
 import com.sunline.sunline_backend.repository.OrderRepository;
 import com.sunline.sunline_backend.repository.UserRepository;
@@ -23,12 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.stream.Collectors;
+
 
 @Service
 public class ChatbotService {
@@ -46,7 +41,6 @@ public class ChatbotService {
     private final IntentDetector intentDetector;
     private final ChatSessionRepository chatSessionRepository;
     private final MenuItemRepository menuItemRepository;
-    private final ReservationRepository reservationRepository;
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
@@ -55,14 +49,12 @@ public class ChatbotService {
                           IntentDetector intentDetector,
                           ChatSessionRepository chatSessionRepository,
                           MenuItemRepository menuItemRepository,
-                          ReservationRepository reservationRepository,
                           OrderRepository orderRepository,
                           UserRepository userRepository) {
         this.groqClient = groqClient;
         this.intentDetector = intentDetector;
         this.chatSessionRepository = chatSessionRepository;
         this.menuItemRepository = menuItemRepository;
-        this.reservationRepository = reservationRepository;
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.objectMapper = new ObjectMapper();

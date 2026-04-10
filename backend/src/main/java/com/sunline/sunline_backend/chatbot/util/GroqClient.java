@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.core.ParameterizedTypeReference;
 
 import java.util.List;
 import java.util.Map;
@@ -42,13 +43,13 @@ public class GroqClient {
                 "temperature", 0.7,
                 "max_tokens", 512);
         try {
-            Map response = webClient.post()
+            Map<String, Object> response = webClient.post()
                     .uri("/openai/v1/chat/completions")
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + apiKey)
                     .bodyValue(body)
                     .retrieve()
-                    .bodyToMono(Map.class)
+                    .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
                     .block();
             return extractText(response);
         } catch (WebClientResponseException e) {
@@ -61,12 +62,12 @@ public class GroqClient {
     }
 
     @SuppressWarnings("unchecked")
-    private String extractText(Map response) {
+    private String extractText(Map<String, Object> response) {
         try {
-            List<Map> choices = (List<Map>) response.get("choices");
+            List<Map<String, Object>> choices = (List<Map<String, Object>>) response.get("choices");
             if (choices == null || choices.isEmpty())
                 return "I couldn't generate a response. Please try rephrasing!";
-            Map message = (Map) choices.get(0).get("message");
+            Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
             return (String) message.get("content");
         } catch (Exception e) {
             log.error("Failed to parse Groq response: {}", e.getMessage());
