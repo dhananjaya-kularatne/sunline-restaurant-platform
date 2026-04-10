@@ -108,7 +108,7 @@ const SupportPage = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-12">
+            <div className="min-h-screen bg-transparent flex flex-col items-center justify-center p-12">
                 <div className="w-12 h-12 border-4 border-[#FF7F50]/20 border-t-[#FF7F50] rounded-full animate-spin mb-4"></div>
                 <p className="text-gray-500 font-medium">Checking authentication...</p>
             </div>
@@ -117,7 +117,7 @@ const SupportPage = () => {
 
     if (!user) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-transparent flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center mt-10 border border-gray-100">
                     <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Lock className="text-[#FF7F50]" size={40} />
@@ -147,7 +147,7 @@ const SupportPage = () => {
 
     if (submitSuccess) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-transparent flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center mt-10 border border-gray-100">
                     <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
                     <h2 className="text-2xl font-bold text-gray-800 mb-2">Report Submitted Successfully</h2>
@@ -172,7 +172,7 @@ const SupportPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-transparent flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8 mt-4 border border-gray-100">
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center p-3 sm:p-4 bg-[#FF7F50] rounded-full text-white mb-4 shadow-sm">

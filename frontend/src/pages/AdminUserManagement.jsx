@@ -76,7 +76,7 @@ const AdminUserManagement = () => {
     };
 
     return (
-        <div className="flex min-h-screen bg-[#F8F9FA]">
+        <div className="flex min-h-screen bg-transparent">
             <AdminSidebar />
 
             {/* Main Content */}
@@ -91,7 +91,7 @@ const AdminUserManagement = () => {
                         <input
                             type="text"
                             placeholder="Search users..."
-                            className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-72 focus:outline-none focus:ring-2 focus:ring-[#FF7F50] transition-all"
+                            className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-[#FF7F50] transition-all"
                             value={search}
                             onChange={handleSearch}
                         />

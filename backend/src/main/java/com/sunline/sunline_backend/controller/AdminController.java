@@ -1,6 +1,7 @@
 package com.sunline.sunline_backend.controller;
 
 import com.sunline.sunline_backend.dto.request.UserRoleRequest;
+import com.sunline.sunline_backend.dto.response.DashboardStatsResponse;
 import com.sunline.sunline_backend.dto.response.UserResponse;
 import com.sunline.sunline_backend.entity.User;
 import com.sunline.sunline_backend.service.UserService;
@@ -23,6 +24,15 @@ public class AdminController {
 
     @Autowired
     private FoodPostService foodPostService;
+    
+    @GetMapping("/dashboard/stats")
+    public ResponseEntity<DashboardStatsResponse> getDashboardStats() {
+        DashboardStatsResponse stats = DashboardStatsResponse.builder()
+                .totalUsers(userService.countAllUsers())
+                .totalMenuItems(userService.countAllMenuItems())
+                .build();
+        return ResponseEntity.ok(stats);
+    }
 
     @GetMapping("/users")
     public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(required = false) String search) {

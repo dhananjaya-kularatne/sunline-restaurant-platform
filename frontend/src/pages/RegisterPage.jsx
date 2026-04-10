@@ -52,7 +52,7 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12 text-gray-800">
+        <div className="min-h-screen bg-transparent flex items-center justify-center px-4 py-12 text-gray-800">
             <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
                 <div className="flex flex-col items-center mb-8">
                     <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white mb-4 shadow-lg">

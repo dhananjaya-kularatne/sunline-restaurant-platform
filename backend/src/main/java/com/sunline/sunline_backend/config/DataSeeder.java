@@ -6,6 +6,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.sunline.sunline_backend.entity.User;
+import com.sunline.sunline_backend.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,16 +17,27 @@ import java.util.List;
 public class DataSeeder {
 
         @Bean
-        CommandLineRunner initDatabase(MenuItemRepository repository) {
+        CommandLineRunner initDatabase(MenuItemRepository repository, UserRepository userRepository,
+                        PasswordEncoder passwordEncoder) {
                 return args -> {
+                        // Always seed admin user regardless of menu item count
+                        if (userRepository.findByEmail("admin@sunline.com").isEmpty()) {
+                                User admin = User.builder()
+                                                .name("Admin User")
+                                                .email("admin@sunline.com")
+                                                .password(passwordEncoder.encode("Admin@123!"))
+                                                .role(User.Role.ADMIN)
+                                                .build();
+                                userRepository.save(admin);
+                                System.out.println("Admin user seeded.");
+                        }
+
                         long count = repository.count();
                         System.out.println("Current menu item count: " + count);
 
-                        // For Phase 2, we want to ensure multi-category support
-                        // If we have old items, let's clear them to seed fresh with multi-categories
                         if (count > 0) {
-                                System.out.println("Clearing old menu items for Phase 2...");
-                                repository.deleteAll();
+                                System.out.println("Menu items already seeded. Skipping.");
+                                return;
                         }
 
                         System.out.println("Seeding menu items with multi-categories...");
