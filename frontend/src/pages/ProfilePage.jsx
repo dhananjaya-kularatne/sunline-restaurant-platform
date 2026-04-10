@@ -84,7 +84,8 @@ const ProfilePage = () => {
         setMessage({ text: '', type: '' });
         try {
             const filePath = await authService.uploadProfilePicture(file);
-            setFormData({ ...formData, profilePicture: filePath });
+            setFormData(prev => ({ ...prev, profilePicture: filePath }));
+            updateUser({ ...user, profilePicture: filePath });
             setMessage({ text: 'Profile picture updated!', type: 'success' });
         } catch (err) {
             setMessage({ text: 'Failed to upload picture', type: 'error' });
