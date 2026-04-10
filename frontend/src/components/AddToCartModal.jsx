@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
+import { FOOD_PLACEHOLDER } from '../utils/imageUtils';
 
 const AddToCartModal = ({ item, isOpen, onClose, onAdd }) => {
     const [quantity, setQuantity] = useState(1);
@@ -27,7 +28,7 @@ const AddToCartModal = ({ item, isOpen, onClose, onAdd }) => {
                 {/* Header with Image */}
                 <div className="relative h-48 overflow-hidden">
                     <img 
-                        src={item.imageUrl || 'https://via.placeholder.com/400x300?text=Delicious+Food'} 
+                        src={item.imageUrl || FOOD_PLACEHOLDER}
                         alt={item.name}
                         className="w-full h-full object-cover"
                     />

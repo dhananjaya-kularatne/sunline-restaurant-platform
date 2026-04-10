@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import AddToCartModal from '../components/AddToCartModal';
 import { Loader2 } from 'lucide-react';
+import { FOOD_PLACEHOLDER } from '../utils/imageUtils';
 
 const WishlistPage = () => {
     const { user } = useAuth();
@@ -43,7 +44,7 @@ const WishlistPage = () => {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-transparent">
-                <Loader2 className="h-12 w-12 animate-spin text-orange-600" />
+                <Loader2 className="h-12 w-12 animate-spin text-[#FF7F50]" />
             </div>
         );
     }
@@ -53,7 +54,7 @@ const WishlistPage = () => {
             <div className="max-w-7xl mx-auto">
                 <header className="text-center mb-12">
                     <h1 className="text-5xl font-extrabold text-gray-900 tracking-tight sm:text-6xl">
-                        My <span className="text-orange-600">Wishlist</span>
+                        My <span className="text-[#FF7F50]">Wishlist</span>
                     </h1>
                     <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
                         Your saved favourites, all in one place.
@@ -68,7 +69,7 @@ const WishlistPage = () => {
                             <p className="text-gray-500 mb-8">Browse our menu and save your favourite dishes here.</p>
                             <Link
                                 to="/menu"
-                                className="bg-orange-600 text-white px-8 py-3 rounded-2xl font-bold hover:bg-orange-700 transition-colors shadow-lg shadow-orange-200"
+                                className="bg-[#FF7F50] text-white px-8 py-3 rounded-2xl font-bold hover:bg-[#e06b3f] transition-colors shadow-lg shadow-orange-200"
                             >
                                 Browse Menu
                             </Link>
@@ -80,7 +81,7 @@ const WishlistPage = () => {
                             <div key={item.id} className="group relative bg-white rounded-3xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col h-full border border-gray-100">
                                 <div className="aspect-w-16 aspect-h-9 w-full overflow-hidden relative">
                                     <img
-                                        src={item.imageUrl || 'https://via.placeholder.com/400x300?text=Delicious+Food'}
+                                        src={item.imageUrl || FOOD_PLACEHOLDER}
                                         alt={item.name}
                                         className="h-64 w-full object-cover object-center group-hover:scale-110 transition-transform duration-700"
                                     />
@@ -90,7 +91,7 @@ const WishlistPage = () => {
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
-                                            className="h-5 w-5 text-orange-500 fill-orange-500"
+                                            className="h-5 w-5 text-[#FF7F50] fill-[#FF7F50]"
                                             viewBox="0 0 24 24"
                                             stroke="currentColor"
                                             strokeWidth={2}
@@ -103,7 +104,7 @@ const WishlistPage = () => {
                                             <span className="text-white font-semibold text-base px-5 py-2 rounded-full bg-black/50 border border-white/60">Sold Out</span>
                                         </div>
                                     )}
-                                    <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl text-lg font-black text-orange-600 shadow-lg">
+                                    <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl text-lg font-black text-[#FF7F50] shadow-lg">
                                         LKR {item.price.toFixed(0)}
                                     </div>
                                 </div>
@@ -112,13 +113,13 @@ const WishlistPage = () => {
                                         {item.categories && item.categories.map(cat => (
                                             <span
                                                 key={cat}
-                                                className="bg-orange-50 text-orange-600 text-[10px] uppercase tracking-wider font-extrabold px-2 py-1 rounded-md border border-orange-100"
+                                                className="bg-orange-50 text-[#FF7F50] text-[10px] uppercase tracking-wider font-extrabold px-2 py-1 rounded-md border border-orange-100"
                                             >
                                                 {cat}
                                             </span>
                                         ))}
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">
+                                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#FF7F50] transition-colors">
                                         {item.name}
                                     </h3>
                                     <p className="text-sm text-gray-500 leading-relaxed mb-6 line-clamp-3">

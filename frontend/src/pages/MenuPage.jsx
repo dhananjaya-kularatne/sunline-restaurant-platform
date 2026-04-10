@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { ShoppingCart } from 'lucide-react';
 import AddToCartModal from '../components/AddToCartModal';
+import { FOOD_PLACEHOLDER } from '../utils/imageUtils';
 
 const MenuPage = () => {
     const [menuItems, setMenuItems] = useState([]);
@@ -94,7 +95,7 @@ const MenuPage = () => {
         return (
             <div className="min-h-screen flex items-center justify-center bg-transparent">
                 <div className="flex flex-col items-center">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-600"></div>
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-t-4 border-b-4 border-[#FF7F50]"></div>
                     <p className="mt-4 text-gray-600 font-medium animate-pulse">Loading Sri Lankan Delicacies...</p>
                 </div>
             </div>
@@ -110,7 +111,7 @@ const MenuPage = () => {
                     <p className="text-gray-600">{error}</p>
                     <button
                         onClick={() => window.location.reload()}
-                        className="mt-6 bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors"
+                        className="mt-6 bg-[#FF7F50] text-white px-6 py-2 rounded-lg font-semibold hover:bg-[#e06b3f] transition-colors"
                     >
                         Try Again
                     </button>
@@ -124,7 +125,7 @@ const MenuPage = () => {
             <div className="max-w-7xl mx-auto">
                 <header className="text-center mb-12">
                     <h1 className="text-5xl font-extrabold text-gray-900 tracking-tight sm:text-6xl">
-                        Our <span className="text-orange-600">Premium</span> Menu
+                        Our <span className="text-[#FF7F50]">Premium</span> Menu
                     </h1>
                     <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
                         Explore authentic Sri Lankan flavors, curated for every palate.
@@ -135,7 +136,7 @@ const MenuPage = () => {
                 <div className="max-w-2xl mx-auto mb-8">
                     <div className="relative group">
                         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <svg className="h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="h-5 w-5 text-gray-400 group-focus-within:text-[#FF7F50] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </div>
@@ -166,8 +167,8 @@ const MenuPage = () => {
                             key={category}
                             onClick={() => setSelectedCategory(category)}
                             className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 shadow-sm ${selectedCategory === category
-                                ? 'bg-orange-600 text-white scale-105 shadow-orange-200'
-                                : 'bg-white text-gray-600 hover:bg-gray-100 hover:text-orange-600'
+                                ? 'bg-[#FF7F50] text-white scale-105 shadow-orange-200'
+                                : 'bg-white text-gray-600 hover:bg-gray-100 hover:text-[#FF7F50]'
                                 }`}
                         >
                             {category}
@@ -179,8 +180,8 @@ const MenuPage = () => {
                 <div className="mb-8 text-center">
                     <p className="text-gray-500 font-medium">
                         Showing {filteredItems.length} {filteredItems.length === 1 ? 'dish' : 'dishes'}
-                        {searchQuery && <span> for "<span className="text-orange-600">{searchQuery}</span>"</span>}
-                        {selectedCategory !== 'All' && <span> in <span className="text-orange-600">{selectedCategory}</span></span>}
+                        {searchQuery && <span> for "<span className="text-[#FF7F50]">{searchQuery}</span>"</span>}
+                        {selectedCategory !== 'All' && <span> in <span className="text-[#FF7F50]">{selectedCategory}</span></span>}
                     </p>
                 </div>
 
@@ -191,7 +192,7 @@ const MenuPage = () => {
                             {/* Image Container */}
                             <div className="aspect-w-16 aspect-h-9 w-full overflow-hidden relative">
                                 <img
-                                    src={item.imageUrl || 'https://via.placeholder.com/400x300?text=Delicious+Food'}
+                                    src={item.imageUrl || FOOD_PLACEHOLDER}
                                     alt={item.name}
                                     className="h-64 w-full object-cover object-center group-hover:scale-110 transition-transform duration-700"
                                 />
@@ -201,7 +202,7 @@ const MenuPage = () => {
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className={`h-5 w-5 transition-colors duration-200 ${wishlistIds.has(item.id) ? 'text-orange-500 fill-orange-500' : 'text-gray-400 fill-none'}`}
+                                        className={`h-5 w-5 transition-colors duration-200 ${wishlistIds.has(item.id) ? 'text-[#FF7F50] fill-[#FF7F50]' : 'text-gray-400 fill-none'}`}
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                         strokeWidth={2}
@@ -216,7 +217,7 @@ const MenuPage = () => {
                                     </div>
                                 )}
                                 {/* Price Tag */}
-                                <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl text-lg font-black text-orange-600 shadow-lg">
+                                <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl text-lg font-black text-[#FF7F50] shadow-lg">
                                     LKR {item.price.toFixed(0)}
                                 </div>
                             </div>
@@ -227,13 +228,13 @@ const MenuPage = () => {
                                     {item.categories && item.categories.map(cat => (
                                         <span
                                             key={cat}
-                                            className="bg-orange-50 text-orange-600 text-[10px] uppercase tracking-wider font-extrabold px-2 py-1 rounded-md border border-orange-100"
+                                            className="bg-orange-50 text-[#FF7F50] text-[10px] uppercase tracking-wider font-extrabold px-2 py-1 rounded-md border border-orange-100"
                                         >
                                             {cat}
                                         </span>
                                     ))}
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">
+                                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#FF7F50] transition-colors">
                                     {item.name}
                                 </h3>
                                 <p className="text-sm text-gray-500 leading-relaxed mb-6 line-clamp-3">
@@ -267,7 +268,7 @@ const MenuPage = () => {
                             <p className="text-gray-500 mb-8">We couldn't find any items matching your current filters. Try searching for something else or clearing your filters.</p>
                             <button
                                 onClick={() => { setSelectedCategory('All'); setSearchQuery(''); }}
-                                className="bg-orange-600 text-white px-8 py-3 rounded-2xl font-bold hover:bg-orange-700 transition-colors shadow-lg shadow-orange-200"
+                                className="bg-[#FF7F50] text-white px-8 py-3 rounded-2xl font-bold hover:bg-[#e06b3f] transition-colors shadow-lg shadow-orange-200"
                             >
                                 Clear All Filters
                             </button>
@@ -284,7 +285,7 @@ const MenuPage = () => {
             </div>
             {wishlistMessage && (
                 <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
-                    <div className="bg-orange-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center space-x-3 font-bold">
+                    <div className="bg-[#FF7F50] text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center space-x-3 font-bold">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>

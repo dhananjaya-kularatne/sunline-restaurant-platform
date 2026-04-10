@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import authService from '../services/authService';
 import api from '../services/api';
 import { User, Camera, Loader2, CheckCircle, Mail, Type, FileText } from 'lucide-react';
+import { getImageUrl, getAvatarFallback } from '../utils/imageUtils';
 
 const ProfilePage = () => {
     const { user, updateUser } = useAuth();
@@ -109,10 +110,10 @@ const ProfilePage = () => {
                         <div className="w-64 h-64 rounded-full overflow-hidden bg-white flex items-center justify-center shadow-lg border-4 border-white mb-6 group-hover:scale-[1.03] transition-transform duration-500 ease-out">
                             {(isViewingOther ? viewedUser?.profilePicture : formData.profilePicture) ? (
                                 <img
-                                    src={`http://localhost:8080/uploads/${isViewingOther ? viewedUser.profilePicture : formData.profilePicture}`}
+                                    src={getImageUrl(isViewingOther ? viewedUser.profilePicture : formData.profilePicture)}
                                     alt="Profile"
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                    onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${isViewingOther ? viewedUser?.name : formData.name}&background=f97316&color=fff&size=256` }}
+                                    onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = getAvatarFallback(isViewingOther ? viewedUser?.name : formData.name); }}
                                 />
                             ) : (
                                 <div className="bg-gray-100 w-full h-full flex items-center justify-center">
@@ -213,7 +214,7 @@ const ProfilePage = () => {
                                 <div className="flex justify-between items-center">
                                     <Link
                                         to="/wishlist"
-                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl border-2 border-orange-500 text-orange-500 font-bold hover:bg-orange-50 transition-all duration-300"
+                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl border-2 border-[#FF7F50] text-[#FF7F50] font-bold hover:bg-orange-50 transition-all duration-300"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />

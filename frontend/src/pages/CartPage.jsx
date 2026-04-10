@@ -2,6 +2,7 @@ import React from 'react';
 import { useCart } from '../context/CartContext';
 import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag, MessageSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { FOOD_PLACEHOLDER } from '../utils/imageUtils';
 
 const CartPage = () => {
     const { cartItems, removeFromCart, updateQuantity, totalPrice, totalCount } = useCart();
@@ -16,7 +17,7 @@ const CartPage = () => {
             <div className="min-h-screen bg-transparent flex flex-col items-center justify-center p-6">
                 <div className="bg-white p-12 rounded-2xl shadow-xl text-center max-w-lg border border-gray-100 card-shadow">
                     <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-                        <ShoppingBag className="text-orange-600" size={40} />
+                        <ShoppingBag className="text-[#FF7F50]" size={40} />
                     </div>
                     <h2 className="text-3xl font-bold text-gray-800 mb-2">Your cart is empty</h2>
                     <p className="text-gray-500 mb-8 leading-relaxed">
@@ -56,7 +57,7 @@ const CartPage = () => {
                                 {/* Item Image */}
                                 <div className="w-full sm:w-28 h-28 rounded-xl overflow-hidden flex-shrink-0">
                                     <img 
-                                        src={item.imageUrl || 'https://via.placeholder.com/400x300?text=Food'} 
+                                        src={item.imageUrl || FOOD_PLACEHOLDER}
                                         alt={item.name}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     />

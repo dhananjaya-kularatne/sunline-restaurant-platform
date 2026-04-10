@@ -3,10 +3,48 @@
 @tailwind utilities;
 
 :root {
-  --primary: #f97316;
+  --primary: #FF7F50;
   --secondary: #1e293b;
 }
 
 body {
   background-color: #FDF8F3;
+}
+
+/* ── Shared animations (used across admin + customer pages) ── */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-up {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%) scale(0.9); opacity: 0; }
+  to   { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+.animate-fade-in       { animation: fade-in        0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-scale-up      { animation: scale-up       0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-slide-in-right{ animation: slide-in-right 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* ── Hide scrollbars on overflow containers ── */
+.overflow-x-auto, .custom-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.overflow-x-auto::-webkit-scrollbar,
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Line-clamp utility ── */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
