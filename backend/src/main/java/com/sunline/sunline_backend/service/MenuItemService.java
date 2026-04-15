@@ -1,8 +1,12 @@
 package com.sunline.sunline_backend.service;
 
 import com.sunline.sunline_backend.dto.MenuItemDTO;
+import com.sunline.sunline_backend.dto.response.RecommendationResponse;
 import com.sunline.sunline_backend.entity.MenuItem;
+import com.sunline.sunline_backend.entity.User;
 import com.sunline.sunline_backend.repository.MenuItemRepository;
+import com.sunline.sunline_backend.repository.OrderRepository;
+import com.sunline.sunline_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,10 +20,16 @@ import java.util.stream.Collectors;
 public class MenuItemService {
 
     private final MenuItemRepository menuItemRepository;
+    private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public MenuItemService(MenuItemRepository menuItemRepository) {
+    public MenuItemService(MenuItemRepository menuItemRepository,
+                           UserRepository userRepository,
+                           OrderRepository orderRepository) {
         this.menuItemRepository = menuItemRepository;
+        this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
     }
 
     public List<MenuItemDTO> getAllAvailableMenuItems() {
@@ -66,6 +76,29 @@ public class MenuItemService {
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public RecommendationResponse getRecommendations(String email, int limit) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        long orderCount = orderRepository.countByUser(user);
+
+        if (orderCount < 3) {
+            return new RecommendationResponse(false, getTrendingMenuItems(limit));
+        }
+
+        List<MenuItemDTO> personalized = menuItemRepository
+                .findPersonalizedMenuItems(user, PageRequest.of(0, limit))
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        if (personalized.isEmpty()) {
+            return new RecommendationResponse(false, getTrendingMenuItems(limit));
+        }
+
+        return new RecommendationResponse(true, personalized);
     }
 
     public void deleteMenuItem(Long id) {
