@@ -13,4 +13,6 @@ public interface OrderService {
     List<OrderDto> getAllOrders();
     List<OrderDto> getKitchenOrders();
     List<OrderDto> getDeliveryOrders();
+    long countOrdersByStatus(OrderStatus status);
+    long countAllOrders();
 }
