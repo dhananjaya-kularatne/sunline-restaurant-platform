@@ -56,6 +56,16 @@ const menuService = {
         }
     },
 
+    getRecommendations: async (limit = 4) => {
+        try {
+            const response = await api.get(`/menu/recommendations?limit=${limit}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching recommendations:', error);
+            throw error;
+        }
+    },
+
     getWishlist: async () => {
         const response = await api.get('/user/wishlist');
         return response.data;

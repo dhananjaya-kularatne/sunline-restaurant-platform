@@ -1,8 +1,11 @@
 package com.sunline.sunline_backend.controller;
 
 import com.sunline.sunline_backend.dto.MenuItemDTO;
+import com.sunline.sunline_backend.dto.response.RecommendationResponse;
 import com.sunline.sunline_backend.service.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +29,16 @@ public class MenuItemController {
     @GetMapping("/trending")
     public List<MenuItemDTO> getTrendingMenuItems(@RequestParam(defaultValue = "4") int limit) {
         return menuItemService.getTrendingMenuItems(limit);
+    }
+
+    @GetMapping("/recommendations")
+    public RecommendationResponse getRecommendations(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(defaultValue = "4") int limit) {
+        if (userDetails == null) {
+            return new RecommendationResponse(false, menuItemService.getTrendingMenuItems(limit));
+        }
+        return menuItemService.getRecommendations(userDetails.getUsername(), limit);
     }
 
     @GetMapping("/all")

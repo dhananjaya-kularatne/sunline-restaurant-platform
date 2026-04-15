@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { Utensils, Star, Clock, MapPin, TrendingUp, ArrowRight, ShoppingBag, CheckCircle } from 'lucide-react';
+import { Utensils, Star, Clock, MapPin, TrendingUp, Sparkles, ArrowRight, ShoppingBag, CheckCircle } from 'lucide-react';
 import menuService from '../services/menuService';
 import { getImageUrl, FOOD_PLACEHOLDER } from '../utils/imageUtils';
 import AddToCartModal from '../components/AddToCartModal';
@@ -68,8 +68,9 @@ const getGreeting = () => {
 const HomePage = () => {
     const { user, loading } = useAuth();
     const { addToCart } = useCart();
-    const [trendingItems, setTrendingItems] = useState([]);
-    const [trendingLoading, setTrendingLoading] = useState(true);
+    const [sectionItems, setSectionItems] = useState([]);
+    const [sectionLoading, setSectionLoading] = useState(true);
+    const [isPersonalized, setIsPersonalized] = useState(false);
     const [modalItem, setModalItem] = useState(null);
 
     useEffect(() => {
@@ -78,19 +79,28 @@ const HomePage = () => {
                 .then(items => items.slice(0, 4))
                 .catch(() => []);
 
-        const fetchTrending = async () => {
+        const fetchItems = async () => {
             try {
-                const trending = await menuService.getTrendingItems(4);
-                const items = trending.length > 0 ? trending : await getAvailableFallback();
-                setTrendingItems(items);
+                if (user) {
+                    const rec = await menuService.getRecommendations(4);
+                    setIsPersonalized(rec.personalized);
+                    const items = rec.items?.length > 0 ? rec.items : await getAvailableFallback();
+                    setSectionItems(items);
+                } else {
+                    const trending = await menuService.getTrendingItems(4);
+                    const items = trending.length > 0 ? trending : await getAvailableFallback();
+                    setSectionItems(items);
+                    setIsPersonalized(false);
+                }
             } catch {
-                setTrendingItems(await getAvailableFallback());
+                setSectionItems(await getAvailableFallback());
+                setIsPersonalized(false);
             } finally {
-                setTrendingLoading(false);
+                setSectionLoading(false);
             }
         };
-        fetchTrending();
-    }, []);
+        if (!loading) fetchItems();
+    }, [user, loading]);
 
     if (loading) {
         return (
@@ -225,19 +235,23 @@ const HomePage = () => {
                 )}
             </section>
 
-            {/* ── Trending Items ────────────────────────────────────── */}
-            {(trendingLoading || trendingItems.length > 0) && (
+            {/* ── Recommendations / Trending ────────────────────────── */}
+            {(sectionLoading || sectionItems.length > 0) && (
                 <section className="max-w-6xl mx-auto px-6 pb-20">
 
                     {/* Section header */}
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-orange-50 text-orange-500 rounded-xl">
-                                <TrendingUp size={20} />
+                            <div className={`p-2 rounded-xl ${isPersonalized ? 'bg-violet-50 text-violet-500' : 'bg-orange-50 text-orange-500'}`}>
+                                {isPersonalized ? <Sparkles size={20} /> : <TrendingUp size={20} />}
                             </div>
                             <div>
-                                <h2 className="text-xl font-bold text-gray-900">Trending Now</h2>
-                                <p className="text-xs text-gray-400">Most ordered by our customers</p>
+                                <h2 className="text-xl font-bold text-gray-900">
+                                    {isPersonalized ? 'Picked For You' : 'Trending Now'}
+                                </h2>
+                                <p className="text-xs text-gray-400">
+                                    {isPersonalized ? 'Based on your order history' : 'Most ordered by our customers'}
+                                </p>
                             </div>
                         </div>
                         <Link
@@ -250,7 +264,7 @@ const HomePage = () => {
 
                     {/* Grid */}
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                        {trendingLoading
+                        {sectionLoading
                             ? Array.from({ length: 4 }).map((_, i) => (
                                 <div key={i} className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse">
                                     <div className="aspect-[4/3] bg-gray-100" />
@@ -261,15 +275,17 @@ const HomePage = () => {
                                     </div>
                                 </div>
                             ))
-                            : trendingItems.map((item, index) => (
+                            : sectionItems.map((item, index) => (
                                 <div
                                     key={item.id}
                                     className="relative bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-md hover:border-gray-200 transition-all group"
                                 >
-                                    {/* Rank badge */}
-                                    <div className="absolute top-3 left-3 z-10 bg-primary text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-md">
-                                        {index + 1}
-                                    </div>
+                                    {/* Rank badge — only shown for trending */}
+                                    {!isPersonalized && (
+                                        <div className="absolute top-3 left-3 z-10 bg-primary text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-md">
+                                            {index + 1}
+                                        </div>
+                                    )}
 
                                     {/* Image */}
                                     <div className="aspect-[4/3] overflow-hidden bg-gray-50">
