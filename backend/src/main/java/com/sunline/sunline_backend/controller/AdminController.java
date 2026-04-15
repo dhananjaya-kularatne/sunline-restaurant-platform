@@ -3,9 +3,12 @@ package com.sunline.sunline_backend.controller;
 import com.sunline.sunline_backend.dto.request.UserRoleRequest;
 import com.sunline.sunline_backend.dto.response.DashboardStatsResponse;
 import com.sunline.sunline_backend.dto.response.UserResponse;
+import com.sunline.sunline_backend.entity.OrderStatus;
 import com.sunline.sunline_backend.entity.User;
 import com.sunline.sunline_backend.service.UserService;
 import com.sunline.sunline_backend.service.FoodPostService;
+import com.sunline.sunline_backend.service.OrderService;
+import com.sunline.sunline_backend.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,12 +27,28 @@ public class AdminController {
 
     @Autowired
     private FoodPostService foodPostService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private ReservationService reservationService;
     
     @GetMapping("/dashboard/stats")
     public ResponseEntity<DashboardStatsResponse> getDashboardStats() {
         DashboardStatsResponse stats = DashboardStatsResponse.builder()
                 .totalUsers(userService.countAllUsers())
                 .totalMenuItems(userService.countAllMenuItems())
+                .totalOrders(orderService.countAllOrders())
+                .pendingOrders(orderService.countOrdersByStatus(OrderStatus.PENDING))
+                .confirmedOrders(orderService.countOrdersByStatus(OrderStatus.CONFIRMED))
+                .preparingOrders(orderService.countOrdersByStatus(OrderStatus.PREPARING))
+                .readyOrders(orderService.countOrdersByStatus(OrderStatus.READY))
+                .outForDeliveryOrders(orderService.countOrdersByStatus(OrderStatus.OUT_FOR_DELIVERY))
+                .deliveredOrders(orderService.countOrdersByStatus(OrderStatus.DELIVERED))
+                .completedOrders(orderService.countOrdersByStatus(OrderStatus.COMPLETED))
+                .cancelledOrders(orderService.countOrdersByStatus(OrderStatus.CANCELLED))
+                .totalReservations(reservationService.countAllReservations())
                 .build();
         return ResponseEntity.ok(stats);
     }

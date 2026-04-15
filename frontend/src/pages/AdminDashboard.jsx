@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Utensils, ArrowRight, TrendingUp } from 'lucide-react';
+import { Users, Utensils, ArrowRight, TrendingUp, ShoppingBag, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AdminSidebar from '../components/AdminSidebar';
 import adminService from '../services/adminService';
 
 const AdminDashboard = () => {
-    const [stats, setStats] = useState({ totalUsers: 0, totalMenuItems: 0 });
+    const [stats, setStats] = useState({ 
+        totalUsers: 0, 
+        totalMenuItems: 0,
+        totalOrders: 0,
+        pendingOrders: 0,
+        confirmedOrders: 0,
+        preparingOrders: 0,
+        readyOrders: 0,
+        outForDeliveryOrders: 0,
+        deliveredOrders: 0,
+        completedOrders: 0,
+        cancelledOrders: 0,
+        totalReservations: 0
+    });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -40,6 +53,34 @@ const AdminDashboard = () => {
             link: '/admin/menu',
             buttonText: 'Manage Menu',
             description: 'Items currently in the restaurant menu'
+        },
+        {
+            title: 'Total Orders',
+            value: stats.totalOrders,
+            icon: ShoppingBag,
+            color: 'bg-green-500',
+            link: '/admin/orders',
+            buttonText: 'Manage Orders',
+            description: 'Customer orders across all statuses',
+            breakdown: [
+                { label: 'Pending', count: stats.pendingOrders, color: 'text-yellow-600' },
+                { label: 'Confirmed', count: stats.confirmedOrders, color: 'text-blue-600' },
+                { label: 'Preparing', count: stats.preparingOrders, color: 'text-indigo-600' },
+                { label: 'Ready', count: stats.readyOrders, color: 'text-teal-600' },
+                { label: 'Out for Delivery', count: stats.outForDeliveryOrders, color: 'text-purple-600' },
+                { label: 'Delivered', count: stats.deliveredOrders, color: 'text-green-600' },
+                { label: 'Completed', count: stats.completedOrders, color: 'text-emerald-600' },
+                { label: 'Cancelled', count: stats.cancelledOrders, color: 'text-red-600' }
+            ]
+        },
+        {
+            title: 'Reservations',
+            value: stats.totalReservations,
+            icon: Calendar,
+            color: 'bg-purple-500',
+            link: '/admin/reservations',
+            buttonText: 'Manage Reservations',
+            description: 'Table bookings and reservations'
         }
     ];
 
@@ -76,7 +117,18 @@ const AdminDashboard = () => {
                                     <div className="flex items-baseline gap-2 mt-1">
                                         <span className="text-4xl font-bold text-gray-900 leading-tight">{card.value}</span>
                                     </div>
-                                    <p className="text-gray-400 text-sm mt-1">{card.description}</p>
+                                    <p className="text-gray-400 text-sm mt-1 mb-4">{card.description}</p>
+                                    
+                                    {card.breakdown && (
+                                        <div className="grid grid-cols-2 gap-2 mb-4 pt-4 border-t border-gray-50">
+                                            {card.breakdown.map((item, idx) => (
+                                                <div key={idx} className="flex justify-between items-center text-xs">
+                                                    <span className="text-gray-500">{item.label}:</span>
+                                                    <span className={`font-bold ${item.color}`}>{item.count}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                     
                                     <div className="mt-8 pt-6 border-t border-gray-50">
                                         <Link 

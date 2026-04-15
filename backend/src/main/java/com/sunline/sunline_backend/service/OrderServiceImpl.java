@@ -170,6 +170,18 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public long countOrdersByStatus(OrderStatus status) {
+        return orderRepository.countByStatus(status);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long countAllOrders() {
+        return orderRepository.count();
+    }
+
     private OrderDto mapToDto(Order order) {
         return OrderDto.builder()
                 .id(order.getId())

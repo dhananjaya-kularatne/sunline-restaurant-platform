@@ -1,6 +1,7 @@
 package com.sunline.sunline_backend.repository;
 
 import com.sunline.sunline_backend.entity.Order;
+import com.sunline.sunline_backend.entity.OrderStatus;
 import com.sunline.sunline_backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -17,4 +18,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT DISTINCT o FROM Order o LEFT JOIN FETCH o.items i LEFT JOIN FETCH i.menuItem ORDER BY o.createdAt DESC")
     List<Order> findAllWithItems();
+
+    long countByStatus(OrderStatus status);
 }
