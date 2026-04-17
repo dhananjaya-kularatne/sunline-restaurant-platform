@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/menu")
@@ -39,6 +40,16 @@ public class MenuItemController {
             return new RecommendationResponse(false, menuItemService.getTrendingMenuItems(limit));
         }
         return menuItemService.getRecommendations(userDetails.getUsername(), limit);
+    }
+
+    @GetMapping("/frequently-ordered-together")
+    public List<MenuItemDTO> getFrequentlyOrderedTogether(
+            @RequestParam(required = false) List<Long> itemIds,
+            @RequestParam(defaultValue = "4") int limit) {
+        if (itemIds == null || itemIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return menuItemService.getFrequentlyOrderedTogether(itemIds, limit);
     }
 
     @GetMapping("/all")

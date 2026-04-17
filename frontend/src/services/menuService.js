@@ -66,6 +66,17 @@ const menuService = {
         }
     },
 
+    getFrequentlyOrderedTogether: async (itemIds, limit = 4) => {
+        try {
+            const params = itemIds.map(id => `itemIds=${id}`).join('&');
+            const response = await api.get(`/menu/frequently-ordered-together?${params}&limit=${limit}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching frequently ordered together:', error);
+            throw error;
+        }
+    },
+
     getWishlist: async () => {
         const response = await api.get('/user/wishlist');
         return response.data;

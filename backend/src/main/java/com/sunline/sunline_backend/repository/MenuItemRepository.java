@@ -21,4 +21,7 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 
     @Query("SELECT oi.menuItem FROM OrderItem oi WHERE oi.order.user = :user AND oi.menuItem.isAvailable = true GROUP BY oi.menuItem ORDER BY SUM(oi.quantity) DESC")
     List<MenuItem> findPersonalizedMenuItems(@Param("user") User user, Pageable pageable);
+
+    @Query("SELECT oi.menuItem FROM OrderItem oi WHERE oi.order IN (SELECT DISTINCT oi2.order FROM OrderItem oi2 WHERE oi2.menuItem.id IN :cartItemIds) AND oi.menuItem.id NOT IN :cartItemIds AND oi.menuItem.isAvailable = true GROUP BY oi.menuItem ORDER BY COUNT(DISTINCT oi.order) DESC")
+    List<MenuItem> findFrequentlyOrderedTogether(@Param("cartItemIds") List<Long> cartItemIds, Pageable pageable);
 }

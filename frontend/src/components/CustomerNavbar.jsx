@@ -13,12 +13,13 @@ const NAV_LINKS = [
 
 const CustomerNavbar = () => {
     const { user, logout } = useAuth();
-    const { totalCount } = useCart();
+    const { totalCount, clearCart } = useCart();
     const navigate = useNavigate();
     const location = useLocation();
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleLogout = () => {
+        clearCart();
         logout();
         navigate('/login');
     };

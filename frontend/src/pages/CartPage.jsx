@@ -3,6 +3,7 @@ import { useCart } from '../context/CartContext';
 import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag, MessageSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { FOOD_PLACEHOLDER } from '../utils/imageUtils';
+import FrequentlyOrderedTogether from '../components/FrequentlyOrderedTogether';
 
 const CartPage = () => {
     const { cartItems, removeFromCart, updateQuantity, totalPrice, totalCount } = useCart();
@@ -149,6 +150,8 @@ const CartPage = () => {
                         </div>
                     </div>
                 </div>
+
+                <FrequentlyOrderedTogether />
             </div>
         </div>
     );
