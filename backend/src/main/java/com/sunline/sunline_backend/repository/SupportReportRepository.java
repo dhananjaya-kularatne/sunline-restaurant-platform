@@ -11,4 +11,6 @@ public interface SupportReportRepository extends JpaRepository<SupportReport, Lo
     List<SupportReport> findByEmailAddressOrderByCreatedAtDesc(String emailAddress);
     
     List<SupportReport> findByHiddenFromAdminFalseOrderByCreatedAtDesc();
+
+    long countByStatus(String status);
 }

@@ -142,4 +142,8 @@ public class FoodPostService {
         post.setRemoved(true);
         foodPostRepository.save(post);
     }
+
+    public long countAllPosts() {
+        return foodPostRepository.count();
+    }
 }

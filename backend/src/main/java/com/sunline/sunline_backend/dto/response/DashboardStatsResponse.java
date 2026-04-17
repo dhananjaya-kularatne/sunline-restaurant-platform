@@ -22,4 +22,7 @@ public class DashboardStatsResponse {
     private long completedOrders;
     private long cancelledOrders;
     private long totalReservations;
+    private long totalPosts;
+    private long openSupportReports;
+    private double averageRating;
 }
