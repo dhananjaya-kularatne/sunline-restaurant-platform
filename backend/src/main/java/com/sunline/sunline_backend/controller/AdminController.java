@@ -9,6 +9,7 @@ import com.sunline.sunline_backend.service.UserService;
 import com.sunline.sunline_backend.service.FoodPostService;
 import com.sunline.sunline_backend.service.OrderService;
 import com.sunline.sunline_backend.service.ReservationService;
+import com.sunline.sunline_backend.service.SupportReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,6 +34,9 @@ public class AdminController {
 
     @Autowired
     private ReservationService reservationService;
+
+    @Autowired
+    private SupportReportService supportReportService;
     
     @GetMapping("/dashboard/stats")
     public ResponseEntity<DashboardStatsResponse> getDashboardStats() {
@@ -49,6 +53,9 @@ public class AdminController {
                 .completedOrders(orderService.countOrdersByStatus(OrderStatus.COMPLETED))
                 .cancelledOrders(orderService.countOrdersByStatus(OrderStatus.CANCELLED))
                 .totalReservations(reservationService.countAllReservations())
+                .totalPosts(foodPostService.countAllPosts())
+                .openSupportReports(supportReportService.countOpenSupportReports())
+                .averageRating(4.5) // Placeholder: Replace with real logic once MenuItem rating system is implemented
                 .build();
         return ResponseEntity.ok(stats);
     }

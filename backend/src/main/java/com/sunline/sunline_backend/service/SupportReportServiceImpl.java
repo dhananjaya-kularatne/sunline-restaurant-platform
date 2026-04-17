@@ -64,4 +64,9 @@ public class SupportReportServiceImpl implements SupportReportService {
         report.setStatus(status);
         return repository.save(report);
     }
+
+    @Override
+    public long countOpenSupportReports() {
+        return repository.countByStatus("PENDING");
+    }
 }

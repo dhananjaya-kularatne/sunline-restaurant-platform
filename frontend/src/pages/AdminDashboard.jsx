@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Utensils, ArrowRight, TrendingUp, ShoppingBag, Calendar } from 'lucide-react';
+import { Users, Utensils, ArrowRight, TrendingUp, ShoppingBag, Calendar, Share2, MessageCircle, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AdminSidebar from '../components/AdminSidebar';
 import adminService from '../services/adminService';
@@ -17,7 +17,10 @@ const AdminDashboard = () => {
         deliveredOrders: 0,
         completedOrders: 0,
         cancelledOrders: 0,
-        totalReservations: 0
+        totalReservations: 0,
+        totalPosts: 0,
+        openSupportReports: 0,
+        averageRating: 0
     });
     const [loading, setLoading] = useState(true);
 
@@ -81,6 +84,33 @@ const AdminDashboard = () => {
             link: '/admin/reservations',
             buttonText: 'Manage Reservations',
             description: 'Table bookings and reservations'
+        },
+        {
+            title: 'Social Feed',
+            value: stats.totalPosts,
+            icon: Share2,
+            color: 'bg-pink-500',
+            link: '/admin/posts',
+            buttonText: 'Manage Feed',
+            description: 'Community posts and shared food photos'
+        },
+        {
+            title: 'Support Reports',
+            value: stats.openSupportReports,
+            icon: MessageCircle,
+            color: 'bg-red-500',
+            link: '/admin/support',
+            buttonText: 'Manage Support',
+            description: 'Open customer support requests'
+        },
+        {
+            title: 'Average Rating',
+            value: stats.averageRating ? stats.averageRating.toFixed(1) : '0.0',
+            icon: Star,
+            color: 'bg-yellow-500',
+            link: '/admin/ratings',
+            buttonText: 'Manage Ratings',
+            description: 'Average rating across all menu items'
         }
     ];
 

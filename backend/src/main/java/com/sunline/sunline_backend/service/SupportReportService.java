@@ -11,4 +11,5 @@ public interface SupportReportService {
     List<SupportReport> getAllReports();
     void deleteSupportReport(Long id);
     SupportReport updateReportStatus(Long id, String status);
+    long countOpenSupportReports();
 }

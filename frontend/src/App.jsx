@@ -25,6 +25,7 @@ import AdminSupportManagement from './pages/AdminSupportManagement';
 import AdminReservationManagement from './pages/AdminReservationManagement';
 import AdminOrdersPage from './pages/AdminOrdersPage';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminRatingsManagement from './pages/AdminRatingsManagement';
 import ReservationsPage from './pages/ReservationsPage';
 import MyReservationsPage from './pages/MyReservationsPage';
 import CheckoutPage from './pages/CheckoutPage';
@@ -65,6 +66,7 @@ function AppContent() {
                 <Route path="/admin/support" element={<AdminSupportManagement />} />
                 <Route path="/admin/reservations" element={<AdminReservationManagement />} />
                 <Route path="/admin/orders" element={<AdminOrdersPage />} />
+                <Route path="/admin/ratings" element={<AdminRatingsManagement />} />
                 <Route path="/reservations" element={<MyReservationsPage />} />
                 <Route path="/book-table" element={<ReservationsPage />} />
                 <Route path="/create-post" element={<CreatePostPage />} />
