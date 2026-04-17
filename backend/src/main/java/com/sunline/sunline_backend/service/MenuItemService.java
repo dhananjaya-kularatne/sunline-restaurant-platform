@@ -101,6 +101,16 @@ public class MenuItemService {
         return new RecommendationResponse(true, personalized);
     }
 
+    public List<MenuItemDTO> getFrequentlyOrderedTogether(List<Long> cartItemIds, int limit) {
+        if (cartItemIds == null || cartItemIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return menuItemRepository.findFrequentlyOrderedTogether(cartItemIds, PageRequest.of(0, limit))
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     public void deleteMenuItem(Long id) {
         if (!menuItemRepository.existsById(id)) {
             throw new RuntimeException("Menu item not found with id: " + id);
