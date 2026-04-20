@@ -19,4 +19,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllWithItems();
 
     long countByUser(User user);
+
+    @Query("SELECT COUNT(o) > 0 FROM Order o JOIN o.items i " +
+           "WHERE o.user.email = :email AND i.menuItem.id = :menuItemId " +
+           "AND (o.status = 'DELIVERED' OR o.status = 'COMPLETED')")
+    boolean hasUserOrderedItemWithStatus(@Param("email") String email, @Param("menuItemId") Long menuItemId);
 }

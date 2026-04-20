@@ -11,12 +11,14 @@ public class MenuItemDTO {
     private List<String> categories = new ArrayList<>();
     private String imageUrl;
     private Boolean isAvailable;
+    private Double averageRating;
+    private Long ratingCount;
 
     public MenuItemDTO() {
     }
 
     public MenuItemDTO(Long id, String name, String description, Double price, List<String> categories, String imageUrl,
-            Boolean isAvailable) {
+            Boolean isAvailable, Double averageRating, Long ratingCount) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -24,6 +26,8 @@ public class MenuItemDTO {
         this.categories = categories != null ? categories : new ArrayList<>();
         this.imageUrl = imageUrl;
         this.isAvailable = isAvailable;
+        this.averageRating = averageRating;
+        this.ratingCount = ratingCount;
     }
 
     public static MenuItemDTOBuilder builder() {
@@ -87,6 +91,22 @@ public class MenuItemDTO {
         this.isAvailable = isAvailable;
     }
 
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public Long getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(Long ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
     public static class MenuItemDTOBuilder {
         private Long id;
         private String name;
@@ -95,6 +115,8 @@ public class MenuItemDTO {
         private List<String> categories = new ArrayList<>();
         private String imageUrl;
         private Boolean isAvailable;
+        private Double averageRating;
+        private Long ratingCount;
 
         public MenuItemDTOBuilder id(Long id) {
             this.id = id;
@@ -131,8 +153,18 @@ public class MenuItemDTO {
             return this;
         }
 
+        public MenuItemDTOBuilder averageRating(Double averageRating) {
+            this.averageRating = averageRating;
+            return this;
+        }
+
+        public MenuItemDTOBuilder ratingCount(Long ratingCount) {
+            this.ratingCount = ratingCount;
+            return this;
+        }
+
         public MenuItemDTO build() {
-            return new MenuItemDTO(id, name, description, price, categories, imageUrl, isAvailable);
+            return new MenuItemDTO(id, name, description, price, categories, imageUrl, isAvailable, averageRating, ratingCount);
         }
     }
 }
