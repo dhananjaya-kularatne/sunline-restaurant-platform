@@ -7,6 +7,7 @@ import com.sunline.sunline_backend.entity.User;
 import com.sunline.sunline_backend.repository.MenuItemRepository;
 import com.sunline.sunline_backend.repository.OrderRepository;
 import com.sunline.sunline_backend.repository.UserRepository;
+import com.sunline.sunline_backend.repository.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -22,14 +23,17 @@ public class MenuItemService {
     private final MenuItemRepository menuItemRepository;
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
+    private final RatingRepository ratingRepository;
 
     @Autowired
     public MenuItemService(MenuItemRepository menuItemRepository,
                            UserRepository userRepository,
-                           OrderRepository orderRepository) {
+                           OrderRepository orderRepository,
+                           RatingRepository ratingRepository) {
         this.menuItemRepository = menuItemRepository;
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
+        this.ratingRepository = ratingRepository;
     }
 
     public List<MenuItemDTO> getAllAvailableMenuItems() {
@@ -127,6 +131,8 @@ public class MenuItemService {
                 .categories(new ArrayList<>(item.getCategories()))
                 .imageUrl(item.getImageUrl())
                 .isAvailable(item.getIsAvailable())
+                .averageRating(ratingRepository.getAverageRating(item.getId()) != null ? ratingRepository.getAverageRating(item.getId()) : 0.0)
+                .ratingCount(ratingRepository.countByMenuItemId(item.getId()))
                 .build();
     }
 

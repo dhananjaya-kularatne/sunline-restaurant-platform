@@ -5,6 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import { ShoppingCart } from 'lucide-react';
 import AddToCartModal from '../components/AddToCartModal';
 import { FOOD_PLACEHOLDER } from '../utils/imageUtils';
+import StarRating from '../components/StarRating';
+import ratingService from '../services/ratingService';
 
 const MenuPage = () => {
     const [menuItems, setMenuItems] = useState([]);
@@ -89,6 +91,31 @@ const MenuPage = () => {
                 setWishlistIds(prev => new Set(prev).add(itemId));
             }
         } catch (err) {}
+    };
+
+    const handleRateItem = async (itemId, stars) => {
+        if (!user) {
+            setWishlistMessage('Please log in to rate this dish.');
+            setTimeout(() => setWishlistMessage(''), 3000);
+            return;
+        }
+
+        try {
+            await ratingService.submitRating({
+                menuItemId: itemId,
+                stars: stars,
+                comment: "" // Default empty comment for this phase
+            });
+            setWishlistMessage('Rating submitted! Thank you.');
+            setTimeout(() => setWishlistMessage(''), 3000);
+            
+            // Refresh menu items to show updated average
+            const data = await menuService.getAvailableMenuItems();
+            setMenuItems(data);
+        } catch (err) {
+            setWishlistMessage(err.message || 'Failed to submit rating.');
+            setTimeout(() => setWishlistMessage(''), 3000);
+        }
     };
 
     if (loading) {
@@ -234,9 +261,20 @@ const MenuPage = () => {
                                         </span>
                                     ))}
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#FF7F50] transition-colors">
+                                <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-[#FF7F50] transition-colors">
                                     {item.name}
                                 </h3>
+                                <div className="flex items-center space-x-2 mb-3">
+                                    <StarRating 
+                                        rating={item.averageRating || 0} 
+                                        interactive={true} 
+                                        onRate={(stars) => handleRateItem(item.id, stars)}
+                                        size={16}
+                                    />
+                                    {item.ratingCount > 0 && (
+                                        <span className="text-xs text-gray-400">({item.ratingCount})</span>
+                                    )}
+                                </div>
                                 <p className="text-sm text-gray-500 leading-relaxed mb-6 line-clamp-3">
                                     {item.description}
                                 </p>
