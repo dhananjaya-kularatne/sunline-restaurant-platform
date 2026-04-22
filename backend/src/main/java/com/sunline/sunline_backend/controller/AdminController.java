@@ -10,6 +10,8 @@ import com.sunline.sunline_backend.service.FoodPostService;
 import com.sunline.sunline_backend.service.OrderService;
 import com.sunline.sunline_backend.service.ReservationService;
 import com.sunline.sunline_backend.service.SupportReportService;
+import com.sunline.sunline_backend.service.AdminReportService;
+import com.sunline.sunline_backend.dto.response.SalesReportResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,6 +39,9 @@ public class AdminController {
 
     @Autowired
     private SupportReportService supportReportService;
+
+    @Autowired
+    private AdminReportService adminReportService;
     
     @GetMapping("/dashboard/stats")
     public ResponseEntity<DashboardStatsResponse> getDashboardStats() {
@@ -91,6 +96,11 @@ public class AdminController {
     public ResponseEntity<?> removePost(@PathVariable Long postId) {
         foodPostService.removePost(postId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/reports/sales")
+    public ResponseEntity<SalesReportResponse> getSalesReport(@RequestParam int year, @RequestParam int month) {
+        return ResponseEntity.ok(adminReportService.generateMonthlySalesReport(year, month));
     }
 
     private UserResponse mapToResponse(User user) {

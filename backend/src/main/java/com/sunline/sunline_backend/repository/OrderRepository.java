@@ -20,4 +20,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllWithItems();
 
     long countByStatus(OrderStatus status);
+
+    @Query("SELECT DISTINCT o FROM Order o LEFT JOIN FETCH o.items i LEFT JOIN FETCH i.menuItem WHERE o.createdAt >= :startDate AND o.createdAt < :endDate AND o.status IN :statuses")
+    List<Order> findOrdersForReport(
+            @Param("startDate") java.time.LocalDateTime startDate,
+            @Param("endDate") java.time.LocalDateTime endDate,
+            @Param("statuses") List<OrderStatus> statuses
+    );
 }
