@@ -25,6 +25,7 @@ import AdminSupportManagement from './pages/AdminSupportManagement';
 import AdminReservationManagement from './pages/AdminReservationManagement';
 import AdminOrdersPage from './pages/AdminOrdersPage';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminReportsPage from './pages/AdminReportsPage';
 import AdminRatingsManagement from './pages/AdminRatingsManagement';
 import ReservationsPage from './pages/ReservationsPage';
 import MyReservationsPage from './pages/MyReservationsPage';
@@ -60,6 +61,7 @@ function AppContent() {
                 <Route path="/user/:userId" element={<ProfilePage />} />
                 <Route path="/my-reports" element={<UserReportsPage />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/reports" element={<AdminReportsPage />} />
                 <Route path="/admin/users" element={<AdminUserManagement />} />
                 <Route path="/admin/menu" element={<AdminMenuManagement />} />
                 <Route path="/admin/posts" element={<AdminPostManagement />} />
