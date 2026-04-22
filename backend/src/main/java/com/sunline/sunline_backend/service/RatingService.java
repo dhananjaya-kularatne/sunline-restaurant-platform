@@ -34,24 +34,25 @@ public class RatingService {
         MenuItem menuItem = menuItemRepository.findById(request.getMenuItemId())
                 .orElseThrow(() -> new ResourceNotFoundException("Menu item not found"));
 
-        // Validation 1: Has ordered the item and it's delivered/completed
+        // Validation: Has ordered the item and it's delivered/completed
         boolean hasOrdered = orderRepository.hasUserOrderedItemWithStatus(userEmail, request.getMenuItemId());
         if (!hasOrdered) {
             throw new IllegalStateException("You can only rate items you have ordered and had delivered.");
         }
 
-        // Validation 2: Already rated?
-        if (ratingRepository.existsByUserAndMenuItem(user, menuItem)) {
-            // For now, we don't implement update, so we throw error
-            throw new IllegalStateException("You have already rated this item.");
-        }
-
-        Rating rating = Rating.builder()
-                .user(user)
-                .menuItem(menuItem)
-                .stars(request.getStars())
-                .comment(request.getComment())
-                .build();
+        // Check if rating already exists - if so, we update it (Edit functionality)
+        Rating rating = ratingRepository.findByUserAndMenuItem(user, menuItem)
+                .map(existingRating -> {
+                    existingRating.setStars(request.getStars());
+                    existingRating.setComment(request.getComment());
+                    return existingRating;
+                })
+                .orElseGet(() -> Rating.builder()
+                        .user(user)
+                        .menuItem(menuItem)
+                        .stars(request.getStars())
+                        .comment(request.getComment())
+                        .build());
 
         Rating savedRating = ratingRepository.save(rating);
 
@@ -62,6 +63,28 @@ public class RatingService {
         return ratingRepository.findByMenuItemId(menuItemId).stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
+    }
+
+    public List<RatingResponse> getUserRatings(String userEmail) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        
+        return ratingRepository.findAll().stream()
+                .filter(r -> r.getUser().getId().equals(user.getId()))
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteRating(Long ratingId, String userEmail) {
+        Rating rating = ratingRepository.findById(ratingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Rating not found"));
+
+        if (!rating.getUser().getEmail().equals(userEmail)) {
+            throw new IllegalStateException("You can only delete your own ratings.");
+        }
+
+        ratingRepository.delete(rating);
     }
 
     public Double getAverageRating(Long menuItemId) {

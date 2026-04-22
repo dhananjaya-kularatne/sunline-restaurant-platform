@@ -2,8 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import menuService from '../services/menuService';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Trash2 } from 'lucide-react';
 import AddToCartModal from '../components/AddToCartModal';
+import ConfirmModal from '../components/ConfirmModal';
 import { FOOD_PLACEHOLDER } from '../utils/imageUtils';
 import StarRating from '../components/StarRating';
 import ratingService from '../services/ratingService';
@@ -16,7 +17,10 @@ const MenuPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const { user } = useAuth();
     const [wishlistIds, setWishlistIds] = useState(new Set());
+    const [userRatings, setUserRatings] = useState({}); // { menuItemId: ratingObject }
     const [wishlistMessage, setWishlistMessage] = useState('');
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState(null);
 
     useEffect(() => {
         const fetchMenu = async () => {
@@ -36,15 +40,27 @@ const MenuPage = () => {
     useEffect(() => {
         if (!user) {
             setWishlistIds(new Set());
+            setUserRatings({});
             return;
         }
-        const fetchWishlist = async () => {
+        const fetchUserData = async () => {
             try {
-                const data = await menuService.getWishlist();
-                setWishlistIds(new Set(data.map(item => item.id)));
-            } catch (err) {}
+                // Fetch Wishlist
+                const wishlistData = await menuService.getWishlist();
+                setWishlistIds(new Set(wishlistData.map(item => item.id)));
+
+                // Fetch User Ratings
+                const ratingsData = await ratingService.getUserRatings();
+                const ratingsMap = {};
+                ratingsData.forEach(r => {
+                    ratingsMap[r.menuItemId] = r;
+                });
+                setUserRatings(ratingsMap);
+            } catch (err) {
+                console.error("Failed to fetch user data", err);
+            }
         };
-        fetchWishlist();
+        fetchUserData();
     }, [user]);
 
     // Extract unique categories from all items
@@ -101,12 +117,19 @@ const MenuPage = () => {
         }
 
         try {
-            await ratingService.submitRating({
+            const response = await ratingService.submitRating({
                 menuItemId: itemId,
                 stars: stars,
-                comment: "" // Default empty comment for this phase
+                comment: "" 
             });
-            setWishlistMessage('Rating submitted! Thank you.');
+            
+            // Update local user ratings state
+            setUserRatings(prev => ({
+                ...prev,
+                [itemId]: response
+            }));
+
+            setWishlistMessage(userRatings[itemId] ? 'Rating updated!' : 'Rating submitted! Thank you.');
             setTimeout(() => setWishlistMessage(''), 3000);
             
             // Refresh menu items to show updated average
@@ -115,6 +138,40 @@ const MenuPage = () => {
         } catch (err) {
             setWishlistMessage(err.message || 'Failed to submit rating.');
             setTimeout(() => setWishlistMessage(''), 3000);
+        }
+    };
+
+    const handleDeleteRating = async (itemId) => {
+        setItemToDelete(itemId);
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDeleteRating = async () => {
+        if (!itemToDelete) return;
+        const rating = userRatings[itemToDelete];
+        if (!rating) return;
+
+        try {
+            await ratingService.deleteRating(rating.id);
+            
+            // Update local state
+            setUserRatings(prev => {
+                const next = { ...prev };
+                delete next[itemToDelete];
+                return next;
+            });
+
+            setWishlistMessage('Rating removed.');
+            setTimeout(() => setWishlistMessage(''), 3000);
+
+            // Refresh menu items
+            const data = await menuService.getAvailableMenuItems();
+            setMenuItems(data);
+        } catch (err) {
+            setWishlistMessage(err.message || 'Failed to delete rating.');
+            setTimeout(() => setWishlistMessage(''), 3000);
+        } finally {
+            setItemToDelete(null);
         }
     };
 
@@ -264,15 +321,27 @@ const MenuPage = () => {
                                 <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-[#FF7F50] transition-colors">
                                     {item.name}
                                 </h3>
-                                <div className="flex items-center space-x-2 mb-3">
-                                    <StarRating 
-                                        rating={item.averageRating || 0} 
-                                        interactive={true} 
-                                        onRate={(stars) => handleRateItem(item.id, stars)}
-                                        size={16}
-                                    />
-                                    {item.ratingCount > 0 && (
-                                        <span className="text-xs text-gray-400">({item.ratingCount})</span>
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="flex items-center space-x-2">
+                                        <StarRating 
+                                            rating={userRatings[item.id]?.stars || item.averageRating || 0} 
+                                            interactive={true} 
+                                            onRate={(stars) => handleRateItem(item.id, stars)}
+                                            size={16}
+                                            className={userRatings[item.id] ? "ring-1 ring-yellow-200 rounded-lg p-1 bg-yellow-50/50" : ""}
+                                        />
+                                        {item.ratingCount > 0 && (
+                                            <span className="text-xs text-gray-400">({item.ratingCount})</span>
+                                        )}
+                                    </div>
+                                    {userRatings[item.id] && (
+                                        <button 
+                                            onClick={() => handleDeleteRating(item.id)}
+                                            className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                                            title="Delete my rating"
+                                        >
+                                            <Trash2 size={14} />
+                                        </button>
                                     )}
                                 </div>
                                 <p className="text-sm text-gray-500 leading-relaxed mb-6 line-clamp-3">
@@ -319,6 +388,16 @@ const MenuPage = () => {
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                     onAdd={addToCart}
+                />
+
+                <ConfirmModal 
+                    isOpen={isDeleteModalOpen}
+                    onClose={() => setIsDeleteModalOpen(false)}
+                    onConfirm={confirmDeleteRating}
+                    title="Delete Rating?"
+                    message="Are you sure you want to remove your feedback for this dish? This will reset the rating to the system average."
+                    confirmText="Delete"
+                    type="danger"
                 />
             </div>
             {wishlistMessage && (
