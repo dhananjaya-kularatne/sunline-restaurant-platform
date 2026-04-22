@@ -19,6 +19,13 @@ const ratingService = {
     getRatingCount: async (menuItemId) => {
         const response = await api.get(`/ratings/menu-item/${menuItemId}/count`);
         return response.data;
+    },
+    getUserRatings: async () => {
+        const response = await api.get('/ratings/me');
+        return response.data;
+    },
+    deleteRating: async (ratingId) => {
+        await api.delete(`/ratings/${ratingId}`);
     }
 };
 

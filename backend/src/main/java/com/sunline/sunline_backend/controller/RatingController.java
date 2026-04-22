@@ -35,8 +35,17 @@ public class RatingController {
         return ResponseEntity.ok(ratingService.getAverageRating(id));
     }
 
-    @GetMapping("/menu-item/{id}/count")
-    public ResponseEntity<Long> getRatingCount(@PathVariable Long id) {
-        return ResponseEntity.ok(ratingService.getRatingCount(id));
+    @GetMapping("/me")
+    public ResponseEntity<List<RatingResponse>> getUserRatings(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(ratingService.getUserRatings(userDetails.getUsername()));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRating(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Long id) {
+        ratingService.deleteRating(id, userDetails.getUsername());
+        return ResponseEntity.noContent().build();
     }
 }
