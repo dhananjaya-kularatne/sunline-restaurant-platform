@@ -330,8 +330,12 @@ const MenuPage = () => {
                                             size={16}
                                             className={userRatings[item.id] ? "ring-1 ring-yellow-200 rounded-lg p-1 bg-yellow-50/50" : ""}
                                         />
-                                        {item.ratingCount > 0 && (
-                                            <span className="text-xs text-gray-400">({item.ratingCount})</span>
+                                        {item.ratingCount > 0 ? (
+                                            <span className="text-xs text-secondary font-semibold">
+                                                {item.averageRating.toFixed(1)} <span className="text-gray-400 font-normal">({item.ratingCount})</span>
+                                            </span>
+                                        ) : (
+                                            <span className="text-[10px] text-gray-400 font-medium italic">No ratings yet</span>
                                         )}
                                     </div>
                                     {userRatings[item.id] && (
