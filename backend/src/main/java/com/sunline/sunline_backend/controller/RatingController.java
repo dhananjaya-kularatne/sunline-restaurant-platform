@@ -41,11 +41,19 @@ public class RatingController {
         return ResponseEntity.ok(ratingService.getUserRatings(userDetails.getUsername()));
     }
 
+    @GetMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<RatingResponse>> getAllRatings() {
+        return ResponseEntity.ok(ratingService.getAllRatings());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRating(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long id) {
-        ratingService.deleteRating(id, userDetails.getUsername());
+        boolean isAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        ratingService.deleteRating(id, userDetails.getUsername(), isAdmin);
         return ResponseEntity.noContent().build();
     }
 }
