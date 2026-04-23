@@ -1,10 +1,17 @@
 package com.sunline.sunline_backend.controller;
 
 import com.sunline.sunline_backend.dto.request.UserRoleRequest;
+import com.sunline.sunline_backend.dto.response.DashboardStatsResponse;
 import com.sunline.sunline_backend.dto.response.UserResponse;
+import com.sunline.sunline_backend.entity.OrderStatus;
 import com.sunline.sunline_backend.entity.User;
 import com.sunline.sunline_backend.service.UserService;
 import com.sunline.sunline_backend.service.FoodPostService;
+import com.sunline.sunline_backend.service.OrderService;
+import com.sunline.sunline_backend.service.ReservationService;
+import com.sunline.sunline_backend.service.SupportReportService;
+import com.sunline.sunline_backend.service.AdminReportService;
+import com.sunline.sunline_backend.dto.response.SalesReportResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +30,40 @@ public class AdminController {
 
     @Autowired
     private FoodPostService foodPostService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private ReservationService reservationService;
+
+    @Autowired
+    private SupportReportService supportReportService;
+
+    @Autowired
+    private AdminReportService adminReportService;
+    
+    @GetMapping("/dashboard/stats")
+    public ResponseEntity<DashboardStatsResponse> getDashboardStats() {
+        DashboardStatsResponse stats = DashboardStatsResponse.builder()
+                .totalUsers(userService.countAllUsers())
+                .totalMenuItems(userService.countAllMenuItems())
+                .totalOrders(orderService.countAllOrders())
+                .pendingOrders(orderService.countOrdersByStatus(OrderStatus.PENDING))
+                .confirmedOrders(orderService.countOrdersByStatus(OrderStatus.CONFIRMED))
+                .preparingOrders(orderService.countOrdersByStatus(OrderStatus.PREPARING))
+                .readyOrders(orderService.countOrdersByStatus(OrderStatus.READY))
+                .outForDeliveryOrders(orderService.countOrdersByStatus(OrderStatus.OUT_FOR_DELIVERY))
+                .deliveredOrders(orderService.countOrdersByStatus(OrderStatus.DELIVERED))
+                .completedOrders(orderService.countOrdersByStatus(OrderStatus.COMPLETED))
+                .cancelledOrders(orderService.countOrdersByStatus(OrderStatus.CANCELLED))
+                .totalReservations(reservationService.countAllReservations())
+                .totalPosts(foodPostService.countAllPosts())
+                .openSupportReports(supportReportService.countOpenSupportReports())
+                .averageRating(4.5) // Placeholder: Replace with real logic once MenuItem rating system is implemented
+                .build();
+        return ResponseEntity.ok(stats);
+    }
 
     @GetMapping("/users")
     public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(required = false) String search) {
@@ -55,6 +96,11 @@ public class AdminController {
     public ResponseEntity<?> removePost(@PathVariable Long postId) {
         foodPostService.removePost(postId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/reports/sales")
+    public ResponseEntity<SalesReportResponse> getSalesReport(@RequestParam int year, @RequestParam int month) {
+        return ResponseEntity.ok(adminReportService.generateMonthlySalesReport(year, month));
     }
 
     private UserResponse mapToResponse(User user) {

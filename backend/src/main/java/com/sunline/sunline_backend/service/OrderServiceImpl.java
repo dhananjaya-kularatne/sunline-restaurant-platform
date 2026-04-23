@@ -32,13 +32,17 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final MenuItemRepository menuItemRepository;
+    private final EmailService emailService;
 
     @Override
     @Transactional
     public OrderDto placeOrder(String userEmail, PlaceOrderRequest request) {
-        log.info("Placing order for user: {}", userEmail);
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        log.info("Placing order for user/guest: {}", userEmail != null ? userEmail : "GUEST");
+        User user = null;
+        if (userEmail != null) {
+            user = userRepository.findByEmail(userEmail)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        }
 
         Order order = Order.builder()
                 .user(user)
@@ -63,6 +67,21 @@ public class OrderServiceImpl implements OrderService {
 
         Order savedOrder = orderRepository.save(order);
         log.info("Order saved with ID: {}", savedOrder.getId());
+
+        // Send order confirmation email only for guests
+        if (user == null) {
+            try {
+                String mailBody = String.format("Dear %s,\n\nWe have received your order (ID: %d).\n\n" +
+                        "Your items will be prepared and delivered to: %s\n\nTotal Amount: LKR %.2f\n\n" +
+                        "Thank you for dining with us!\nSunline Restaurant", 
+                        savedOrder.getFullName(), savedOrder.getId(), savedOrder.getAddress(), savedOrder.getTotalPrice());
+                emailService.sendEmail(savedOrder.getEmail(), "Order Confirmation - Sunline Restaurant", mailBody);
+                log.info("Order confirmation email sent to guest: {}", savedOrder.getEmail());
+            } catch (Exception e) {
+                log.error("Failed to send order confirmation email to guest: {}", savedOrder.getEmail(), e);
+            }
+        }
+
         return mapToDto(savedOrder);
     }
 
@@ -170,10 +189,22 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public long countOrdersByStatus(OrderStatus status) {
+        return orderRepository.countByStatus(status);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long countAllOrders() {
+        return orderRepository.count();
+    }
+
     private OrderDto mapToDto(Order order) {
         return OrderDto.builder()
                 .id(order.getId())
-                .userId(order.getUser().getId())
+                .userId(order.getUser() != null ? order.getUser().getId() : null)
                 .totalPrice(order.getTotalPrice())
                 .status(order.getStatus())
                 .fullName(order.getFullName())

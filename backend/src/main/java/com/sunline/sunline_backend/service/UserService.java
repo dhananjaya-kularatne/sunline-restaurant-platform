@@ -27,6 +27,14 @@ import java.util.UUID;
 @Service
 public class UserService implements UserDetailsService {
 
+    public long countAllUsers() {
+        return userRepository.count();
+    }
+
+    public long countAllMenuItems() {
+        return menuItemRepository.count();
+    }
+
     public List<User> getAllUsers(String search) {
         if (search != null && !search.isEmpty()) {
             return userRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search);

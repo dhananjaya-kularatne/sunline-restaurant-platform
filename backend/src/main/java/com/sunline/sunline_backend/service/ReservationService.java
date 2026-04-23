@@ -65,6 +65,10 @@ public class ReservationService {
         return mapToDto(updatedReservation);
     }
 
+    public long countAllReservations() {
+        return reservationRepository.count();
+    }
+
     private ReservationDto mapToDto(Reservation reservation) {
         return ReservationDto.builder()
                 .id(reservation.getId())

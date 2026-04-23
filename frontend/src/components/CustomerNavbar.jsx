@@ -130,11 +130,11 @@ const CustomerNavbar = () => {
                                     )}
                                     {user.role === 'ADMIN' && (
                                         <Link
-                                            to="/admin/users"
-                                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-[#FF7F50] transition-colors border-b border-gray-100"
+                                            to="/admin/dashboard"
+                                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100"
                                             onClick={() => setDropdownOpen(false)}
                                         >
-                                            <LayoutDashboard size={15} className="mr-2.5" /> Admin Dashboard
+                                            <LayoutDashboard size={16} className="mr-2" /> Admin
                                         </Link>
                                     )}
                                     {user.role === 'KITCHEN' && (

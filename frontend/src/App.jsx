@@ -24,6 +24,9 @@ import UserReportsPage from './pages/UserReportsPage';
 import AdminSupportManagement from './pages/AdminSupportManagement';
 import AdminReservationManagement from './pages/AdminReservationManagement';
 import AdminOrdersPage from './pages/AdminOrdersPage';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminReportsPage from './pages/AdminReportsPage';
+import AdminRatingsManagement from './pages/AdminRatingsManagement';
 import ReservationsPage from './pages/ReservationsPage';
 import MyReservationsPage from './pages/MyReservationsPage';
 import CheckoutPage from './pages/CheckoutPage';
@@ -35,11 +38,11 @@ import ChatbotWidget from './components/ChatbotWidget';
 
 function AppContent() {
     const location = useLocation();
-    
+
     // Check if the current route is a dashboard-style page
     const isDashboardPage = location.pathname.startsWith('/admin') ||
-                            location.pathname === '/kitchen' ||
-                            location.pathname === '/delivery';
+        location.pathname === '/kitchen' ||
+        location.pathname === '/delivery';
 
     // Different background colors as discussed
     const bgColor = isDashboardPage ? '#F8F9FA' : '#FDF8F3';
@@ -58,12 +61,15 @@ function AppContent() {
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/user/:userId" element={<ProfilePage />} />
                 <Route path="/my-reports" element={<UserReportsPage />} />
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/reports" element={<AdminReportsPage />} />
                 <Route path="/admin/users" element={<AdminUserManagement />} />
                 <Route path="/admin/menu" element={<AdminMenuManagement />} />
                 <Route path="/admin/posts" element={<AdminPostManagement />} />
                 <Route path="/admin/support" element={<AdminSupportManagement />} />
                 <Route path="/admin/reservations" element={<AdminReservationManagement />} />
                 <Route path="/admin/orders" element={<AdminOrdersPage />} />
+                <Route path="/admin/ratings-management" element={<AdminRatingsManagement />} />
                 <Route path="/admin/ratings" element={<AdminRatingsPage />} />
                 <Route path="/reservations" element={<MyReservationsPage />} />
                 <Route path="/book-table" element={<ReservationsPage />} />
