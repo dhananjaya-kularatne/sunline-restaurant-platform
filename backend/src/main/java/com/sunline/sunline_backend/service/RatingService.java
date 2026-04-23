@@ -59,12 +59,14 @@ public class RatingService {
         return mapToResponse(savedRating);
     }
 
+    @Transactional(readOnly = true)
     public List<RatingResponse> getRatingsByMenuItem(Long menuItemId) {
         return ratingRepository.findByMenuItemId(menuItemId).stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<RatingResponse> getUserRatings(String userEmail) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -75,12 +77,19 @@ public class RatingService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<RatingResponse> getAllRatings() {
+        return ratingRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
-    public void deleteRating(Long ratingId, String userEmail) {
+    public void deleteRating(Long ratingId, String userEmail, boolean isAdmin) {
         Rating rating = ratingRepository.findById(ratingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Rating not found"));
 
-        if (!rating.getUser().getEmail().equals(userEmail)) {
+        if (!isAdmin && !rating.getUser().getEmail().equals(userEmail)) {
             throw new IllegalStateException("You can only delete your own ratings.");
         }
 

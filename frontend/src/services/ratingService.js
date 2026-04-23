@@ -10,6 +10,10 @@ const ratingService = {
         const response = await api.get(`/ratings/menu-item/${menuItemId}`);
         return response.data;
     },
+    getAllRatings: async () => {
+        const response = await api.get('/ratings');
+        return response.data;
+    },
 
     getAverageRating: async (menuItemId) => {
         const response = await api.get(`/ratings/menu-item/${menuItemId}/average`);

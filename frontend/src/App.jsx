@@ -29,6 +29,7 @@ import MyReservationsPage from './pages/MyReservationsPage';
 import CheckoutPage from './pages/CheckoutPage';
 import MyOrdersPage from './pages/MyOrdersPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
+import AdminRatingsPage from './pages/AdminRatingsPage';
 import Footer from './components/Footer';
 import ChatbotWidget from './components/ChatbotWidget';
 
@@ -63,6 +64,7 @@ function AppContent() {
                 <Route path="/admin/support" element={<AdminSupportManagement />} />
                 <Route path="/admin/reservations" element={<AdminReservationManagement />} />
                 <Route path="/admin/orders" element={<AdminOrdersPage />} />
+                <Route path="/admin/ratings" element={<AdminRatingsPage />} />
                 <Route path="/reservations" element={<MyReservationsPage />} />
                 <Route path="/book-table" element={<ReservationsPage />} />
                 <Route path="/create-post" element={<CreatePostPage />} />
