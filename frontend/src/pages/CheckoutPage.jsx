@@ -31,6 +31,12 @@ const CheckoutPage = () => {
         setLoading(true);
         setError(null);
 
+        if (!formData.fullName || !formData.email || !formData.phone || !formData.address) {
+            setError("Please fill out all the delivery information fields.");
+            setLoading(false);
+            return;
+        }
+
         if (cartItems.length === 0) {
             setError("Your cart is empty. Cannot place an order.");
             setLoading(false);

@@ -25,7 +25,8 @@ public class OrderController {
     public ResponseEntity<OrderDto> placeOrder(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody PlaceOrderRequest request) {
-        return ResponseEntity.ok(orderService.placeOrder(userDetails.getUsername(), request));
+        String userEmail = userDetails != null ? userDetails.getUsername() : null;
+        return ResponseEntity.ok(orderService.placeOrder(userEmail, request));
     }
 
     @GetMapping("/my-orders")

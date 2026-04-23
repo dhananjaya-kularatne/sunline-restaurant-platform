@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**", "/uploads/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/feed").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/feed/posts/*/comments").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
                         .requestMatchers("/api/feed/**").authenticated()
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/api/user/wishlist", "/api/user/wishlist/**").authenticated()
