@@ -40,3 +40,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 *.log
+backend/startup_log*.txt
+
+# ========================
+# DEV ARTIFACTS
+# ========================
+backend/login_response.json
