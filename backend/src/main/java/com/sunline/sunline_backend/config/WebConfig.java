@@ -1,25 +1,20 @@
 package com.sunline.sunline_backend.config;
 
-import org.springframework.lang.NonNull;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${app.upload.dir}")
-    private String uploadDir;
+    @Autowired
+    private UploadPathConfig uploadPathConfig;
 
     @Override
     public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
-        Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
-        
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations(uploadPath.toUri().toString() + "/");
+                .addResourceLocations(uploadPathConfig.getResolvedPath().toUri().toString() + "/");
     }
 }

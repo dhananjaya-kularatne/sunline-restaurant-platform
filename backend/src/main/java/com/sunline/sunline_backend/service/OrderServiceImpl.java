@@ -168,7 +168,8 @@ public class OrderServiceImpl implements OrderService {
 
         boolean isAdmin = currentUser.getRole() == User.Role.ADMIN;
 
-        if (!isAdmin && !order.getUser().getEmail().equals(userEmail)) {
+        boolean isGuestOrder = order.getUser() == null;
+        if (!isAdmin && (isGuestOrder || !order.getUser().getEmail().equals(userEmail))) {
             throw new RuntimeException("Unauthorized to cancel this order");
         }
 

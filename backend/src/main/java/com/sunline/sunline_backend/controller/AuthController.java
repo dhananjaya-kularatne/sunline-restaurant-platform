@@ -8,6 +8,7 @@ import com.sunline.sunline_backend.dto.response.AuthResponse;
 import com.sunline.sunline_backend.entity.User;
 import com.sunline.sunline_backend.security.JwtTokenProvider;
 import com.sunline.sunline_backend.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,8 +51,10 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
-        userService.createPasswordResetToken(request.getEmail());
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request,
+                                            HttpServletRequest httpRequest) {
+        String origin = httpRequest.getHeader("Origin");
+        userService.createPasswordResetToken(request.getEmail(), origin);
         return ResponseEntity.ok("Reset link sent");
     }
 

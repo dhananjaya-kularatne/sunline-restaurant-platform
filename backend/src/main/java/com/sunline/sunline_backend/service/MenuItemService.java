@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -76,7 +77,8 @@ public class MenuItemService {
     }
 
     public List<MenuItemDTO> getTrendingMenuItems(int limit) {
-        return menuItemRepository.findTrendingMenuItems(PageRequest.of(0, limit))
+        LocalDateTime since = LocalDateTime.now().minusDays(7);
+        return menuItemRepository.findTrendingMenuItems(since, PageRequest.of(0, limit))
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());

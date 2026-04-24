@@ -1,5 +1,6 @@
 package com.sunline.sunline_backend.controller;
 
+import com.sunline.sunline_backend.config.UploadPathConfig;
 import com.sunline.sunline_backend.dto.request.CreatePostRequest;
 import com.sunline.sunline_backend.dto.request.ReactionRequest;
 import com.sunline.sunline_backend.dto.response.FoodPostResponse;
@@ -17,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +30,7 @@ public class FoodPostController {
 
     private final FoodPostService foodPostService;
     private final UserRepository userRepository;
+    private final UploadPathConfig uploadPathConfig;
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
@@ -41,12 +42,7 @@ public class FoodPostController {
             String originalFilename = file.getOriginalFilename();
             String filename = UUID.randomUUID().toString() + "_" + originalFilename;
 
-            Path uploadPath = Paths.get("uploads").toAbsolutePath();
-
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-
+            Path uploadPath = uploadPathConfig.getResolvedPath();
             Path filePath = uploadPath.resolve(filename);
             Files.copy(file.getInputStream(), filePath);
 

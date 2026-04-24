@@ -35,6 +35,11 @@ public class RatingController {
         return ResponseEntity.ok(ratingService.getAverageRating(id));
     }
 
+    @GetMapping("/menu-item/{id}/count")
+    public ResponseEntity<Long> getRatingCount(@PathVariable Long id) {
+        return ResponseEntity.ok(ratingService.getRatingCount(id));
+    }
+
     @GetMapping("/me")
     public ResponseEntity<List<RatingResponse>> getUserRatings(
             @AuthenticationPrincipal UserDetails userDetails) {

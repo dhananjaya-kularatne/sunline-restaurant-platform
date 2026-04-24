@@ -2,6 +2,7 @@ package com.sunline.sunline_backend.config;
 
 import com.sunline.sunline_backend.entity.MenuItem;
 import com.sunline.sunline_backend.repository.MenuItemRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Configuration
 public class DataSeeder {
 
@@ -29,18 +31,18 @@ public class DataSeeder {
                                                 .role(User.Role.ADMIN)
                                                 .build();
                                 userRepository.save(admin);
-                                System.out.println("Admin user seeded.");
+                                log.info("Admin user seeded.");
                         }
 
                         long count = repository.count();
-                        System.out.println("Current menu item count: " + count);
+                        log.info("Current menu item count: {}", count);
 
                         if (count > 0) {
-                                System.out.println("Menu items already seeded. Skipping.");
+                                log.info("Menu items already seeded. Skipping.");
                                 return;
                         }
 
-                        System.out.println("Seeding menu items with multi-categories...");
+                        log.info("Seeding menu items...");
                         List<MenuItem> items = Arrays.asList(
                                         MenuItem.builder()
                                                         .name("Vegetable Kottu")

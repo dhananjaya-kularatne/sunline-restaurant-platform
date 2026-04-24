@@ -10,6 +10,7 @@ const AdminSidebar = () => {
         { name: 'Reports', path: '/admin/reports', icon: BarChart3 },
         { name: 'User Management', path: '/admin/users', icon: Users },
         { name: 'Order Management', path: '/admin/orders', icon: ShoppingBag },
+        { name: 'Reservation Management', path: '/admin/reservations', icon: Calendar },
         { name: 'Menu Management', path: '/admin/menu', icon: Utensils },
         { name: 'Social Feed Management', path: '/admin/posts', icon: Image },
         { name: 'Support Management', path: '/admin/support', icon: MessageSquare },

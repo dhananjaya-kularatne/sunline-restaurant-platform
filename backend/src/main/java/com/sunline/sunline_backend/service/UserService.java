@@ -1,5 +1,6 @@
 package com.sunline.sunline_backend.service;
 
+import com.sunline.sunline_backend.config.UploadPathConfig;
 import com.sunline.sunline_backend.entity.User;
 import com.sunline.sunline_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -68,11 +68,11 @@ public class UserService implements UserDetailsService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private UploadPathConfig uploadPathConfig;
+
     @Value("${app.frontend.url}")
     private String frontendUrl;
-
-    @Value("${app.upload.dir}")
-    private String uploadDir;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -116,15 +116,16 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public void createPasswordResetToken(String email) {
+    public void createPasswordResetToken(String email, String origin) {
         User user = findByEmail(email);
         String token = UUID.randomUUID().toString();
         user.setResetToken(token);
         user.setResetTokenExpiry(LocalDateTime.now().plusMinutes(5));
         userRepository.save(user);
 
-        String resetLink = frontendUrl + "/reset-password?token=" + token;
-        emailService.sendEmail(user.getEmail(), "Password Reset", "Click here to reset: " + resetLink);
+        String base = (origin != null && !origin.isBlank()) ? origin : frontendUrl;
+        String resetLink = base + "/reset-password?token=" + token;
+        emailService.sendPasswordResetEmail(user.getEmail(), resetLink);
     }
 
     public void resetPassword(String token, String newPassword) {
@@ -189,10 +190,7 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("Invalid file type. Only JPG, JPEG, and PNG are allowed.");
         }
 
-        Path uploadPath = Paths.get(uploadDir);
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
+        Path uploadPath = uploadPathConfig.getResolvedPath();
 
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         Path filePath = uploadPath.resolve(fileName);

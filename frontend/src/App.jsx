@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -7,6 +7,7 @@ import ProfilePage from './pages/ProfilePage';
 import AdminUserManagement from './pages/AdminUserManagement';
 import HomePage from './pages/HomePage';
 import CustomerNavbar from './components/CustomerNavbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import MenuPage from './pages/MenuPage';
@@ -16,7 +17,6 @@ import CartPage from './pages/CartPage';
 import WishlistPage from './pages/WishlistPage';
 import KitchenPage from './pages/KitchenPage';
 import DeliveryPage from './pages/DeliveryPage';
-
 import AdminMenuManagement from './pages/AdminMenuManagement';
 import AdminPostManagement from './pages/AdminPostManagement';
 import SupportPage from './pages/SupportPage';
@@ -39,18 +39,17 @@ import ChatbotWidget from './components/ChatbotWidget';
 function AppContent() {
     const location = useLocation();
 
-    // Check if the current route is a dashboard-style page
     const isDashboardPage = location.pathname.startsWith('/admin') ||
         location.pathname === '/kitchen' ||
         location.pathname === '/delivery';
 
-    // Different background colors as discussed
     const bgColor = isDashboardPage ? '#F8F9FA' : '#FDF8F3';
 
     return (
         <div style={{ backgroundColor: bgColor }} className="min-h-screen text-gray-900 border-none outline-none transition-colors duration-500">
             <CustomerNavbar />
             <Routes>
+                {/* Public */}
                 <Route path="/" element={<HomePage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/login" element={<LoginPage />} />
@@ -58,30 +57,34 @@ function AppContent() {
                 <Route path="/support" element={<SupportPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/user/:userId" element={<ProfilePage />} />
-                <Route path="/my-reports" element={<UserReportsPage />} />
-                <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                <Route path="/admin/reports" element={<AdminReportsPage />} />
-                <Route path="/admin/users" element={<AdminUserManagement />} />
-                <Route path="/admin/menu" element={<AdminMenuManagement />} />
-                <Route path="/admin/posts" element={<AdminPostManagement />} />
-                <Route path="/admin/support" element={<AdminSupportManagement />} />
-                <Route path="/admin/reservations" element={<AdminReservationManagement />} />
-                <Route path="/admin/orders" element={<AdminOrdersPage />} />
-                <Route path="/admin/ratings-management" element={<AdminRatingsManagement />} />
-                <Route path="/admin/ratings" element={<AdminRatingsPage />} />
-                <Route path="/reservations" element={<MyReservationsPage />} />
-                <Route path="/book-table" element={<ReservationsPage />} />
-                <Route path="/create-post" element={<CreatePostPage />} />
                 <Route path="/social-feed" element={<SocialFeedPage />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
-                <Route path="/my-orders" element={<MyOrdersPage />} />
-                <Route path="/order-success" element={<OrderSuccessPage />} />
-                <Route path="/wishlist" element={<WishlistPage />} />
-                <Route path="/kitchen" element={<KitchenPage />} />
-                <Route path="/delivery" element={<DeliveryPage />} />
+                <Route path="/user/:userId" element={<ProfilePage />} />
+
+                {/* Authenticated */}
+                <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                <Route path="/my-reports" element={<ProtectedRoute><UserReportsPage /></ProtectedRoute>} />
+                <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
+                <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+                <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>} />
+                <Route path="/order-success" element={<ProtectedRoute><OrderSuccessPage /></ProtectedRoute>} />
+                <Route path="/wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
+                <Route path="/reservations" element={<ProtectedRoute><MyReservationsPage /></ProtectedRoute>} />
+                <Route path="/book-table" element={<ProtectedRoute><ReservationsPage /></ProtectedRoute>} />
+                <Route path="/create-post" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
+                <Route path="/kitchen" element={<ProtectedRoute><KitchenPage /></ProtectedRoute>} />
+                <Route path="/delivery" element={<ProtectedRoute><DeliveryPage /></ProtectedRoute>} />
+
+                {/* Admin only */}
+                <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="ADMIN"><AdminDashboard /></ProtectedRoute>} />
+                <Route path="/admin/reports" element={<ProtectedRoute requiredRole="ADMIN"><AdminReportsPage /></ProtectedRoute>} />
+                <Route path="/admin/users" element={<ProtectedRoute requiredRole="ADMIN"><AdminUserManagement /></ProtectedRoute>} />
+                <Route path="/admin/menu" element={<ProtectedRoute requiredRole="ADMIN"><AdminMenuManagement /></ProtectedRoute>} />
+                <Route path="/admin/posts" element={<ProtectedRoute requiredRole="ADMIN"><AdminPostManagement /></ProtectedRoute>} />
+                <Route path="/admin/support" element={<ProtectedRoute requiredRole="ADMIN"><AdminSupportManagement /></ProtectedRoute>} />
+                <Route path="/admin/reservations" element={<ProtectedRoute requiredRole="ADMIN"><AdminReservationManagement /></ProtectedRoute>} />
+                <Route path="/admin/orders" element={<ProtectedRoute requiredRole="ADMIN"><AdminOrdersPage /></ProtectedRoute>} />
+                <Route path="/admin/ratings-management" element={<ProtectedRoute requiredRole="ADMIN"><AdminRatingsManagement /></ProtectedRoute>} />
+                <Route path="/admin/ratings" element={<ProtectedRoute requiredRole="ADMIN"><AdminRatingsPage /></ProtectedRoute>} />
             </Routes>
             <Footer />
             <ChatbotWidget />

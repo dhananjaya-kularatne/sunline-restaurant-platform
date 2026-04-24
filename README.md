@@ -1,55 +1,81 @@
-# Story 1: User Registration with Secure Validation (Isolated)
+# Sunline Restaurant Platform
 
-This folder contains the isolated code for the User Registration story (SRP-2). All logic unrelated to registration (login, profile, admin, etc.) has been pruned.
+A full-stack restaurant management platform built with Spring Boot and React.
 
-## Structure
+## Team
 
+| Name | Reg. No. | Email | Features |
+|------|----------|-------|----------|
+| Kularatne R.A.D | IT24103431 | it24103431@my.sliit.lk | User Management, Ratings Management & Smart Recommendations |
+| Peiris M.D.D.P | IT24100532 | it24100532@my.sliit.lk | Order Management & Menu Management |
+| Hettiarachchi S.S | IT24103438 | it24103438@my.sliit.lk | Support Management, Reservations Management & Admin Dashboard |
+| Srinayaka S.P.B.M. | IT24103435 | it24103435@my.sliit.lk | Social Feed Management, AI Chatbot & Wishlist |
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Backend | Spring Boot 3.2.2, Java 21, Spring Security + JWT |
+| Database | MySQL 8+ |
+| Frontend | React 18, Vite, TailwindCSS, React Router v6 |
+| Auth | JWT (stateless), BCrypt password hashing |
+
+## Features
+
+- **Customer**: Browse menu, place orders, book tables, wishlist, social feed, ratings, chatbot support
+- **Admin**: Dashboard (revenue/sales), user/menu/order/reservation/post/support management
+- **Kitchen & Delivery**: Role-based dashboards for operational staff
+- **Authentication**: Register, login, forgot/reset password via email
+
+## Prerequisites
+
+- Java 21+
+- Node.js 18+
+- MySQL 8+
+- Maven 3.8+
+
+## Setup
+
+### 1. Database
+
+MySQL will auto-create the `sunline_db` database on first run.
+
+### 2. Backend
+
+```bash
+cd backend
+# Copy the example config and fill in your values
+cp src/main/resources/application.properties.example src/main/resources/application.properties
+# Edit application.properties with your DB password and mail credentials
+mvn spring-boot:run
 ```
-Story1_Registration/
-├── backend/
-│   └── src/main/java/com/sunline/sunline_backend/
-│       ├── controller/AuthController.java (Register endpoint only)
-│       ├── dto/request/RegisterRequest.java (Validation logic)
-│       ├── entity/User.java (Basic User entity)
-│       ├── repository/UserRepository.java (Email uniqueness check)
-│       └── service/UserService.java (Registration logic)
-└── frontend/
-    └── src/
-        ├── pages/RegisterPage.jsx (Registration UI & validation)
-        └── services/
-            ├── api.js (Axios configuration)
-            └── authService.js (Register API call only)
+
+The backend starts on `http://localhost:8080`.  
+A default admin account (`admin@sunline.com` / `Admin@123!`) and sample menu items are seeded automatically.
+
+### 3. Frontend
+
+```bash
+cd frontend
+npm install
+# Optional: copy .env.example to .env and set VITE_API_URL if needed
+npm run dev
 ```
 
-## How to Run This Story Independently
+The frontend starts on `http://localhost:5173`.
 
-### 1. Prerequisites
-- **MySQL Server**: Ensure MySQL is running on your machine.
-- **Java 21+**: Installed and configured (for backend).
-- **Node.js**: Installed (for frontend).
-- **Maven**: (Optional if using `./mvnw`, but good to have).
+## Available Scripts (Frontend)
 
-### 2. Backend Setup
-1.  **Configure Environment**: (Optional) Update `backend/src/main/resources/application.properties` with your MySQL username and password if different from `root/root`. The database `sunline_db` will be created automatically.
-2.  **Run Backend**:
-    - Open a terminal in `Story1_Registration/backend`.
-    - Run: `mvn spring-boot:run`
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server |
+| `npm run build` | Production build |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Auto-fix lint issues |
+| `npm run format` | Format code with Prettier |
 
-### 3. Frontend Setup
-1.  **Navigate to Frontend**: Open a new terminal in `Story1_Registration/frontend`.
-2.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
-3.  **Run Frontend**:
-    ```bash
-    npm run dev
-    ```
-4.  **Access**: Open [http://localhost:5173/register](http://localhost:5173/register) in your browser.
+## Default Credentials
 
-## Features Included
-- **Scenario 1 - Successful Registration**: Submit the form and verify the success message.
-- **Scenario 2 - Duplicate Email**: Try registering with the same email twice.
-- **Scenario 3 - Weak Password**: Try a password like `password123`.
-- **Scenario 4 - Password Mismatch**: Enter different passwords in the two fields.
-- **Scenario 5 - Mandatory Fields**: Leave fields empty and try to submit.
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@sunline.com | Admin@123! |
