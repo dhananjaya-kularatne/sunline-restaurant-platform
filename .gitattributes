@@ -1,0 +1,5 @@
+# Force LF for files that must not have CRLF on Linux
+Dockerfile       text eol=lf
+*.sh             text eol=lf
+railway.json     text eol=lf
+*.properties     text eol=lf

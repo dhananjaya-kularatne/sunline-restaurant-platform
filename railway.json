@@ -1,0 +1,10 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "dockerfilePath": "backend/Dockerfile",
+    "buildContext": "backend"
+  },
+  "deploy": {
+    "startCommand": "java -jar app.jar"
+  }
+}
