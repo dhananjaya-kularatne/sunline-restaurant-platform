@@ -26,7 +26,7 @@ public class EmailService {
     public void sendEmail(String to, String subject, String html) {
         try {
             Map<String, Object> body = Map.of(
-                    "sender", Map.of("name", "Sunline Restaurant", "email", "djaya2100@gmail.com"),
+                    "sender", Map.of("name", "Sunline Restaurant", "email", "djaya21000@gmail.com"),
                     "to", List.of(Map.of("email", to)),
                     "subject", subject,
                     "htmlContent", html
