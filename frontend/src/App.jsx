@@ -63,13 +63,13 @@ function AppContent() {
                 {/* Authenticated */}
                 <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                 <Route path="/my-reports" element={<ProtectedRoute><UserReportsPage /></ProtectedRoute>} />
-                <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
-                <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>} />
                 <Route path="/order-success" element={<ProtectedRoute><OrderSuccessPage /></ProtectedRoute>} />
                 <Route path="/wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
-                <Route path="/reservations" element={<ProtectedRoute><MyReservationsPage /></ProtectedRoute>} />
-                <Route path="/book-table" element={<ProtectedRoute><ReservationsPage /></ProtectedRoute>} />
+                <Route path="/reservations" element={<MyReservationsPage />} />
+                <Route path="/book-table" element={<ReservationsPage />} />
                 <Route path="/create-post" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
                 <Route path="/kitchen" element={<ProtectedRoute><KitchenPage /></ProtectedRoute>} />
                 <Route path="/delivery" element={<ProtectedRoute><DeliveryPage /></ProtectedRoute>} />
