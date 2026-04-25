@@ -66,7 +66,7 @@ function AppContent() {
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>} />
-                <Route path="/order-success" element={<ProtectedRoute><OrderSuccessPage /></ProtectedRoute>} />
+                <Route path="/order-success" element={<OrderSuccessPage />} />
                 <Route path="/wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
                 <Route path="/reservations" element={<MyReservationsPage />} />
                 <Route path="/book-table" element={<ReservationsPage />} />
