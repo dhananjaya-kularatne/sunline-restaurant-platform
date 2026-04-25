@@ -1,29 +1,48 @@
 package com.sunline.sunline_backend.service;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final WebClient webClient;
+
+    @Value("${brevo.api.key}")
+    private String apiKey;
+
+    public EmailService(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder
+                .baseUrl("https://api.brevo.com/v3")
+                .build();
+    }
 
     public void sendEmail(String to, String subject, String html) {
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(html, true);
-            mailSender.send(message);
-        } catch (MessagingException e) {
+            Map<String, Object> body = Map.of(
+                    "sender", Map.of("name", "Sunline Restaurant", "email", "djaya2100@gmail.com"),
+                    "to", List.of(Map.of("email", to)),
+                    "subject", subject,
+                    "htmlContent", html
+            );
+
+            webClient.post()
+                    .uri("/smtp/email")
+                    .header("api-key", apiKey)
+                    .header("Content-Type", "application/json")
+                    .bodyValue(body)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+
+            log.info("Email sent to {} via Brevo API", to);
+        } catch (Exception e) {
             log.error("Failed to send email to {}: {}", to, e.getMessage());
             throw new RuntimeException("Failed to send email", e);
         }
